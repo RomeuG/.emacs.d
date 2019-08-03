@@ -339,8 +339,8 @@ This command does not push text to `kill-ring'."
 ;; mouse settings
 (xterm-mouse-mode t)
 (global-unset-key [mouse-2])
-(global-set-key   [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-(global-set-key   [mouse-5] '(lambda () (interactive) (scroll-up   1)))
+(global-set-key   [mouse-4] '(lambda () (interactive) (scroll-down 3)))
+(global-set-key   [mouse-5] '(lambda () (interactive) (scroll-up   3)))
 
 ;; new home key action
 (global-set-key (kbd "<home>") 'move-beginning-of-line)
