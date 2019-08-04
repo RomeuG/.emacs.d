@@ -736,6 +736,8 @@ This command does not push text to `kill-ring'."
   (org-src-tab-acts-natively t)
   (org-src-preserve-indentation t)
   (org-log-done t)
+  (org-startup-indented t)
+  (org-pretty-entities t)
   :init
   (customize-set-variable 'org-ellipsis "↴")
   (setq org-agenda-files (list "~/Documents/Notes/projects.org"
