@@ -384,6 +384,9 @@ This command does not push text to `kill-ring'."
 (setq-default indent-tabs-mode nil)   ; use space
 (defalias 'yes-or-no-p #'y-or-n-p)
 
+;; startup mode
+(setq initial-major-mode 'org-mode)
+
 ;; column number
 (column-number-mode 1)
 
