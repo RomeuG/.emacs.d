@@ -354,8 +354,10 @@ This command does not push text to `kill-ring'."
 ;; disable suspend frame
 (global-unset-key (kbd "C-z"))
 
-;; more intuitive regions
+;; text marking
 (delete-selection-mode t)
+(transient-mark-mode t)
+(setq x-select-enable-clipboard t)
 
 ;; cursor type
 (setq-default cursor-type 'box)
