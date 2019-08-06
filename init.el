@@ -5,6 +5,9 @@
 
 ;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;;(setq gnutls-verify-error nil)
+(setq gnutls-min-prime-bits 1024)
+(setq gnutls-algorithm-priority "SECURE128:-VERS-SSL3.0:-VERS-TLS1.3")
+
 
 (when (>= emacs-major-version 24)
   (require 'package)
