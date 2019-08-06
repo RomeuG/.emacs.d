@@ -62,6 +62,7 @@
 	 (output-pdf "Zathura")
 	 (output-html "xdg-open"))))
  '(bmkp-last-as-first-bookmark-file "/home/romeu/.emacs.d/bookmarks")
+ '(ccls-executable "ccls")
  '(column-number-mode t)
  '(company-c-headers-path-system
    (quote
@@ -72,8 +73,12 @@
  '(company-clang-insert-arguments t)
  '(company-echo-delay 0 t)
  '(company-idle-delay 0)
+ '(company-lsp-async t t)
+ '(company-lsp-cache-candidates t t)
+ '(company-lsp-enable-recompletion t t)
+ '(company-lsp-enable-snippet t t)
  '(company-minimum-prefix-length 1)
- '(company-quickhelp-delay 0.8)
+ '(company-quickhelp-delay 0.8 t)
  '(compile-command
    "make -k -j4 -C /home/romeu/Documents/Projects/CHIP8_IMGUI/cmake-build-debug")
  '(custom-safe-themes
@@ -84,7 +89,7 @@
    (quote
 	(elpy-module-company elpy-module-eldoc elpy-module-sane-defaults)))
  '(flycheck-clang-include-path nil)
- '(flycheck-disabled-checkers (quote (tex-lacheck tex-chktex)))
+ '(flycheck-disabled-checkers (quote (tex-lacheck tex-chktex)) t)
  '(global-hl-line-mode nil)
  '(global-semantic-decoration-mode t)
  '(global-subword-mode t)
@@ -94,11 +99,43 @@
  '(indent-tabs-mode t)
  '(inhibit-startup-screen t)
  '(irony-cdb-search-directory-list (quote ("." "build")))
+ '(lsp-auto-guess-root t)
+ '(lsp-document-sync-method (quote incremental))
+ '(lsp-log-io nil)
+ '(lsp-prefer-flymake nil)
+ '(lsp-print-io nil)
+ '(lsp-print-performance nil)
+ '(lsp-response-timeout 10)
+ '(lsp-trace nil t)
+ '(lsp-ui-doc-enable nil t)
+ '(lsp-ui-doc-header t t)
+ '(lsp-ui-flycheck-enable nil t)
+ '(lsp-ui-imenu-enable t t)
+ '(lsp-ui-imenu-kind-position (quote top) t)
+ '(lsp-ui-peek-enable t t)
+ '(lsp-ui-peek-fontify (quote on-demand) t)
+ '(lsp-ui-peek-list-width 50 t)
+ '(lsp-ui-peek-peek-height 20 t)
+ '(lsp-ui-sideline-code-actions-prefix "" t)
+ '(lsp-ui-sideline-enable nil t)
+ '(lsp-ui-sideline-ignore-duplicate t t)
+ '(lsp-ui-sideline-show-code-actions t t)
+ '(lsp-ui-sideline-show-diagnostics nil t)
+ '(lsp-ui-sideline-show-hover t t)
+ '(lsp-ui-sideline-show-symbol t t)
+ '(magit-auto-revert-mode nil)
  '(org-agenda-files (quote ("~/Documents/Notes/projects.org")))
  '(org-ellipsis "↴")
+ '(org-log-done t)
+ '(org-pretty-entities t)
+ '(org-src-fontify-natively t)
+ '(org-src-preserve-indentation t)
+ '(org-src-tab-acts-natively t)
+ '(org-startup-folded nil)
+ '(org-startup-indented t)
  '(package-selected-packages
    (quote
-	(browse-at-remote diffview git-timemachine company-quickhelp hungry-delete yasnippet-snippets ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets elpy ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode)))
+	(org-web-tools browse-at-remote diffview git-timemachine company-quickhelp hungry-delete yasnippet-snippets ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets elpy ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#1d2021")))
  '(popwin:popup-window-height 0.5)
  '(preview-gs-options
@@ -114,7 +151,10 @@
  '(sml/modified-char "X")
  '(sml/modified-time-string "Modified on %T %Y/%m/%d.")
  '(sp-escape-quotes-after-insert nil)
- '(speedbar-show-unknown-files t))
+ '(speedbar-show-unknown-files t)
+ '(tls-program
+   (quote
+	("gnutls-cli --x509cafile %t -p %p %h" "gnutls-cli --x509cafile %t -p %p %h --protocols ssl3"))))
 
 (setq gc-cons-threshold 800000)
 (custom-set-faces

@@ -4,6 +4,7 @@
 (scroll-bar-mode 0)
 
 ;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;;(setq gnutls-verify-error nil)
 
 (when (>= emacs-major-version 24)
   (require 'package)
