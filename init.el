@@ -824,6 +824,15 @@ This command does not push text to `kill-ring'."
 
   (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
 
+  ;; recover old keybinds
+  (define-key helm-map (kbd "<left>") 'helm-previous-source)
+  (define-key helm-map (kbd "<right>") 'helm-next-source)
+
+  (customize-set-variable 'helm-ff-lynx-style-map t)
+  (customize-set-variable 'helm-imenu-lynx-style-map t)
+  (customize-set-variable 'helm-semantic-lynx-style-map t)
+  (customize-set-variable 'helm-occur-use-ioccur-style-keys t)
+
   (helm-mode 1))
 
 (use-package helm-gtags
