@@ -418,15 +418,14 @@ This command does not push text to `kill-ring'."
 (setq-default sentence-end-double-space nil)
 
 ;; font settings
-;; (set-frame-font "xos4 Terminus-9")
-;; (setq default-frame-alist '((font . "xos4 Terminus-9")))
-;; (set-frame-font "Hack-11")
-;; (setq default-frame-alist '((font . "Hack-11")))
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
-(setq default-font-family "Source Code Pro Medium")
-(set-frame-font "Source Code Pro Medium-11")
-(setq default-frame-alist '((font . "Source Code Pro Medium-11")))
+
+(cond ((string-equal system-type "gnu/linux"))
+	  (setq default-font-family "Source Code Pro Medium")
+	  (set-frame-font "Source Code Pro Medium-11")
+	  (setq default-frame-alist '((font . "Source Code Pro Medium-11")))
+	  )
 
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'prev-window)
