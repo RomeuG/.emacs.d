@@ -7,6 +7,14 @@
     (setq gc-cons-threshold 16777216 ; 16mb
           gc-cons-percentage 0.1)))
 
+;; file-name-handler-list optimization
+(defvar my--file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+(add-hook 'emacs-startup-hook
+		  (lambda ()
+			(setq file-name-handler-alist my--file-name-handler-alist)))
+
 ;; Window System
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -869,6 +877,10 @@ This command does not push text to `kill-ring'."
   (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
   (lsp-response-timeout 10)
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
+  :hook
+  (c-mode . lsp)
+  (c++-mode . lsp)
+  :config
   (use-package lsp-ui
     :custom
     ;; lsp-ui-doc
@@ -896,25 +908,22 @@ This command does not push text to `kill-ring'."
     (defun ladicle/toggle-lsp-ui-doc ()
       (interactive)
       (if lsp-ui-doc-mode
-		  (progn
-			(lsp-ui-doc-mode -1)
-			(lsp-ui-doc--hide-frame))
-		(lsp-ui-doc-mode 1)))
+          (progn
+            (lsp-ui-doc-mode -1)
+            (lsp-ui-doc--hide-frame))
+        (lsp-ui-doc-mode 1)))
     :bind
     (:map lsp-mode-map
-		  ;; ("C-c C-r" . lsp-ui-peek-find-references)
-		  ;; ("C-c C-j" . lsp-ui-peek-find-definitions)
-		  ;; ("C-c i"   . lsp-ui-peek-find-implementation)
-		  ;; ("C-c m"   . lsp-ui-imenu)
-		  ("C-c s"   . lsp-ui-sideline-mode)
-		  ("C-c d"   . ladicle/toggle-lsp-ui-doc))
+          ;; ("C-c C-r" . lsp-ui-peek-find-references)
+          ;; ("C-c C-j" . lsp-ui-peek-find-definitions)
+          ;; ("C-c i"   . lsp-ui-peek-find-implementation)
+          ;; ("C-c m"   . lsp-ui-imenu)
+          ("C-c s"   . lsp-ui-sideline-mode)
+          ("C-c d"   . ladicle/toggle-lsp-ui-doc))
     :hook
-	(c-mode . lsp)
-	(c++-mode . lsp)
-	(lsp-mode . lsp-ui-mode)
-    )
-
+    (lsp-mode . lsp-ui-mode))
   (use-package company-lsp
+    :ensure t
     :commands company-lsp
     :custom
     (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
