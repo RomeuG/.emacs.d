@@ -474,25 +474,9 @@ This command does not push text to `kill-ring'."
 (setq vc-make-backup-files t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-;; utf-8
-;; (prefer-coding-system 'utf-8)
-;; (set-terminal-coding-system 'utf-8)
-;; (set-keyboard-coding-system 'utf-8)
-;; (when (display-graphic-p)
-;;   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT
-;; STRING)))
-(prefer-coding-system 'utf-8-unix)
+;; utf8 stuff
 (set-locale-environment "en_US.UTF-8")
-(set-default-coding-systems 'utf-8-unix)
-(set-selection-coding-system 'utf-8-unix)
-(set-buffer-file-coding-system 'utf-8-unix)
-(set-clipboard-coding-system 'utf-8) ; included by set-selection-coding-system
-(set-keyboard-coding-system 'utf-8) ; configured by prefer-coding-system
-(set-terminal-coding-system 'utf-8) ; configured by prefer-coding-system
-(setq buffer-file-coding-system 'utf-8) ; utf-8-unix
-(setq save-buffer-coding-system 'utf-8-unix) ; nil
-(setq process-coding-system-alist
-  (cons '("grep" utf-8 . utf-8) process-coding-system-alist))
+(set-default-coding-systems 'utf-8)
 
 ;; backtab delete spaces
 (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
