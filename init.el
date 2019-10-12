@@ -401,7 +401,6 @@ This command does not push text to `kill-ring'."
 
 ;; highlighting
 (global-font-lock-mode t)
-(setq font-lock-maximum-decoration t)
 
 ;; scroll bar new-frame
 (add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
