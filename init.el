@@ -532,6 +532,10 @@ This command does not push text to `kill-ring'."
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Prepare for ensure
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 (use-package server
   :ensure nil
   :hook (after-init . server-mode))
@@ -629,6 +633,7 @@ This command does not push text to `kill-ring'."
   :defer 1)
 
 (use-package uniquify
+  :ensure nil
   :defer 1
   :config
   (setq uniquify-buffer-name-style 'reverse)
@@ -861,7 +866,6 @@ This command does not push text to `kill-ring'."
 	:custom (company-quickhelp-delay 0.8)))
 
 (use-package lsp-mode
-  :ensure t
   :commands lsp
   :custom
   ;; debug
@@ -919,7 +923,6 @@ This command does not push text to `kill-ring'."
     (lsp-mode . lsp-ui-mode))
 
    (use-package company-lsp
-	 :ensure t
 	 :commands company-lsp
 	 :custom
 	 (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
@@ -929,7 +932,6 @@ This command does not push text to `kill-ring'."
 	 :config (push 'company-lsp company-backends)))
 
 (use-package ccls
-  :ensure t
   :custom
   (ccls-executable "ccls")
   (lsp-prefer-flymake nil)
@@ -944,8 +946,8 @@ This command does not push text to `kill-ring'."
   :hook (after-init . yas-global-mode))
 
 (use-package eldoc
-  :defer 1
   :ensure nil
+  :defer 1
   :config (global-eldoc-mode -1))
 
 (use-package iedit
