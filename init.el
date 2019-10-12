@@ -419,13 +419,13 @@ This command does not push text to `kill-ring'."
 (setq-default sentence-end-double-space nil)
 
 ;; font settings
-(setq use-default-font-for-symbols nil)
-(setq inhibit-compacting-font-caches t)
+(setq-default use-default-font-for-symbols nil)
+(setq-default inhibit-compacting-font-caches t)
 
 (cond ((string-equal system-type "gnu/linux"))
-	  (setq default-font-family "Source Code Pro Medium")
+	  (setq-default default-font-family "Source Code Pro Medium")
 	  (set-frame-font "Source Code Pro Medium-11")
-	  (setq default-frame-alist '((font . "Source Code Pro Medium-11")))
+	  (setq-default default-frame-alist '((font . "Source Code Pro Medium-11")))
 	  )
 
 (global-set-key (kbd "C-.") 'other-window)
@@ -434,45 +434,45 @@ This command does not push text to `kill-ring'."
 (add-hook 'after-save-hook #'gtags-update-hook)
 
 ;; visual bell and less keystrokes
-(setq echo-keystrokes 0.1
-	  use-dialog-box nil
-	  visible-bell t)
+(setq-default echo-keystrokes 0.1)
+(setq-default use-dialog-box nil)
+(setq-default visible-bell t)
 
 (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
 (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
 
 ;; backups
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups"))
-	  backup-by-copying t
-	  delete-old-versions t
-	  kept-new-versions 6
-	  kept-old-version 2
-	  version-control t)
+(setq-default backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq-default backup-by-copying t)
+(setq-default delete-old-versions t)
+(setq-default kept-new-versions 6)
+(setq-default kept-old-version 2)
+(setq-default version-control t)
 
 ;; disable warning when killing buffers
-(setq kill-buffer-query-functions
+(setq-default kill-buffer-query-functions
   (remq 'process-kill-buffer-query-function
          kill-buffer-query-functions))
 
 ;; custom file
-(setq custom-file "~/.emacs.d/custom.el")
+(setq-default custom-file "~/.emacs.d/custom.el")
 
 ;; history
-(setq savehist-file "~/.emacs.d/savehist")
+(setq-default savehist-file "~/.emacs.d/savehist")
 (savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
+(setq-default history-length t)
+(setq-default history-delete-duplicates t)
+(setq-default savehist-save-minibuffer-history 1)
+(setq-default savehist-additional-variables
 	  '(kill-ring
 		search-ring
 		regexp-search-ring))
 
 ;; save disk space
-(setq delete-old-versions t)
-(setq version-control t)
-(setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+(setq-default delete-old-versions t)
+(setq-default version-control t)
+(setq-default vc-make-backup-files t)
+(setq-default auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 ;; utf8 stuff
 (set-locale-environment "en_US.UTF-8")
@@ -486,7 +486,7 @@ This command does not push text to `kill-ring'."
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; highlight NOTE and TODO
-(setq fixme-modes '(c++-mode c-mode emacs-lisp-mode))
+(setq-default fixme-modes '(c++-mode c-mode emacs-lisp-mode))
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-note-face)
 (mapc (lambda (mode)
@@ -507,8 +507,8 @@ This command does not push text to `kill-ring'."
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
 ;; GDB
-(setq gdb-many-windows t
-	  gdb-show-main	   t)
+(setq-default gdb-many-windows t)
+(setq-default gdb-show-main	   t)
 
 (add-hook 'c-mode-hook (lambda () (local-unset-key (kbd "C-d"))))
 (add-hook 'c++-mode-hook (lambda () (local-unset-key (kbd "C-d"))))
@@ -602,7 +602,7 @@ This command does not push text to `kill-ring'."
 (use-package cc-mode
   :defer 1
   :config
-  (setq c-default-style "bsd")
+  (setq-default c-default-style "bsd")
   (setq-default c-basic-offset 4)
   (global-set-key (kbd "RET") 'newline-and-indent)	; automatically indent when press RET
 
