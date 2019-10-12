@@ -536,6 +536,7 @@ This command does not push text to `kill-ring'."
 ;; Prepare for ensure
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
+(setq use-package-always-defer t)
 
 (use-package server
   :ensure nil
@@ -596,16 +597,14 @@ This command does not push text to `kill-ring'."
   (projectile-mode +1))
 
 (use-package gruvbox-theme
-  :defer 1
+  :defer 0
   :config
   (load-theme 'gruvbox-dark-hard))
 
 (use-package rainbow-delimiters
-  :defer 1
   :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package cc-mode
-  :defer 1
   :config
   (setq-default c-default-style "bsd")
   (setq-default c-basic-offset 4)
