@@ -911,7 +911,7 @@ This command does not push text to `kill-ring'."
     :custom
     (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
     (company-lsp-async t)
-    (company-lsp-enable-snippet t)
+    ;;(company-lsp-enable-snippet t)
     (company-lsp-enable-recompletion t)
     :config (push 'company-lsp company-backends)))
 
