@@ -325,12 +325,14 @@ This command does not push text to `kill-ring'."
 ;; load early
 (require 'tramp)
 
-(setq-default confirm-kill-emacs 'yes-or-no-p
-			  cursor-in-non-selected-windows t
-			  help-window-select t
-			  x-stretch-cursor t)
+(setq-default confirm-kill-emacs 'yes-or-no-p)
+(setq-default cursor-in-non-selected-windows t)
+(setq-default help-window-select t)
+(setq-default x-stretch-cursor t)
+(setq-default scroll-margin 10)
+(setq-default window-combination-resize t)
 
-(global-subword-mode)
+(global-subword-mode 1)
 
 (add-hook 'focus-out-hook #'garbage-collect)
 
@@ -360,7 +362,8 @@ This command does not push text to `kill-ring'."
 ;; text marking
 (delete-selection-mode t)
 (transient-mark-mode t)
-(setq x-select-enable-clipboard t)
+(setq-default select-enable-clipboard t)
+(setq-default x-select-enable-clipboard t)
 
 ;; cursor type
 (setq-default cursor-type 'box)
@@ -375,21 +378,22 @@ This command does not push text to `kill-ring'."
 (setq initial-scratch-message nil)
 (defun display-startup-echo-area-message ()
   (message ""))
-(setq frame-title-format nil)
-(setq ring-bell-function 'ignore)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets) ; Show path if names are same
-(setq adaptive-fill-regexp "[ t]+|[ t]*([0-9]+.|*+)[ t]*")
-(setq adaptive-fill-first-line-regexp "^* *$")
-(setq sentence-end "\\([。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
-(setq sentence-end-double-space nil)
-(setq set-mark-command-repeat-pop t)  ; Repeating set-mark after popping mark pops it again
-(setq track-eol t)			; Keep cursor at end of lines.
-(setq line-move-visual nil)		; To be required by track-eol
+(setq-default frame-title-format nil)
+(setq-default ring-bell-function 'ignore)
+(setq-default uniquify-buffer-name-style 'post-forward-angle-brackets) ; Show path if names are same
+(setq-default adaptive-fill-regexp "[ t]+|[ t]*([0-9]+.|*+)[ t]*")
+(setq-default adaptive-fill-first-line-regexp "^* *$")
+(setq-default sentence-end "\\([。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
+(setq-default sentence-end-double-space nil)
+(setq-default set-mark-command-repeat-pop t)  ; Repeating set-mark after popping mark pops it again
+(setq-default track-eol t)			; Keep cursor at end of lines.
+(setq-default line-move-visual nil)		; To be required by track-eol
 (setq-default kill-whole-line t)	; Kill line including '\n'
 (setq-default indent-tabs-mode nil)   ; use space
+
 (defalias 'yes-or-no-p #'y-or-n-p)
 
-;; startup mode
+;; scratch buffer mode
 (setq initial-major-mode 'org-mode)
 
 ;; column number
@@ -408,10 +412,9 @@ This command does not push text to `kill-ring'."
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; isearch
-(setq-default
- isearch-allow-scroll t
- lazy-highlight-cleanup nil
- lazy-highlight-initial-delay 0)
+(setq-default isearch-allow-scroll t)
+(setq-default lazy-highlight-cleanup nil)
+(setq-default lazy-highlight-initial-delay 0)
 
 ;; redefining sentences in emacs
 (setq-default sentence-end-double-space nil)
