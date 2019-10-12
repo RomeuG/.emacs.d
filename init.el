@@ -3,9 +3,9 @@
       gc-cons-percentage 0.6)
 
 (add-hook 'emacs-startup-hook
-  (lambda ()
-    (setq gc-cons-threshold 16777216 ; 16mb
-          gc-cons-percentage 0.1)))
+		  (lambda ()
+			(setq gc-cons-threshold 16777216 ; 16mb
+				  gc-cons-percentage 0.1)))
 
 ;; file-name-handler-list optimization
 (defvar my--file-name-handler-alist file-name-handler-alist)
@@ -65,41 +65,41 @@
       (beginning-of-line)
       ;; get rid of tabs at beginning of line
       (when (looking-at "^\\s-+")
-	(untabify (match-beginning 0) (match-end 0)))
+		(untabify (match-beginning 0) (match-end 0)))
       (when (looking-at "^	  ")
-	(replace-match "")))))
+		(replace-match "")))))
 
 (defun duplicate-line (arg)
   "Duplicate current line, leaving point in lower line."
   (interactive "*p")
   (setq buffer-undo-list (cons (point) buffer-undo-list))
   (let ((bol (save-excursion (beginning-of-line) (point)))
-	eol)
+		eol)
     (save-excursion
       (end-of-line)
       (setq eol (point))
       (let ((line (buffer-substring bol eol))
-	    (buffer-undo-list t)
-	    (count arg))
-	(while (> count 0)
-	  (newline)			;; because there is no newline in 'line'
-	  (insert line)
-	  (setq count (1- count)))
-	)
+			(buffer-undo-list t)
+			(count arg))
+		(while (> count 0)
+		  (newline)			;; because there is no newline in 'line'
+		  (insert line)
+		  (setq count (1- count)))
+		)
       (setq buffer-undo-list (cons (cons eol (point)) buffer-undo-list)))
     )
   (next-line arg))
 
 (defun my/disable-scroll-bars (frame)
   (modify-frame-parameters frame
-			   '((vertical-scroll-bars . nil)
-			     (horizontal-scroll-bars . nil))))
+						   '((vertical-scroll-bars . nil)
+							 (horizontal-scroll-bars . nil))))
 
 (defun bookmark-to-abbrevs ()
   "Create abbrevs based on `bookmark-alist'."
   (dolist (bookmark bookmark-alist)
     (let* ((name (car bookmark))
-	   (file (bookmark-get-filename name)))
+		   (file (bookmark-get-filename name)))
       (define-abbrev global-abbrev-table name file))))
 
 (defun endless/flycheck-dir (dir)
@@ -109,74 +109,74 @@ Results are reported in a compilation buffer."
   (displaying-byte-compile-warnings
    (let ((p nil))
      (with-current-buffer (get-buffer-create
-			   byte-compile-log-buffer)
+						   byte-compile-log-buffer)
        (setq default-directory dir)
        (unless (eq major-mode 'compilation-mode)
-	 (compilation-mode))
+		 (compilation-mode))
        (goto-char (point-max))
        (let ((inhibit-read-only t))
-	 (insert "\n\xc\n\n"))
+		 (insert "\n\xc\n\n"))
        (setq p (point)))
      (dolist (file (directory-files "./" nil
-				    "\\`[^\\.].*\\'"))
+									"\\`[^\\.].*\\'"))
        (endless/-flycheck-file file))
      (with-selected-window (display-buffer
-			    byte-compile-log-buffer)
+							byte-compile-log-buffer)
        (goto-char p)
        (recenter 1)))))
 
 (defun endless/-report-error (fmt &rest args)
   "Print an error on `byte-compile-log-buffer'."
   (let ((inhibit-read-only t)
-	(fill-prefix "	  "))
+		(fill-prefix "	  "))
     (with-current-buffer byte-compile-log-buffer
       (let ((l (point)))
-	(insert "\n" (apply #'format fmt args))
-	(fill-region (1+ l) (point))))))
+		(insert "\n" (apply #'format fmt args))
+		(fill-region (1+ l) (point))))))
 
 (defun endless/-flycheck-file (file)
   "Check FILE and report to `byte-compile-log-buffer'."
   (let ((was-visited (find-buffer-visiting file)))
     (with-current-buffer (or was-visited
-			     (progn (find-file file)
-				    (current-buffer)))
+							 (progn (find-file file)
+									(current-buffer)))
       (when (ignore-errors (flycheck-buffer))
-	(while (flycheck-running-p)
-	  (accept-process-output nil 0.1))
-	(pcase flycheck-last-status-change
-	  ((or `errored `suspicious)
-	   (endless/-report-error
-	    "%s: Something wrong here!"
-	    (file-name-nondirectory (buffer-file-name))))
-	  (`finished
-	   (dolist (e flycheck-current-errors)
-	     (endless/-report-error
-	      "%s:%s:%s:%s: %s"
-	      (file-name-nondirectory (buffer-file-name))
-	      (flycheck-error-line e)
-	      (flycheck-error-column e)
-	      (flycheck-error-level e)
-	      (flycheck-error-message e))))))
+		(while (flycheck-running-p)
+		  (accept-process-output nil 0.1))
+		(pcase flycheck-last-status-change
+		  ((or `errored `suspicious)
+		   (endless/-report-error
+			"%s: Something wrong here!"
+			(file-name-nondirectory (buffer-file-name))))
+		  (`finished
+		   (dolist (e flycheck-current-errors)
+			 (endless/-report-error
+			  "%s:%s:%s:%s: %s"
+			  (file-name-nondirectory (buffer-file-name))
+			  (flycheck-error-line e)
+			  (flycheck-error-column e)
+			  (flycheck-error-level e)
+			  (flycheck-error-message e))))))
       (if was-visited
-	  (bury-buffer was-visited)
-	(kill-buffer (current-buffer))))))
+		  (bury-buffer was-visited)
+		(kill-buffer (current-buffer))))))
 
 (defun insert-date (prefix)
   "Insert the current date. With prefix-argument, use ISO format. With
    two prefix arguments, write out the day and month name."
   (interactive "P")
   (let ((format (cond
-		 ((not prefix) "%d.%m.%Y")
-		 ((equal prefix '(4)) "%Y-%m-%d")
-		 ((equal prefix '(16)) "%A, %d. %B %Y")))
-	(system-time-locale "de_DE"))
+				 ((not prefix) "%d.%m.%Y")
+				 ((equal prefix '(4)) "%Y-%m-%d")
+				 ((equal prefix '(16)) "%A, %d. %B %Y")))
+		(system-time-locale "de_DE"))
     (insert (format-time-string format))))
 
 (defun gtags-root-dir ()
   "Returns GTAGS root directory or nil if doesn't exist."
   (with-temp-buffer
     (if (zerop (call-process "global" nil t nil "-pr"))
-	(buffer-substring (point-min) (1- (point-max)))
+		(buffer-substring (point-min) (1- (point-max)))
       nil)))
 
 (defun gtags-update ()
@@ -237,7 +237,7 @@ Results are reported in a compilation buffer."
    (format "https://pypi.python.org/pypi?%%3Aaction=search&term=%s&submit=search"
            (read-string "Pip: ")
            (message "Searching pip.")
-	   )))
+		   )))
 
 (defun python/doc-search ()
   "Search Python3 official documentation. at: https://docs.python.org"
@@ -308,13 +308,13 @@ Results are reported in a compilation buffer."
   (interactive)
   (message "Deleting old backup files...")
   (let ((week (* 60 60 24 7))
-	(current (float-time (current-time))))
+		(current (float-time (current-time))))
     (dolist (file (directory-files temporary-file-directory t))
       (when (and (backup-file-name-p file)
-		 (> (- current (float-time (fifth (file-attributes file))))
-		    week))
-	(message "%s" file)
-	(delete-file file)))))
+				 (> (- current (float-time (fifth (file-attributes file))))
+					week))
+		(message "%s" file)
+		(delete-file file)))))
 
 (defun my-delete-word (arg)
   "Delete characters forward until encountering the end of a word.
@@ -467,8 +467,8 @@ This command does not push text to `kill-ring'."
 
 ;; disable warning when killing buffers
 (setq-default kill-buffer-query-functions
-	      (remq 'process-kill-buffer-query-function
-		    kill-buffer-query-functions))
+			  (remq 'process-kill-buffer-query-function
+					kill-buffer-query-functions))
 
 ;; custom file
 (setq-default custom-file "~/.emacs.d/custom.el")
@@ -480,9 +480,9 @@ This command does not push text to `kill-ring'."
 (setq-default history-delete-duplicates t)
 (setq-default savehist-save-minibuffer-history 1)
 (setq-default savehist-additional-variables
-	      '(kill-ring
-		search-ring
-		regexp-search-ring))
+			  '(kill-ring
+				search-ring
+				regexp-search-ring))
 
 ;; save disk space
 (setq-default delete-old-versions t)
@@ -506,18 +506,18 @@ This command does not push text to `kill-ring'."
 (make-face 'font-lock-fixme-face)
 (make-face 'font-lock-note-face)
 (mapc (lambda (mode)
-	(font-lock-add-keywords
-	 mode
-	 '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
-	   ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
+		(font-lock-add-keywords
+		 mode
+		 '(("\\<\\(TODO\\)" 1 'font-lock-fixme-face t)
+		   ("\\<\\(NOTE\\)" 1 'font-lock-note-face t))))
       fixme-modes)
 (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
 
 ;; compilation
 (global-set-key (kbd "<f5>") (lambda ()
-			       (interactive)
-			       (call-interactively 'compile)))
+							   (interactive)
+							   (call-interactively 'compile)))
 
 ;; UTF8
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
@@ -712,7 +712,7 @@ This command does not push text to `kill-ring'."
   (sp-with-modes '(c-mode c++-mode)
     (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
     (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-					      ))))
+											  ))))
 
 (use-package clean-aindent-mode
   :init
@@ -750,8 +750,8 @@ This command does not push text to `kill-ring'."
   :init
   (custom-set-faces
    '(diff-hl-change ((t (:background "dark blue" :foreground "dark blue")))
-		    '(diff-hl-insert ((t (:background "dark green" :foreground "dark green"))))
-		    '(diff-hl-delete ((t (:background "dark red" :foreground "dark red"))))))
+					'(diff-hl-insert ((t (:background "dark green" :foreground "dark green"))))
+					'(diff-hl-delete ((t (:background "dark red" :foreground "dark red"))))))
   (diff-hl-flydiff-mode)
   (diff-hl-margin-mode)
   (global-diff-hl-mode 1)
@@ -799,14 +799,14 @@ This command does not push text to `kill-ring'."
         helm-ff-file-name-history-use-recentf t
         helm-move-to-line-cycle-in-source     t
         helm-autoresize-mode                  t
-	helm-ff-auto-update-initial-value     t
+		helm-ff-auto-update-initial-value     t
         )
 
   (customize-set-variable 'helm-apropos-function-list
-			  '(helm-def-source--emacs-commands
-			    helm-def-source--emacs-functions
-			    helm-def-source--emacs-variables
-			    helm-def-source--emacs-faces))
+						  '(helm-def-source--emacs-commands
+							helm-def-source--emacs-functions
+							helm-def-source--emacs-variables
+							helm-def-source--emacs-faces))
 
   (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
 
@@ -834,11 +834,11 @@ This command does not push text to `kill-ring'."
   :hook
   ((c++-mode
     c-mode) . (lambda () (set (make-local-variable 'company-backends)
-			      '((;; company-yasnippet
-				 company-lsp
-				 company-files
-				 ;; company-dabbrev-code
-				 )))))
+							  '((;; company-yasnippet
+								 company-lsp
+								 company-files
+								 ;; company-dabbrev-code
+								 )))))
   :custom
   (company-idle-delay 0)
   (company-echo-delay 0)
@@ -848,7 +848,7 @@ This command does not push text to `kill-ring'."
   (defun indent-or-complete ()
     (interactive)
     (if (looking-at "\\_>")
-	(company-complete-common)
+		(company-complete-common)
       (indent-according-to-mode)))
 
   (setq company-require-match nil)
@@ -861,7 +861,7 @@ This command does not push text to `kill-ring'."
   (use-package company-quickhelp
     :defines company-quickhelp-delay
     :bind (:map company-active-map
-		("M-h" . company-quickhelp-manual-begin))
+				("M-h" . company-quickhelp-manual-begin))
     :hook (global-company-mode . company-quickhelp-mode)
     :custom (company-quickhelp-delay 0.8)))
 
@@ -956,17 +956,17 @@ This command does not push text to `kill-ring'."
     "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
     (interactive "P")
     (if arg
-	(iedit-mode)
+		(iedit-mode)
       (save-excursion
-	(save-restriction
-	  (widen)
-	  ;; this function determines the scope of `iedit-start'.
-	  (if iedit-mode
-	      (iedit-done)
-	    ;; `current-word' can of course be replaced by other
-	    ;; functions.
-	    (narrow-to-defun)
-	    (iedit-start (current-word) (point-min) (point-max)))))))
+		(save-restriction
+		  (widen)
+		  ;; this function determines the scope of `iedit-start'.
+		  (if iedit-mode
+			  (iedit-done)
+			;; `current-word' can of course be replaced by other
+			;; functions.
+			(narrow-to-defun)
+			(iedit-start (current-word) (point-min) (point-max)))))))
   :config
   (global-set-key (kbd "C-;") 'iedit-dwim)
   )
