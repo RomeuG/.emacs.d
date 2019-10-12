@@ -1,10 +1,9 @@
-;; tool-bars
+;; Window System
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
+(blink-cursor-mode 1)
 
-;;(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-;;(setq gnutls-verify-error nil)
 (setq gnutls-min-prime-bits 1024)
 (setq gnutls-algorithm-priority "SECURE128:-VERS-SSL3.0:-VERS-TLS1.3")
 
