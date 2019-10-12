@@ -329,7 +329,6 @@ This command does not push text to `kill-ring'."
 (setq-default cursor-in-non-selected-windows t)
 (setq-default help-window-select t)
 (setq-default x-stretch-cursor t)
-(setq-default scroll-margin 10)
 (setq-default window-combination-resize t)
 
 (global-subword-mode 1)
