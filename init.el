@@ -827,8 +827,8 @@ This command does not push text to `kill-ring'."
   (company-idle-delay 0)
   (company-echo-delay 0)
   (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t)
   :config
-
   (defun indent-or-complete ()
     (interactive)
     (if (looking-at "\\_>")
