@@ -601,7 +601,8 @@ This command does not push text to `kill-ring'."
   (load-theme 'gruvbox-dark-hard))
 
 (use-package rainbow-delimiters
-  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 (use-package cc-mode
   :config
@@ -742,6 +743,7 @@ This command does not push text to `kill-ring'."
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package helm
+  :defer 0
   :config
 
   (require 'helm-config)
