@@ -620,20 +620,16 @@ This command does not push text to `kill-ring'."
   )
 
 (use-package visual-regexp
-  :defer 1
   :bind
   (("C-c r" . vr/replace)
    ("C-c q" . vr/query-replace)))
 
-(use-package visual-regexp-steroids
-  :defer 1)
+(use-package visual-regexp-steroids)
 
-(use-package lua-mode
-  :defer 1)
+(use-package lua-mode)
 
 (use-package uniquify
   :ensure nil
-  :defer 1
   :config
   (setq uniquify-buffer-name-style 'reverse)
   (setq uniquify-separator "  ")
@@ -642,7 +638,6 @@ This command does not push text to `kill-ring'."
   )
 
 (use-package markdown-mode
-  :defer 1
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
@@ -650,17 +645,14 @@ This command does not push text to `kill-ring'."
   :init (setq markdown-command "multimarkdown"))
 
 (use-package multiple-cursors
-  :defer 1
   :bind (("C-c m"   . mc/edit-lines)
          ("C->"     . mc/mark-next-like-this)
          ("C-<"     . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
-(use-package cmake-mode
-  :defer 1)
+(use-package cmake-mode)
 
 (use-package magit
-  :defer 1
   :init
   (set-default 'magit-stage-all-confirm nil)
   (add-hook 'magit-mode-hook 'magit-load-config-extensions)
@@ -688,8 +680,7 @@ This command does not push text to `kill-ring'."
       (diffview-current)))
   :bind ("M-g v" . rg/diffview-dwim))
 
-(use-package px
-  :defer 1)
+(use-package px)
 
 (use-package smartparens
   :hook
@@ -707,12 +698,10 @@ This command does not push text to `kill-ring'."
 					      ))))
 
 (use-package clean-aindent-mode
-  :defer 1
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
 
 (use-package smart-mode-line
-  :defer 1
   :init
   (setq sml/no-confirm-load-theme t)
   (setq sml/shorten-directory t)
@@ -721,7 +710,6 @@ This command does not push text to `kill-ring'."
   (sml/setup))
 
 (use-package org
-  :defer 1
   :custom
   (org-src-fontify-natively t)
   (org-startup-folded nil)
@@ -736,14 +724,12 @@ This command does not push text to `kill-ring'."
                                "~/Documents/Notes/todo.org")))
 
 (use-package popwin
-  :defer 1
   :init
   (customize-set-variable 'popwin:popup-window-height 0.5)
   :config
   (popwin-mode 1))
 
 (use-package diff-hl
-  :defer 1
   :init
   (custom-set-faces
    '(diff-hl-change ((t (:background "dark blue" :foreground "dark blue")))
@@ -756,7 +742,6 @@ This command does not push text to `kill-ring'."
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package helm
-  :defer 1
   :config
 
   (require 'helm-config)
@@ -819,13 +804,11 @@ This command does not push text to `kill-ring'."
   (helm-mode 1))
 
 (use-package helm-gtags
-  :defer 1
   :config
   (add-hook 'c-mode-hook 'helm-gtags-mode)
   (add-hook 'c++-mode-hook 'helm-gtags-mode))
 
 (use-package company
-  :defer 1
   :diminish company-mode
   :defines
   (company-dabbrev-ignore-case company-dabbrev-downcase)
@@ -946,11 +929,9 @@ This command does not push text to `kill-ring'."
 
 (use-package eldoc
   :ensure nil
-  :defer 1
   :config (global-eldoc-mode -1))
 
 (use-package iedit
-  :defer 1
   :preface
   (defun iedit-dwim (arg)
     "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
@@ -971,8 +952,7 @@ This command does not push text to `kill-ring'."
   (global-set-key (kbd "C-;") 'iedit-dwim)
   )
 
-(use-package csv-mode
-  :defer 1)
+(use-package csv-mode)
 
 ;; (use-package semantic
 ;;   :defer 1
