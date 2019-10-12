@@ -433,11 +433,6 @@ This command does not push text to `kill-ring'."
 
 (add-hook 'after-save-hook #'gtags-update-hook)
 
-;; marking text
-(delete-selection-mode t)
-(transient-mark-mode t)
-(setq x-select-enable-clipboard t)
-
 ;; visual bell and less keystrokes
 (setq echo-keystrokes 0.1
 	  use-dialog-box nil
