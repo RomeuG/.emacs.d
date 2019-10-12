@@ -1,3 +1,12 @@
+;; garbage collector
+(setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
+      gc-cons-percentage 0.6)
+
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (setq gc-cons-threshold 16777216 ; 16mb
+          gc-cons-percentage 0.1)))
+
 ;; Window System
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -16,8 +25,6 @@
   (package-initialize))
 
 (setq load-prefer-newer t)
-
-(setq gc-cons-threshold 50000000)
 
 (setenv "GTAGSLIBPATH" "/usr/include")
 
@@ -39,7 +46,8 @@
 
 (defun my-minibuffer-exit-hook ()
   "GC BUFFER."
-  (setq gc-cons-threshold 800000))
+  (run-at-time
+   1 nil (lambda () (setq gc-cons-threshold 16777216))))
 
 (defun un-indent-by-removing-4-spaces ()
   "remove 4 spaces from beginning of of line"
