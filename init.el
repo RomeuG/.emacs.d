@@ -422,11 +422,12 @@ This command does not push text to `kill-ring'."
 (setq-default use-default-font-for-symbols nil)
 (setq-default inhibit-compacting-font-caches t)
 
-(cond ((string-equal system-type "gnu/linux"))
-	  (setq-default default-font-family "Source Code Pro Medium")
-	  (set-frame-font "Source Code Pro Medium-11")
-	  (setq-default default-frame-alist '((font . "Source Code Pro Medium-11")))
-	  )
+(cond ((string-equal system-type "gnu/linux")
+       (setq-default default-font-family "Source Code Pro Medium")
+       (set-frame-font "Source Code Pro Medium-10")
+       (setq-default default-frame-alist '((font . "Source Code Pro Medium-10")))
+       )
+      )
 
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'prev-window)
