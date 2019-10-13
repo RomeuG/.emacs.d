@@ -880,6 +880,8 @@ This command does not push text to `kill-ring'."
   (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
   (lsp-response-timeout 10)
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
+  ;; snippet
+  (lsp-enable-snippet nil)
   :hook
   (c-mode . lsp)
   (c++-mode . lsp)
