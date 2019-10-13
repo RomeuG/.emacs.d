@@ -79,7 +79,8 @@
  '(company-lsp-enable-recompletion t)
  '(company-lsp-enable-snippet t)
  '(company-minimum-prefix-length 1)
- '(company-quickhelp-delay 0.8)
+ '(company-quickhelp-delay 0.8 t)
+ '(company-tooltip-align-annotations t)
  '(compile-command
    "make -k -j4 -C /home/romeu/Documents/Projects/CHIP8_IMGUI/cmake-build-debug")
  '(custom-safe-themes
@@ -141,9 +142,9 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (uniquify org-ref org-web-tools browse-at-remote diffview git-timemachine company-quickhelp hungry-delete yasnippet-snippets ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets elpy ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode)))
+    (uniquify org-ref org-web-tools browse-at-remote diffview git-timemachine company-quickhelp hungry-delete ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode)))
  '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#1d2021")))
- '(popwin:popup-window-height 0.5)
+ '(popwin:popup-window-height 0.5 t)
  '(preview-gs-options
    (quote
     ("-q" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")))

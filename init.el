@@ -834,11 +834,8 @@ This command does not push text to `kill-ring'."
   :hook
   ((c++-mode
     c-mode) . (lambda () (set (make-local-variable 'company-backends)
-							  '((;; company-yasnippet
-								 company-lsp
-								 company-files
-								 ;; company-dabbrev-code
-								 )))))
+			      '((company-lsp
+				 company-files)))))
   :custom
   (company-idle-delay 0)
   (company-echo-delay 0)
@@ -928,7 +925,6 @@ This command does not push text to `kill-ring'."
     :custom
     (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
     (company-lsp-async t)
-    ;;(company-lsp-enable-snippet t)
     (company-lsp-enable-recompletion t)
     :config (push 'company-lsp company-backends)))
 
@@ -941,10 +937,6 @@ This command does not push text to `kill-ring'."
   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
   :hook ((c-mode c++-mode objc-mode) .
          (lambda () (require 'ccls) (lsp))))
-
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :hook (after-init . yas-global-mode))
 
 (use-package eldoc
   :ensure nil
