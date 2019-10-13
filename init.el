@@ -620,6 +620,12 @@ This command does not push text to `kill-ring'."
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
+(use-package move-text
+  :defer 0
+  :config
+  (move-text-default-bindings)
+  )
+
 (use-package cc-mode
   :config
   (setq-default c-default-style "bsd")
