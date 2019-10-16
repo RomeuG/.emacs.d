@@ -334,6 +334,13 @@ This command does not push text to `kill-ring'."
   (interactive "p")
   (my-delete-word (- arg)))
 
+(defun edit-file-with-sudo ()
+  "Take the file currently being edited, and open it as root with `sudo'."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+    (when file-name
+      (find-alternate-file (concat "/sudo::" file-name)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
