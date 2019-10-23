@@ -454,7 +454,7 @@ This command does not push text to `kill-ring'."
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'prev-window)
 
-(add-hook 'after-save-hook #'gtags-update-hook)
+;;(add-hook 'after-save-hook #'gtags-update-hook)
 
 ;; visual bell and less keystrokes
 (setq-default echo-keystrokes 0.1)
