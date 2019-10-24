@@ -980,6 +980,17 @@ This command does not push text to `kill-ring'."
 
 (use-package csv-mode)
 
+(use-package pdf-tools
+  :defer 0
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-annot-activate-created-annotations t)
+  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+  (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+  (add-hook 'pdf-view-mode-hook (lambda ()
+				  (bms/pdf-midnite-amber)))
+  )
   )
 
 (put 'upcase-region 'disabled nil)
