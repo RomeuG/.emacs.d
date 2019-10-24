@@ -980,11 +980,6 @@ This command does not push text to `kill-ring'."
 
 (use-package csv-mode)
 
-(use-package auctex
-  :custom
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  (TeX-master nil)
   )
 
 (put 'upcase-region 'disabled nil)
