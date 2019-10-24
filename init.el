@@ -1005,6 +1005,10 @@ This command does not push text to `kill-ring'."
 				TeX-command-list)))
   )
 
+(use-package reftex
+  :config
+  (setq reftex-cite-prompt-optional-args t)
+  )
   )
 
 (put 'upcase-region 'disabled nil)
