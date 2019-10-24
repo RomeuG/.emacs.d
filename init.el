@@ -1009,6 +1009,9 @@ This command does not push text to `kill-ring'."
   :config
   (setq reftex-cite-prompt-optional-args t)
   )
+(use-package company-auctex
+  :defer 0
+  :init (company-auctex-init))
   )
 
 (put 'upcase-region 'disabled nil)
