@@ -1009,9 +1009,35 @@ This command does not push text to `kill-ring'."
   :config
   (setq reftex-cite-prompt-optional-args t)
   )
+
 (use-package company-auctex
   :defer 0
   :init (company-auctex-init))
+
+(use-package tex
+  :ensure auctex
+  :defer 0
+  :mode ("\\.tex\\'" . latex-mode)
+  :config (progn
+	    (setq TeX-source-correlate-mode t)
+	    (setq TeX-source-correlate-method 'synctex)
+	    (setq TeX-auto-save t)
+	    (setq TeX-parse-self t)
+	    ;;(setq-default TeX-master nil)
+	    (setq reftex-plug-into-AUCTeX t)
+	    (pdf-tools-install)
+	    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+		  TeX-source-correlate-start-server t)
+	    ;; Update PDF buffers after successful LaTeX runs
+	    (add-hook 'TeX-after-compilation-finished-functions
+		      #'TeX-revert-document-buffer)
+	    (add-hook 'LaTeX-mode-hook
+		      (lambda ()
+			(reftex-mode t)
+			(flyspell-mode t)))
+
+	    (setq TeX-command-default "Latexmk")
+	    )
   )
 
 (put 'upcase-region 'disabled nil)
