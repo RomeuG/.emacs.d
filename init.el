@@ -991,6 +991,20 @@ This command does not push text to `kill-ring'."
   (add-hook 'pdf-view-mode-hook (lambda ()
 				  (bms/pdf-midnite-amber)))
   )
+
+(use-package auctex-latexmk
+  :defer 0
+  :init
+  (auctex-latexmk-setup)
+  :config
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+			       (push
+				'("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+				  :help "Run latexmk on file")
+				TeX-command-list)))
+  )
+
   )
 
 (put 'upcase-region 'disabled nil)
