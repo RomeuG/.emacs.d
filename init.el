@@ -1039,5 +1039,9 @@ This command does not push text to `kill-ring'."
 	    )
   )
 
+(use-package rust-mode
+  :mode ("\\.rs\\'" . rust-mode)
+  )
+
 (put 'upcase-region 'disabled nil)
 (load custom-file)
