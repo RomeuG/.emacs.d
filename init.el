@@ -1000,7 +1000,7 @@ This command does not push text to `kill-ring'."
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   (add-hook 'LaTeX-mode-hook (lambda ()
 			       (push
-				'("latexmk" "latexmk -pdf %s" TeX-run-TeX nil t
+				'("LaTeXmk" "latexmk -pdf --synctex=1 -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
 				  :help "Run latexmk on file")
 				TeX-command-list)))
   )
