@@ -1023,7 +1023,6 @@ This command does not push text to `kill-ring'."
 	    (setq TeX-source-correlate-method 'synctex)
 	    (setq TeX-auto-save t)
 	    (setq TeX-parse-self t)
-	    ;;(setq-default TeX-master nil)
 	    (setq reftex-plug-into-AUCTeX t)
 	    (pdf-tools-install)
 	    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
