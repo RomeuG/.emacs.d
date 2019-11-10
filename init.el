@@ -694,6 +694,9 @@ This command does not push text to `kill-ring'."
     (magit-stage-modified)
     (magit-commit)))
 
+(use-package forge
+  :after magit)
+
 (use-package git-timemachine
   :bind ("M-g t" . git-timemachine-toggle))
 
