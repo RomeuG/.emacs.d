@@ -812,7 +812,7 @@ This command does not push text to `kill-ring'."
         helm-ff-file-name-history-use-recentf t
         helm-move-to-line-cycle-in-source     t
         helm-autoresize-mode                  t
-	helm-ff-auto-update-initial-value     t
+		helm-ff-auto-update-initial-value     nil
         )
 
   (customize-set-variable 'helm-apropos-function-list
