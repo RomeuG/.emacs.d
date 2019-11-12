@@ -753,8 +753,7 @@ This command does not push text to `kill-ring'."
   (org-pretty-entities t)
   :init
   (customize-set-variable 'org-ellipsis "↴")
-  (setq org-agenda-files (list "~/Documents/Notes/projects.org"
-                               "~/Documents/Notes/todo.org")))
+  )
 
 (use-package popwin
   :init
@@ -815,7 +814,7 @@ This command does not push text to `kill-ring'."
         helm-ff-file-name-history-use-recentf t
         helm-move-to-line-cycle-in-source     t
         helm-autoresize-mode                  t
-		helm-ff-auto-update-initial-value     nil
+	helm-ff-auto-update-initial-value     nil
         )
 
   (customize-set-variable 'helm-apropos-function-list
