@@ -529,6 +529,10 @@ This command does not push text to `kill-ring'."
 ;; UTF8
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
+;; disable recentf
+(recentf-mode -1)
+(setq recentf-mode nil)
+
 ;; GDB
 (setq-default gdb-many-windows t)
 (setq-default gdb-show-main	   t)
@@ -582,34 +586,34 @@ This command does not push text to `kill-ring'."
   :hook (after-init . save-place-mode))
 
 ;; Recent files
-(use-package recentf
-  :ensure nil
-  :hook (after-init . recentf-mode)
-  :custom
-  (recentf-max-saved-items 20000000)
-  (recentf-auto-cleanup 'never)
-  (recentf-exclude '((expand-file-name package-user-dir)
-                     ".cache"
-                     "cache"
-                     "recentf"
-                     "COMMIT_EDITMSG\\'"))
-  :preface
-  (defun ladicle/recentf-save-list-silence ()
-    (interactive)
-    (let ((message-log-max nil))
-      (if (fboundp 'shut-up)
-          (shut-up (recentf-save-list))
-        (recentf-save-list)))
-    (message ""))
-  (defun ladicle/recentf-cleanup-silence ()
-    (interactive)
-    (let ((message-log-max nil))
-      (if shutup-p
-          (shut-up (recentf-cleanup))
-        (recentf-cleanup)))
-    (message ""))
-  :hook
-  (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence)))
+;; (use-package recentf
+;;   :ensure nil
+;;   :hook (after-init . recentf-mode)
+;;   :custom
+;;   (recentf-max-saved-items 20000000)
+;;   (recentf-auto-cleanup 'never)
+;;   (recentf-exclude '((expand-file-name package-user-dir)
+;;                      ".cache"
+;;                      "cache"
+;;                      "recentf"
+;;                      "COMMIT_EDITMSG\\'"))
+;;   :preface
+;;   (defun ladicle/recentf-save-list-silence ()
+;;     (interactive)
+;;     (let ((message-log-max nil))
+;;       (if (fboundp 'shut-up)
+;;           (shut-up (recentf-save-list))
+;;         (recentf-save-list)))
+;;     (message ""))
+;;   (defun ladicle/recentf-cleanup-silence ()
+;;     (interactive)
+;;     (let ((message-log-max nil))
+;;       (if shutup-p
+;;           (shut-up (recentf-cleanup))
+;;         (recentf-cleanup)))
+;;     (message ""))
+;;   :hook
+;;   (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence)))
 
 (use-package projectile
   :diminish
@@ -806,12 +810,12 @@ This command does not push text to `kill-ring'."
         helm-semantic-fuzzy-match             t
         helm-imenu-fuzzy-match                t
         helm-buffer-fuzzy-matching            t
-        helm-recentf-fuzzy-match              t
+        helm-recentf-fuzzy-match              nil
         helm-split-window-in-side-p           t
         helm-move-to-line-cycle-in-source     t
         helm-ff-search-library-in-sexp        t
         helm-scroll-amount                    8
-        helm-ff-file-name-history-use-recentf t
+        helm-ff-file-name-history-use-recentf nil
         helm-move-to-line-cycle-in-source     t
         helm-autoresize-mode                  t
 	helm-ff-auto-update-initial-value     nil
