@@ -780,6 +780,7 @@ This command does not push text to `kill-ring'."
     (org-ascii-publish-to-ascii a b c)
     (org-gfm-publish-to-gfm a b c))
   (setq org-directory my-org-dir
+	org-image-actual-width nil
         org-startup-indented t
         org-babel-min-lines-for-block-output 1
         org-startup-folded "showeverything"
