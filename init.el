@@ -760,13 +760,13 @@ This command does not push text to `kill-ring'."
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
 
-(use-package smart-mode-line
-  :init
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/shorten-directory t)
-  (setq sml/shorten-modes t)
-  (setq sml/name-width 40)
-  (sml/setup))
+;; (use-package smart-mode-line
+;;   :init
+;;   (setq sml/no-confirm-load-theme t)
+;;   (setq sml/shorten-directory t)
+;;   (setq sml/shorten-modes t)
+;;   (setq sml/name-width 40)
+;;   (sml/setup))
 
 (use-package org
   :commands org-indent-mode
