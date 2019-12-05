@@ -39,6 +39,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun kill-other-buffers ()
+  "Kill all other buffers except scratch."
+  (interactive)
+  (mapc 'kill-buffer (delq "*scratch*" (buffer-list))))
+
 (defun prev-window ()
   "CHANGE WINDOW."
   (interactive)
