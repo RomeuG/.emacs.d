@@ -965,7 +965,7 @@ This command does not push text to `kill-ring'."
     (interactive)
     (if (looking-at "\\_>")
 	(company-complete-common)
-      (indent-according-to-mode)))
+	(indent-according-to-mode)))
 
   (setq company-require-match nil)
   (setq company-tooltip-idle-delay .25)
@@ -973,13 +973,18 @@ This command does not push text to `kill-ring'."
   (global-unset-key (kbd "C-SPC"))
   (global-set-key (kbd "C-SPC") 'company-complete)
 
+  ;; deactivate auto complete selection
+  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "RET") nil)
+
   ;; Show quick tooltip
   (use-package company-quickhelp
     :defines company-quickhelp-delay
     :bind (:map company-active-map
-		("M-h" . company-quickhelp-manual-begin))
+  		("M-h" . company-quickhelp-manual-begin))
     :hook (global-company-mode . company-quickhelp-mode)
-    :custom (company-quickhelp-delay 0.8)))
+    :custom (company-quickhelp-delay 0.8))
+  )
 
 (use-package lsp-mode
   :commands lsp
