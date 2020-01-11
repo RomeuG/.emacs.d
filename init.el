@@ -765,13 +765,6 @@ This command does not push text to `kill-ring'."
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
 
-(use-package smart-mode-line
-  :init
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/shorten-directory t)
-  (setq sml/shorten-modes t)
-  (setq sml/name-width 40)
-  (sml/setup))
 ;; (use-package smart-mode-line
 ;;   :init
 ;;   (setq sml/no-confirm-load-theme t)
@@ -781,18 +774,90 @@ This command does not push text to `kill-ring'."
 ;;   (sml/setup))
 
 (use-package org
-  :custom
-  (org-src-fontify-natively t)
-  (org-startup-folded nil)
-  (org-src-tab-acts-natively t)
-  (org-src-preserve-indentation t)
-  (org-log-done t)
-  (org-startup-indented t)
-  (org-pretty-entities t)
+  :commands org-indent-mode
+  :config
+  (defvar my-org-dir "/home/romeu/Documents/Org")
+  (defvar my-org-publish-dir "/home/romeu/Documents/Org/Publish")
+  (defun my-maybe-lob-ingest ()
+    (if (and buffer-file-name
+             (string-match
+              (format "%s/.*code\\.inc$" my-org-dir)
+              buffer-file-name))
+        (org-babel-lob-ingest buffer-file-name)))
+  (defun my-after-save-hook ()
+    (my-maybe-lob-ingest))
+  (defun my-org-mode-hook ()
+    (my-maybe-lob-ingest)
+    (turn-on-auto-fill)
+    (org-indent-mode 1)
+    (setq fill-column 80))
+  (defun my-chromium (ppl)
+    (start-process "fox" nil "open" "-a"
+                   "chromium" (format "file://%s" my-org-publish-dir)))
+  (defun my-git-publish (ppl)
+    (let ((publish-script (format "%s/publish.sh" my-org-publish-dir)))
+      (when (file-executable-p publish-script)
+	(start-process-shell-command "pub" nil publish-script))))
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (member lang '("sh" "python" "elisp" "ruby" "shell" "dot" "perl"))))
+  (defun my-publish (a b c)
+    (setq org-export-with-toc t)
+    (org-html-publish-to-html a b c)
+    (setq org-export-with-toc nil)
+    (org-ascii-publish-to-ascii a b c)
+    (org-gfm-publish-to-gfm a b c))
+  (setq org-directory my-org-dir
+	org-image-actual-width nil
+        org-startup-indented t
+        org-babel-min-lines-for-block-output 1
+        org-startup-folded "showeverything"
+        org-startup-with-inline-images t
+        org-src-preserve-indentation t
+        org-use-speed-commands t
+        org-hide-emphasis-markers t
+        org-export-with-section-numbers nil
+        org-export-with-toc t
+        org-export-with-date nil
+        org-export-time-stamp-file nil
+        org-export-with-email t
+        org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate
+        org-babel-default-header-args
+	(cons '(:noweb . "yes")
+	      (assq-delete-all :noweb org-babel-default-header-args))
+        org-babel-default-header-args
+	(cons '(:exports . "both")
+	      (assq-delete-all :exports org-babel-default-header-args))
+        org-babel-default-header-args
+	(cons '(:results . "output verbatim replace")
+	      (assq-delete-all :results org-babel-default-header-args))
+	org-ellipsis " ▼ ")
+
+  (custom-set-faces '(org-ellipsis ((t (:foreground "gray40" :underline nil)))))
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (python . t)
+     (ruby . t)
+     (perl . t)
+     (emacs-lisp . t)
+     (dot . t)))
+
+  :bind (("M-p" . #'org-publish))
+  :hook
+  (after-save . my-after-save-hook)
+  (org-mode . my-org-mode-hook))
+
+
+(use-package org-bullets
   :init
-  (customize-set-variable 'org-ellipsis "↴")
-  (setq org-agenda-files (list "~/Documents/Notes/projects.org"
-                               "~/Documents/Notes/todo.org")))
+  (add-hook 'org-mode-hook #'org-bullets-mode)
+  )
+
+(use-package ox-gfm)
 
 (use-package popwin
   :init
@@ -900,7 +965,7 @@ This command does not push text to `kill-ring'."
     (interactive)
     (if (looking-at "\\_>")
 	(company-complete-common)
-      (indent-according-to-mode)))
+	(indent-according-to-mode)))
 
   (setq company-require-match nil)
   (setq company-tooltip-idle-delay .25)
