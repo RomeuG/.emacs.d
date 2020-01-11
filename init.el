@@ -556,6 +556,10 @@ This command does not push text to `kill-ring'."
 ;; UTF8
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
+;; disable recentf
+(recentf-mode -1)
+(setq recentf-mode nil)
+
 ;; GDB
 (setq-default gdb-many-windows t)
 (setq-default gdb-show-main	   t)
