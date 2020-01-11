@@ -838,15 +838,15 @@ This command does not push text to `kill-ring'."
         helm-semantic-fuzzy-match             t
         helm-imenu-fuzzy-match                t
         helm-buffer-fuzzy-matching            t
-        helm-recentf-fuzzy-match              t
+        helm-recentf-fuzzy-match              nil
         helm-split-window-in-side-p           t
         helm-move-to-line-cycle-in-source     t
         helm-ff-search-library-in-sexp        t
         helm-scroll-amount                    8
-        helm-ff-file-name-history-use-recentf t
+        helm-ff-file-name-history-use-recentf nil
         helm-move-to-line-cycle-in-source     t
         helm-autoresize-mode                  t
-	helm-ff-auto-update-initial-value     t
+	helm-ff-auto-update-initial-value     nil
         )
 
   (customize-set-variable 'helm-apropos-function-list
