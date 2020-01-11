@@ -991,6 +991,17 @@ This command does not push text to `kill-ring'."
   :ensure nil
   :config (global-eldoc-mode -1))
 
+(use-package elpy
+  :ensure t
+  :commands elpy-enable
+  :init (with-eval-after-load 'python (elpy-enable))
+  :config
+  (delete 'elpy-module-eldoc elpy-modules)
+  (delete 'elpy-module-flymake elpy-modules)
+  (delete 'elpy-module-highlight-indentation elpy-modules)
+  (add-hook 'elpy-mode-hook (lambda () (subword-mode 1)))
+  )
+
 (use-package iedit
   :preface
   (defun iedit-dwim (arg)
