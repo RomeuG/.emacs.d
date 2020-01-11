@@ -452,7 +452,8 @@ This command does not push text to `kill-ring'."
 (cond ((string-equal system-type "gnu/linux")
        (setq-default default-font-family "Source Code Pro Medium")
        (set-frame-font "Source Code Pro Medium-12")
-       (setq-default default-frame-alist '((font . "Source Code Pro Medium-12")))
+       (setq-default default-frame-alist '((font . "Source Code Pro Medium-12")
+					   (height . 75)))
        )
       )
 
