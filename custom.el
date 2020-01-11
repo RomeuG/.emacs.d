@@ -91,7 +91,8 @@
  '(global-semantic-decoration-mode t)
  '(global-subword-mode t)
  '(helm-apropos-function-list
-   '(helm-def-source--emacs-commands helm-def-source--emacs-functions helm-def-source--emacs-variables helm-def-source--emacs-faces))
+   (quote
+    (helm-def-source--emacs-commands helm-def-source--emacs-functions helm-def-source--emacs-variables helm-def-source--emacs-faces)))
  '(helm-ff-lynx-style-map t)
  '(helm-imenu-lynx-style-map t t)
  '(helm-occur-use-ioccur-style-keys t)
@@ -126,7 +127,7 @@
  '(lsp-ui-sideline-show-symbol t)
  '(magit-auto-revert-mode nil)
  '(menu-bar-mode nil)
- '(org-agenda-files '("~/Documents/Notes/projects.org"))
+ '(org-agenda-files (quote ("~/Documents/Notes/projects.org")))
  '(org-ellipsis "↴")
  '(org-log-done t)
  '(org-pretty-entities t)
@@ -136,16 +137,20 @@
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(elpy forge auctex-latexmk move-text uniquify org-ref org-web-tools browse-at-remote diffview git-timemachine company-quickhelp hungry-delete ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode))
- '(pdf-view-midnight-colors '("#fdf4c1" . "#1d2021"))
+   (quote
+    (ox-gfm forge auctex-latexmk move-text uniquify org-ref org-web-tools browse-at-remote diffview git-timemachine company-quickhelp hungry-delete ccls lsp-ui lsp-mode company-lsp rainbow-delimiters clang-format helm-ag restclient disable-mouse diff-hl srefactor bison-mode popwin exec-path-from-shell auctex rust-mode helm-gtags cmake-mode org-bullets ace-window material-theme csv-mode px magic-latex-buffer org company flycheck helm esup w3m color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-theme-solarized solarized-theme pretty-mode discover-my-major pcre2el visual-regexp visual-regexp-steroids ws-butler use-package stickyfunc-enhance sr-speedbar spacemacs-theme sml-modeline smartparens smart-mode-line pdf-tools nasm-mode multiple-cursors mode-icons markdown-mode magit lua-mode latex-preview-pane latex-pretty-symbols iedit htmlize gruvbox-theme ggtags function-args flycheck-tip company-php clean-aindent-mode)))
+ '(pdf-view-midnight-colors (quote ("#fdf4c1" . "#1d2021")))
  '(popwin:popup-window-height 0.5 t)
  '(preview-gs-options
    '("-q" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4"))
  '(racer-rust-src-path "/home/romeu/Documents/Repositories/rust/src")
- '(recentf-auto-cleanup 'never)
+
+ '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
-   '((expand-file-name package-user-dir)
-	 ".cache" "cache" "recentf" "COMMIT_EDITMSG\\'"))
+   (quote
+    ((expand-file-name package-user-dir)
+     ".cache" "cache" "recentf" "COMMIT_EDITMSG\\'")))
+
  '(recentf-max-saved-items 20000000)
  '(sml/modified-char "X")
  '(sml/modified-time-string "Modified on %T %Y/%m/%d.")
