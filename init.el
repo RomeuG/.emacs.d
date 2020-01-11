@@ -1017,7 +1017,7 @@ This command does not push text to `kill-ring'."
 (use-package pdf-tools
   :defer 0
   :config
-  (pdf-tools-install)
+  ;; (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-annot-activate-created-annotations t)
   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
@@ -1058,7 +1058,7 @@ This command does not push text to `kill-ring'."
 	    (setq TeX-auto-save t)
 	    (setq TeX-parse-self t)
 	    (setq reftex-plug-into-AUCTeX t)
-	    (pdf-tools-install)
+	    ;; (pdf-tools-install)
 	    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
 		  TeX-source-correlate-start-server t)
 	    ;; Update PDF buffers after successful LaTeX runs
