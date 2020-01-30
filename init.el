@@ -996,6 +996,8 @@ This command does not push text to `kill-ring'."
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
   ;; snippet
   (lsp-enable-snippet nil)
+  ;; force disable highlight
+  (lsp-enable-semantic-highlighting nil)
   :hook
   (c-mode . lsp)
   (c++-mode . lsp)
