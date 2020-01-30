@@ -654,10 +654,6 @@ This command does not push text to `kill-ring'."
   :config
   (load-theme 'gruvbox-dark-hard))
 
-(use-package rainbow-delimiters
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
-
 (use-package move-text
   :defer 0
   :config
