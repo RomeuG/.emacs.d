@@ -363,6 +363,12 @@ This command does not push text to `kill-ring'."
 
 (add-hook 'focus-out-hook #'garbage-collect)
 
+;; (setq garbage-collection-messages t)
+(setq jit-lock-defer-time 0)
+(setq fast-but-imprecise-scrolling t)
+(setq redisplay-dont-pause t)
+(setq read-process-output-max (* 1024 1024))
+
 (use-package exec-path-from-shell
   :ensure t
   :demand t
