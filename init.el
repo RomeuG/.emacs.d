@@ -680,6 +680,15 @@ This command does not push text to `kill-ring'."
 
   (c-set-offset 'inlambda 0)
   (fset 'c-indent-region 'clang-format-region)
+
+  (add-hook 'before-save-hook
+	    (lambda ()
+	      (when (member major-mode '(c-mode c++-mode))
+		(progn
+		  (when (locate-dominating-file "." ".clang-format")
+		    (clang-format-buffer))
+		  ;; Return nil, to continue saving.
+		  nil))))
   )
 
 (use-package visual-regexp
