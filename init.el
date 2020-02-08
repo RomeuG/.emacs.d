@@ -843,6 +843,11 @@ This command does not push text to `kill-ring'."
 	      (assq-delete-all :results org-babel-default-header-args))
 	org-ellipsis " ▼ ")
 
+  ;; TODO states configurations
+  (setq org-todo-keywords '((sequence "TODO" "WORKING" "|" "DONE")))
+  (setq org-log-done 'time)
+  (setq org-log-done 'note)
+
   (custom-set-faces '(org-ellipsis ((t (:foreground "gray40" :underline nil)))))
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c l") 'org-store-link)
