@@ -456,9 +456,9 @@ This command does not push text to `kill-ring'."
 (setq-default inhibit-compacting-font-caches t)
 
 (cond ((string-equal system-type "gnu/linux")
-       (setq-default default-font-family "Source Code Pro Medium")
-       (set-frame-font "Source Code Pro Medium-12")
-       (setq-default default-frame-alist '((font . "Source Code Pro Medium-12")
+       (setq-default default-font-family "Fira Code Retina")
+       (set-frame-font "Fira Code Retina-11")
+       (setq-default default-frame-alist '((font . "Fira Code Retina-11")
 					   (height . 75)))
        )
       )
