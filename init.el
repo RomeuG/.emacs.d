@@ -1021,6 +1021,7 @@ This command does not push text to `kill-ring'."
   :hook
   (c-mode . lsp)
   (c++-mode . lsp)
+  (typescript-mode . lsp)
   :config
   (use-package lsp-ui
     :custom
