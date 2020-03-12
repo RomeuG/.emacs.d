@@ -1010,14 +1010,14 @@ This command does not push text to `kill-ring'."
   (lsp-trace nil)
   (lsp-print-performance nil)
   ;; general
-  (lsp-auto-guess-root t)
-  (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
-  (lsp-response-timeout 10)
+  ;;(lsp-auto-guess-root t)
+  ;;(lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
+  ;;(lsp-response-timeout 10)
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
   ;; snippet
   (lsp-enable-snippet nil)
   ;; force disable highlight
-  (lsp-enable-semantic-highlighting nil)
+  (lsp-enable-semantic-highlighting t)
   :hook
   (c-mode . lsp)
   (c++-mode . lsp)
