@@ -618,36 +618,6 @@ This command does not push text to `kill-ring'."
   :ensure nil
   :hook (after-init . save-place-mode))
 
-;; Recent files
-;; (use-package recentf
-;;   :ensure nil
-;;   :hook (after-init . recentf-mode)
-;;   :custom
-;;   (recentf-max-saved-items 20000000)
-;;   (recentf-auto-cleanup 'never)
-;;   (recentf-exclude '((expand-file-name package-user-dir)
-;;                      ".cache"
-;;                      "cache"
-;;                      "recentf"
-;;                      "COMMIT_EDITMSG\\'"))
-;;   :preface
-;;   (defun ladicle/recentf-save-list-silence ()
-;;     (interactive)
-;;     (let ((message-log-max nil))
-;;       (if (fboundp 'shut-up)
-;;           (shut-up (recentf-save-list))
-;;         (recentf-save-list)))
-;;     (message ""))
-;;   (defun ladicle/recentf-cleanup-silence ()
-;;     (interactive)
-;;     (let ((message-log-max nil))
-;;       (if shutup-p
-;;           (shut-up (recentf-cleanup))
-;;         (recentf-cleanup)))
-;;     (message ""))
-;;   :hook
-;;   (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence)))
-
 (use-package projectile
   :diminish
   :bind
