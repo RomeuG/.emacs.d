@@ -980,7 +980,7 @@ This command does not push text to `kill-ring'."
   (lsp-trace nil)
   (lsp-print-performance nil)
   ;; general
-  ;;(lsp-auto-guess-root t)
+  (lsp-auto-guess-root t)
   ;;(lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
   ;;(lsp-response-timeout 10)
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
