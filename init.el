@@ -661,12 +661,17 @@ This command does not push text to `kill-ring'."
 		  nil))))
   )
 
+;; Use :defer to load steroids first
 (use-package visual-regexp
+  :defer
   :bind
   (("C-c r" . vr/replace)
    ("C-c q" . vr/query-replace)))
 
-(use-package visual-regexp-steroids)
+;; hack to actually load this package
+(use-package visual-regexp-steroids
+  :ensure
+  :demand)
 
 (use-package lua-mode)
 
