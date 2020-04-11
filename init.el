@@ -346,6 +346,10 @@ This command does not push text to `kill-ring'."
     (when file-name
       (find-alternate-file (concat "/sudo::" file-name)))))
 
+(defun my/ansi-colorize-buffer ()
+  (let ((buffer-read-only nil))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -558,6 +562,9 @@ This command does not push text to `kill-ring'."
 (global-set-key (kbd "<f5>") (lambda ()
 			       (interactive)
 			       (call-interactively 'compile)))
+(setq compilation-scroll-output t)
+(require 'ansi-color)
+(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
 
 ;; UTF8
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
