@@ -956,7 +956,7 @@ This command does not push text to `kill-ring'."
     (interactive)
     (if (looking-at "\\_>")
 	(company-complete-common)
-	(indent-according-to-mode)))
+      (indent-according-to-mode)))
 
   (setq company-require-match nil)
   (setq company-tooltip-idle-delay .25)
@@ -1096,53 +1096,6 @@ This command does not push text to `kill-ring'."
   (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
   (add-hook 'pdf-view-mode-hook (lambda ()
 				  (bms/pdf-midnite-amber)))
-  )
-
-(use-package auctex-latexmk
-  :defer 0
-  :init
-  (auctex-latexmk-setup)
-  :config
-  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  (add-hook 'LaTeX-mode-hook (lambda ()
-			       (push
-				'("LaTeXmk" "latexmk -pdf --synctex=1 -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
-				  :help "Run latexmk on file")
-				TeX-command-list)))
-  )
-
-(use-package reftex
-  :config
-  (setq reftex-cite-prompt-optional-args t)
-  )
-
-(use-package company-auctex
-  :defer 0
-  :init (company-auctex-init))
-
-(use-package tex
-  :ensure auctex
-  :defer 0
-  :mode ("\\.tex\\'" . latex-mode)
-  :config (progn
-	    (setq TeX-source-correlate-mode t)
-	    (setq TeX-source-correlate-method 'synctex)
-	    (setq TeX-auto-save t)
-	    (setq TeX-parse-self t)
-	    (setq reftex-plug-into-AUCTeX t)
-	    ;; (pdf-tools-install)
-	    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-		  TeX-source-correlate-start-server t)
-	    ;; Update PDF buffers after successful LaTeX runs
-	    (add-hook 'TeX-after-compilation-finished-functions
-		      #'TeX-revert-document-buffer)
-	    (add-hook 'LaTeX-mode-hook
-		      (lambda ()
-			(reftex-mode t)
-			(flyspell-mode t)))
-
-	    (setq TeX-command-default "Latexmk")
-	    )
   )
 
 (use-package rust-mode
