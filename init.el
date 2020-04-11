@@ -1102,5 +1102,8 @@ This command does not push text to `kill-ring'."
   :mode ("\\.rs\\'" . rust-mode)
   )
 
+(use-package avy
+  :bind ("M-s" . avy-goto-char))
+
 (put 'upcase-region 'disabled nil)
 (load custom-file)
