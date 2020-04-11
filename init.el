@@ -477,7 +477,7 @@ This command does not push text to `kill-ring'."
 (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
 
 ;; backups
-(setq-default backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq-default backup-directory-alist '(("." . "~/.config/emacs/backups")))
 (setq-default backup-by-copying t)
 (setq-default delete-old-versions t)
 (setq-default kept-new-versions 6)
@@ -490,10 +490,10 @@ This command does not push text to `kill-ring'."
 		    kill-buffer-query-functions))
 
 ;; custom file
-(setq-default custom-file "~/.emacs.d/custom.el")
+(setq-default custom-file "~/.config/emacs/custom.el")
 
 ;; history
-(setq-default savehist-file "~/.emacs.d/savehist")
+(setq-default savehist-file "~/.config/emacs/savehist")
 (savehist-mode 1)
 (setq-default history-length t)
 (setq-default history-delete-duplicates t)
@@ -507,7 +507,7 @@ This command does not push text to `kill-ring'."
 (setq-default delete-old-versions t)
 (setq-default version-control t)
 (setq-default vc-make-backup-files t)
-(setq-default auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+(setq-default auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)))
 
 ;; utf8 stuff
 (set-locale-environment "en_US.UTF-8")
