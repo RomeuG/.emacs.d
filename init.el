@@ -993,13 +993,12 @@ This command does not push text to `kill-ring'."
   (lsp-print-performance nil)
   ;; general
   (lsp-auto-guess-root t)
-  ;;(lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
-  ;;(lsp-response-timeout 10)
-  (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
+  (lsp-prefer-flymake nil)
   ;; snippet
   (lsp-enable-snippet nil)
   ;; force disable highlight
-  (lsp-enable-semantic-highlighting t)
+  (lsp-enable-semantic-highlighting nil)
+  (lsp-diagnostic-package :none)
   :hook
   (c-mode . lsp)
   (c++-mode . lsp)
@@ -1060,7 +1059,6 @@ This command does not push text to `kill-ring'."
   :custom
   (ccls-executable "ccls")
   (lsp-prefer-flymake nil)
-  ;;(ccls-sem-highlight-method 'font-lock)
   :config
   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
   :hook ((c-mode c++-mode objc-mode) .
