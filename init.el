@@ -948,14 +948,9 @@ This command does not push text to `kill-ring'."
   :defines
   (company-dabbrev-ignore-case company-dabbrev-downcase)
   :init (global-company-mode)
-  :hook
-  ((c++-mode
-    c-mode) . (lambda () (set (make-local-variable 'company-backends)
-			      '((company-lsp
-				 company-files)))))
   :custom
-  (company-idle-delay 0)
-  (company-echo-delay 0)
+  (company-idle-delay 0.1)
+  (company-echo-delay 0.1)
   (company-minimum-prefix-length 1)
   (company-tooltip-align-annotations t)
   :config
@@ -963,7 +958,10 @@ This command does not push text to `kill-ring'."
     (interactive)
     (if (looking-at "\\_>")
 	(company-complete-common)
-      (indent-according-to-mode)))
+    (indent-according-to-mode)))
+
+  (delete 'company-dabbrev company-backends)
+  (delete '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
 
   (setq company-require-match nil)
   (setq company-tooltip-idle-delay .25)
@@ -1046,14 +1044,18 @@ This command does not push text to `kill-ring'."
           ("C-c d"   . ladicle/toggle-lsp-ui-doc))
     :hook
     (lsp-mode . lsp-ui-mode))
+
   (use-package company-lsp
     :ensure t
     :commands company-lsp
     :custom
-    (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
+    (company-lsp-cache-candidates t)
     (company-lsp-async t)
     (company-lsp-enable-recompletion t)
-    :config (push 'company-lsp company-backends)))
+    :config
+	(push 'company-lsp company-backends)
+	)
+  )
 
 (use-package ccls
   :custom
