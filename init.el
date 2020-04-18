@@ -1041,7 +1041,7 @@ This command does not push text to `kill-ring'."
     :ensure t
     :commands company-lsp
     :custom
-    (company-lsp-cache-candidates t)
+    (company-lsp-cache-candidates 'auto)
     (company-lsp-async t)
     (company-lsp-enable-recompletion t)
     :config
@@ -1055,7 +1055,7 @@ This command does not push text to `kill-ring'."
   (lsp-prefer-flymake nil)
   :config
   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  :hook ((c-mode c++-mode objc-mode) .
+  :hook ((c-mode c++-mode) .
          (lambda () (require 'ccls) (lsp))))
 
 (use-package eldoc
