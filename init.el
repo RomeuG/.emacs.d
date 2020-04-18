@@ -398,6 +398,12 @@ This command does not push text to `kill-ring'."
 ;; my custom C-backspace
 (global-set-key [C-backspace] 'my-backward-delete-word)
 
+;; set new keyboard-quit
+(global-set-key (kbd "C-q") 'keyboard-quit)
+
+;; set new goto line
+(global-set-key (kbd "C-g") 'goto-line)
+
 ;; disable suspend frame
 (global-unset-key (kbd "C-z"))
 
