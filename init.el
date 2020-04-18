@@ -359,6 +359,9 @@ This command does not push text to `kill-ring'."
 ;; load early
 (require 'tramp)
 
+;; bind-key for use-package
+(require 'bind-key)
+
 (setq-default confirm-kill-emacs 'yes-or-no-p)
 (setq-default cursor-in-non-selected-windows t)
 (setq-default help-window-select t)
