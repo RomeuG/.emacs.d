@@ -935,11 +935,6 @@ This command does not push text to `kill-ring'."
 
   (helm-mode 1))
 
-(use-package helm-gtags
-  :config
-  (add-hook 'c-mode-hook 'helm-gtags-mode)
-  (add-hook 'c++-mode-hook 'helm-gtags-mode))
-
 (use-package company
   :diminish company-mode
   :defines
