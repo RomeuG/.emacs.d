@@ -570,12 +570,15 @@ This command does not push text to `kill-ring'."
 (modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
 
 ;; compilation
-(global-set-key (kbd "<f5>") (lambda ()
-			       (interactive)
-			       (call-interactively 'compile)))
+(setq compile-command "make -C .. all")
+(setq compile-read-command nil)
 (setq compilation-scroll-output t)
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
+
+(global-set-key (kbd "<f5>") (lambda ()
+			       (interactive)
+			       (call-interactively 'recompile)))
 
 ;; UTF8
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
