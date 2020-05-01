@@ -1045,17 +1045,6 @@ This command does not push text to `kill-ring'."
           ("C-c d"   . ladicle/toggle-lsp-ui-doc))
     :hook
     (lsp-mode . lsp-ui-mode))
-
-  (use-package company-lsp
-    :ensure t
-    :commands company-lsp
-    :custom
-    (company-lsp-cache-candidates 'auto)
-    (company-lsp-async t)
-    (company-lsp-enable-recompletion t)
-    :config
-	(push 'company-lsp company-backends)
-	)
   )
 
 (use-package ccls
