@@ -3,7 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ccls-executable "ccls")
+ '(ccls-executable "ccls" t)
  '(company-echo-delay 0.1 t)
  '(company-idle-delay 0.1)
  '(company-minimum-prefix-length 1)
@@ -17,14 +17,14 @@
  '(helm-imenu-lynx-style-map t t)
  '(helm-occur-use-ioccur-style-keys t)
  '(helm-semantic-lynx-style-map t t)
- '(lsp-auto-guess-root t)
- '(lsp-diagnostic-package :none)
+ '(lsp-auto-guess-root t t)
+ '(lsp-diagnostic-package :none t)
  '(lsp-enable-semantic-highlighting nil t)
- '(lsp-enable-snippet nil)
+ '(lsp-enable-snippet nil t)
  '(lsp-log-io nil)
  '(lsp-prefer-flymake nil t)
- '(lsp-print-io nil)
- '(lsp-print-performance nil)
+ '(lsp-print-io nil t)
+ '(lsp-print-performance nil t)
  '(lsp-trace nil t)
  '(magit-auto-revert-mode nil)
  '(package-selected-packages
@@ -32,17 +32,17 @@
  '(popwin:popup-window-height 0.5 t)
  '(safe-local-variable-values
    '((eval setq compile-command
-		   (concat "make -C " my-project-path " all"))
-	 (eval set
-		   (make-local-variable 'my-project-path)
-		   (file-name-directory
-			(let
-				((d
-				  (dir-locals-find-file ".")))
-			  (if
-				  (stringp d)
-				  d
-				(car d))))))))
+           (concat "make -C " my-project-path " all"))
+     (eval set
+           (make-local-variable 'my-project-path)
+           (file-name-directory
+            (let
+                ((d
+                  (dir-locals-find-file ".")))
+              (if
+                  (stringp d)
+                  d
+                (car d))))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

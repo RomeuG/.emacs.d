@@ -1047,14 +1047,14 @@ This command does not push text to `kill-ring'."
     (lsp-mode . lsp-ui-mode))
   )
 
-(use-package ccls
-  :custom
-  (ccls-executable "ccls")
-  (lsp-prefer-flymake nil)
-  :config
-  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  :hook ((c-mode c++-mode) .
-         (lambda () (require 'ccls) (lsp))))
+;; (use-package ccls
+;;   :custom
+;;   (ccls-executable "ccls")
+;;   (lsp-prefer-flymake nil)
+;;   :config
+;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+;;   :hook ((c-mode c++-mode) .
+;;          (lambda () (require 'ccls) (lsp))))
 
 (use-package eldoc
   :ensure nil
