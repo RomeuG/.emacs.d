@@ -883,6 +883,7 @@ This command does not push text to `kill-ring'."
 
 (use-package helm
   :defer 0
+  :diminish helm-ff-cache-mode
   :config
 
   (require 'helm-config)
@@ -1010,7 +1011,7 @@ This command does not push text to `kill-ring'."
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header t)
     ;; lsp-ui-flycheck
-    (lsp-ui-flycheck-enable nil)
+    (lsp-ui-flycheck-enable t)
     ;; lsp-ui-sideline
     (lsp-ui-sideline-enable nil)
     (lsp-ui-sideline-ignore-duplicate t)
