@@ -478,6 +478,9 @@ This command does not push text to `kill-ring'."
        )
       )
 
+(set-fontset-font "fontset-default" nil (font-spec :size 11 :name "Symbola"))
+(set-fontset-font "fontset-default" 'unicode "DejaVu Sans")
+
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'prev-window)
 
@@ -1048,15 +1051,6 @@ This command does not push text to `kill-ring'."
     (lsp-mode . lsp-ui-mode))
   )
 
-;; (use-package ccls
-;;   :custom
-;;   (ccls-executable "ccls")
-;;   (lsp-prefer-flymake nil)
-;;   :config
-;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-;;   :hook ((c-mode c++-mode) .
-;;          (lambda () (require 'ccls) (lsp))))
-
 (use-package eldoc
   :ensure nil
   :config (global-eldoc-mode -1))
@@ -1086,6 +1080,16 @@ This command does not push text to `kill-ring'."
 
 (use-package avy
   :bind ("M-s" . avy-goto-char))
+
+(use-package all-the-icons
+  :config
+  (set-fontset-font t 'unicode (font-spec :family "all-the-icons") nil 'append)
+  (set-fontset-font t 'unicode (font-spec :family "file-icons") nil 'append)
+  (set-fontset-font t 'unicode (font-spec :family "Material Icons") nil 'append)
+  (set-fontset-font t 'unicode (font-spec :family "github-octicons") nil 'append)
+  (set-fontset-font t 'unicode (font-spec :family "FontAwesome") nil 'append)
+  (set-fontset-font t 'unicode (font-spec :family "Weather Icons") nil 'append)
+  )
 
 (put 'upcase-region 'disabled nil)
 (load custom-file)
