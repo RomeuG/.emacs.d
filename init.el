@@ -362,6 +362,9 @@ This command does not push text to `kill-ring'."
 ;; bind-key for use-package
 (require 'bind-key)
 
+;; mode line
+(display-time-mode 1)
+
 (setq-default confirm-kill-emacs 'yes-or-no-p)
 (setq-default cursor-in-non-selected-windows t)
 (setq-default help-window-select t)
