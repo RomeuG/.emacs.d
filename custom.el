@@ -10,4 +10,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
  '(diff-hl-change ((t (:background "dark blue" :foreground "dark blue"))) nil '(diff-hl-delete ((t (:background "dark red" :foreground "dark red"))))))

@@ -533,6 +533,7 @@ This command does not push text to `kill-ring'."
 ;; utf8 stuff
 (set-locale-environment "en_US.UTF-8")
 (set-default-coding-systems 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;; backtab delete spaces
 (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
@@ -585,9 +586,6 @@ This command does not push text to `kill-ring'."
 (global-set-key (kbd "<f5>") (lambda ()
 			       (interactive)
 			       (call-interactively 'recompile)))
-
-;; UTF8
-;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
 ;; disable recentf
 (recentf-mode -1)
