@@ -773,7 +773,11 @@ This command does not push text to `kill-ring'."
   :defer
   :bind
   (("C-c r" . vr/replace)
-   ("C-c q" . vr/query-replace)))
+   ("C-c q" . vr/query-replace))
+  :config
+  (setq vr/default-replace-preview nil)
+  (setq vr/match-separator-use-custom-face t)
+)
 
 ;; hack to actually load this package
 (use-package visual-regexp-steroids
@@ -1226,6 +1230,18 @@ This command does not push text to `kill-ring'."
 
 (use-package avy
   :bind ("M-s" . avy-goto-char))
+
+(use-package rg
+  :ensure
+  :defer
+  :config
+  (setq rg-group-result t)
+  (setq rg-hide-command t)
+  (setq rg-show-columns nil)
+  (setq rg-show-header t)
+  (setq rg-custom-type-aliases nil)
+  (setq rg-default-alias-fallback "all")
+  )
 
 (use-package all-the-icons
   :config
