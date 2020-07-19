@@ -615,6 +615,7 @@ This command does not push text to `kill-ring'."
 (global-set-key (kbd "M-P") #'previous-error)
 
 (fringe-mode '(nil . 0))
+(set-fringe-mode fringe-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
