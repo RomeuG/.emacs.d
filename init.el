@@ -653,7 +653,9 @@ This command does not push text to `kill-ring'."
 (use-package gruvbox-theme
   :defer 0
   :config
-  (load-theme 'gruvbox-dark-hard))
+  (load-theme 'gruvbox-dark-hard)
+  (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
+  )
 
 (use-package move-text
   :defer 0
