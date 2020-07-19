@@ -368,6 +368,39 @@ This command does not push text to `kill-ring'."
   (let ((buffer-read-only nil))
     (ansi-color-apply-on-region (point-min) (point-max))))
 
+(defun prot/window-single-toggle ()
+    "Toggle between multiple windows and single window.
+This is the equivalent of maximising a window.  Tiling window
+managers such as DWM, BSPWM refer to this state as 'monocle'."
+    (interactive)
+    (if (one-window-p)
+        (when prot/window-configuration
+          (set-window-configuration prot/window-configuration))
+      (setq prot/window-configuration (current-window-configuration))
+      (delete-other-windows)))
+
+(defun prot/window-dired-vc-root-left ()
+  (interactive)
+  (let ((dir (if (eq (vc-root-dir) nil)
+                 (dired-noselect default-directory)
+               (dired-noselect (vc-root-dir)))))
+    (display-buffer-in-side-window
+     dir `((side . left)
+           (slot . -1)
+           (window-width . 0.16)
+           (window-parameters
+            . ((no-other-window . t)
+               (no-delete-other-windows . t)
+               (mode-line-format
+                . (" "
+                   mode-line-buffer-identification))))))
+    (with-current-buffer dir
+      (rename-buffer "*Dired-Side*")
+      (setq-local window-size-fixed 'width)))
+  (with-eval-after-load 'ace-window
+    (when (boundp 'aw-ignored-buffers)
+      (add-to-list 'aw-ignored-buffers "*Dired-Side*"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
