@@ -938,7 +938,9 @@ This command does not push text to `kill-ring'."
   :init
   (customize-set-variable 'popwin:popup-window-height 0.5)
   :config
-  (popwin-mode 1))
+  (popwin-mode 1)
+  (setq display-buffer-function 'popwin:display-buffer)
+  )
 
 (use-package diff-hl
   :init
