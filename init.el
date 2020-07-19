@@ -789,10 +789,9 @@ This command does not push text to `kill-ring'."
 (use-package uniquify
   :ensure nil
   :config
-  (setq uniquify-buffer-name-style 'reverse)
-  (setq uniquify-separator "  ")
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+  (setq uniquify-strip-common-suffix t)
   (setq uniquify-after-kill-buffer-p t)
-  (setq uniquify-ignore-buffers-re "^\\*")
   )
 
 (use-package markdown-mode
