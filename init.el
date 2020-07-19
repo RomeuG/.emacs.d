@@ -786,61 +786,97 @@ This command does not push text to `kill-ring'."
 (use-package org
   :commands org-indent-mode
   :config
-  (defvar my-org-dir "/home/romeu/Documents/Org")
-  (defvar my-org-publish-dir "/home/romeu/Documents/Org/Publish")
+  (defvar root-dir "/home/romeu/Documents/Org/")
+  (defvar my-org-dir root-dir)
+  (defvar my-org-publish-dir (concat root-dir "Publish/"))
+  (defvar my-org-meta-dir (concat root-dir "Meta/"))
+  (defvar my-org-archive-dir (concat my-org-meta-dir "Archive/"))
+  (defvar my-org-diary-file (concat root-dir "Diary/Diary.org"))
+
   (defun my-maybe-lob-ingest ()
     (if (and buffer-file-name
              (string-match
               (format "%s/.*code\\.inc$" my-org-dir)
               buffer-file-name))
         (org-babel-lob-ingest buffer-file-name)))
+
   (defun my-after-save-hook ()
     (my-maybe-lob-ingest))
+
   (defun my-org-mode-hook ()
     (my-maybe-lob-ingest)
     (turn-on-auto-fill)
     (org-indent-mode 1)
     (setq fill-column 80))
+
   (defun my-chromium (ppl)
     (start-process "fox" nil "open" "-a"
                    "chromium" (format "file://%s" my-org-publish-dir)))
+
   (defun my-git-publish (ppl)
     (let ((publish-script (format "%s/publish.sh" my-org-publish-dir)))
       (when (file-executable-p publish-script)
 	(start-process-shell-command "pub" nil publish-script))))
+
   (defun my-org-confirm-babel-evaluate (lang body)
     (not (member lang '("sh" "python" "elisp" "ruby" "shell" "dot" "perl"))))
+
   (defun my-publish (a b c)
     (setq org-export-with-toc t)
     (org-html-publish-to-html a b c)
     (setq org-export-with-toc nil)
     (org-ascii-publish-to-ascii a b c)
     (org-gfm-publish-to-gfm a b c))
-  (setq org-directory my-org-dir
-	org-image-actual-width nil
-        org-startup-indented t
-        org-babel-min-lines-for-block-output 1
-        org-startup-folded "showeverything"
-        org-startup-with-inline-images t
-        org-src-preserve-indentation t
-        org-use-speed-commands t
-        org-hide-emphasis-markers t
-        org-export-with-section-numbers nil
-        org-export-with-toc t
-        org-export-with-date nil
-        org-export-time-stamp-file nil
-        org-export-with-email t
-        org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate
-        org-babel-default-header-args
-	(cons '(:noweb . "yes")
-	      (assq-delete-all :noweb org-babel-default-header-args))
-        org-babel-default-header-args
-	(cons '(:exports . "both")
-	      (assq-delete-all :exports org-babel-default-header-args))
-        org-babel-default-header-args
-	(cons '(:results . "output verbatim replace")
-	      (assq-delete-all :results org-babel-default-header-args))
-	org-ellipsis " ▼ ")
+
+  (setq org-directory my-org-dir)
+  (setq org-metadir my-org-meta-dir)
+  (setq org-archive-location my-org-archive-dir)
+  (setq diary-file my-org-diary-file)
+
+  (setq org-image-actual-width nil)
+  (setq org-startup-indented t)
+  (setq org-babel-min-lines-for-block-output 1)
+  (setq org-startup-folded "showeverything")
+  (setq org-startup-with-inline-images t)
+  (setq org-src-preserve-indentation t)
+  (setq org-use-speed-commands t)
+  (setq org-export-with-section-numbers nil)
+  (setq org-export-with-toc t)
+  (setq org-export-with-date nil)
+  (setq org-export-time-stamp-file nil)
+  (setq org-export-with-email t)
+  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
+  (setq org-todo-keyword-faces
+        '(
+          ("DONE"      . (:foreground "#afd8af"     :weight bold))
+          ("WAITING"   . (:foreground "dark salmon" :weight bold))
+          ("CANCELLED" . (:foreground "dim gray"    :weight bold))
+          ("BUY"       . (:foreground "goldenrod"   :weight bold))
+          ("HOWTO"     . (:foreground "SkyBlue3"    :weight bold))
+          ("INFO"      . (:foreground "khaki1"      :weight bold))
+          ("COLLECT"   . (:foreground "MediumSeaGreen"   :weight bold))
+          ("SOLVE"     . (:foreground "orange red"    :weight bold))
+          ))
+
+  (setq org-ellipsis " ▼ ")
+  (setq org-hide-leading-stars t)
+  (setq org-hide-emphasis-markers t)
+
+  (setq org-pretty-entities 1)
+  (setq org-pretty-entities-include-sub-superscripts nil)
+
+  (setq org-descriptive-links nil)
+  (setq org-src-fontify-natively t)
+
+  (setq org-tags-column -110)
+  (setq org-agenda-tags-column -110)
+  (setq org-habit-graph-column 100)
+
+  (setq org-babel-default-header-args (cons '(:noweb . "yes") (assq-delete-all :noweb org-babel-default-header-args)))
+  (setq org-babel-default-header-args (cons '(:exports . "both") (assq-delete-all :exports org-babel-default-header-args)))
+  (setq org-babel-default-header-args (cons '(:results . "output verbatim replace") (assq-delete-all :results org-babel-default-header-args)))
+
 
   ;; TODO states configurations
   (setq org-todo-keywords '((sequence "TODO" "WORKING" "|" "DONE")))
@@ -852,6 +888,22 @@ This command does not push text to `kill-ring'."
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
 
+  ;; Org Capture
+  ;; TODO: improve and add more templates
+  (setq org-capture-templates
+        '(
+          ("t" "Todo" entry (file "TODO.org")
+           "* TODO %?\n%U" :empty-lines 1)
+          ("s" "Songs" entry (file+headline "Songs.org" "Songs")
+           "* %^{Song: } %?\n")
+          )
+        )
+
+  (setq org-babel-interpreters
+        (quote
+         ("emacs-lisp" "python" "sh" ""))
+        )
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
@@ -861,11 +913,19 @@ This command does not push text to `kill-ring'."
      (emacs-lisp . t)
      (dot . t)))
 
+  ;; org crypt
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic)
+  (setq org-crypt-tag-matcher "encrypt")
+  (setq org-crypt-key "09852491") ;; TODO: make it a constant
+  (add-to-list 'org-tags-exclude-from-inheritance (quote "encrypt"))
+  (add-to-list 'org-tags-exclude-from-inheritance (quote "crypt"))
+
   :bind (("M-p" . #'org-publish))
   :hook
   (after-save . my-after-save-hook)
-  (org-mode . my-org-mode-hook))
-
+  (org-mode . my-org-mode-hook)
+  )
 
 (use-package org-bullets
   :init
