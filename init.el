@@ -461,6 +461,9 @@ This command does not push text to `kill-ring'."
 ;; delete trailing whitespace on write
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
+;; Defer fontification a little bit, so we could gain a bit in scroll speed
+(setq jit-lock-defer-time 0.02)
+
 ;; isearch
 (setq-default isearch-allow-scroll t)
 (setq-default lazy-highlight-cleanup nil)
