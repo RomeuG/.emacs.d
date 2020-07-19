@@ -483,11 +483,6 @@ This command does not push text to `kill-ring'."
 ;; Defer fontification a little bit, so we could gain a bit in scroll speed
 (setq jit-lock-defer-time 0.02)
 
-;; isearch
-(setq-default isearch-allow-scroll t)
-(setq-default lazy-highlight-cleanup nil)
-(setq-default lazy-highlight-initial-delay 0)
-
 ;; redefining sentences in emacs
 (setq-default sentence-end-double-space nil)
 
@@ -640,10 +635,24 @@ This command does not push text to `kill-ring'."
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Prepare for ensure
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-(setq use-package-always-defer t)
+(use-package isearch
+  :defer
+  :ensure nil
+  :diminish
+  :config
+  (setq search-highlight t)
+  (setq search-whitespace-regexp ".*?")
+  (setq isearch-lax-whitespace t)
+  (setq isearch-regexp-lax-whitespace nil)
+  (setq isearch-lazy-highlight t)
+
+  (setq isearch-lazy-count t)
+  (setq lazy-count-prefix-format nil)
+  (setq lazy-count-suffix-format " (%s/%s)")
+  (setq isearch-yank-on-move 'shift)
+  (setq isearch-allow-scroll 'unlimited)
+  )
+
 
 (use-package server
   :ensure nil
