@@ -387,6 +387,9 @@ This command does not push text to `kill-ring'."
 (setq-default x-stretch-cursor t)
 (setq-default window-combination-resize t)
 
+(setq x-underline-at-descent-line t)
+(setq underline-minimum-offset 1)
+
 (global-subword-mode 1)
 
 (add-hook 'focus-out-hook #'garbage-collect)
