@@ -731,6 +731,7 @@ This command does not push text to `kill-ring'."
 (use-package cmake-mode)
 
 (use-package magit
+  :diminish magit-auto-revert-mode
   :init
   (set-default 'magit-stage-all-confirm nil)
   (add-hook 'magit-mode-hook 'magit-load-config-extensions)
