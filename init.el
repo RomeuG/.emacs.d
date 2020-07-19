@@ -653,6 +653,54 @@ This command does not push text to `kill-ring'."
   (setq isearch-allow-scroll 'unlimited)
   )
 
+(use-package dired
+  :defer
+  :ensure nil
+  :config
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always)
+  (setq delete-by-moving-to-trash t)
+  (setq dired-listing-switches
+        "-AGFhlv --group-directories-first --time-style=long-iso")
+  (setq dired-dwim-target t)
+  :hook ((dired-mode-hook . dired-hide-details-mode)
+         (dired-mode-hook . hl-line-mode)))
+
+(use-package dired-aux
+  :defer
+  :ensure nil
+  :config
+  (setq dired-isearch-filenames 'dwim)
+  (setq dired-create-destination-dirs 'ask)
+  (setq dired-vc-rename-file t)
+  )
+
+(use-package find-dired
+  :defer
+  :ensure nil
+  :after dired
+  :config
+  (setq find-ls-option
+        '("-ls" . "-AGFhlv --group-directories-first --time-style=long-iso"))
+  (setq find-name-arg "-iname"))
+
+(use-package async :ensure)
+
+(use-package dired-async
+  :defer
+  :ensure nil
+  :after (dired async)
+  :hook (dired-mode-hook . dired-async-mode))
+
+(use-package dired-subtree
+  :defer
+  :after dired
+  :config
+  (setq dired-subtree-use-backgrounds nil)
+  :bind (:map dired-mode-map
+              ("<tab>" . dired-subtree-toggle)
+              ("<C-tab>" . dired-subtree-cycle)
+              ("<S-iso-lefttab>" . dired-subtree-remove)))
 
 (use-package server
   :ensure nil
