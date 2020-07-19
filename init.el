@@ -811,6 +811,63 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
          (custom-mode-hook . visual-line-mode))
   )
 
+(use-package diary-lib
+  :ensure nil
+  :defer
+  :config
+  (setq diary-file "~/.config/emacs/diary")
+  (setq diary-entry-marker "diary")
+  (setq diary-show-holidays-flag t)
+  (setq diary-header-line-flag nil)
+  (setq diary-mail-addr "romeu.bizz@gmail.com")
+  (setq diary-mail-days 3)
+  (setq diary-number-of-entries 3)
+  (setq diary-comment-start ";")
+  (setq diary-comment-end "")
+  (setq diary-date-forms
+        '((day "/" month "[^/0-9]")
+          (day "/" month "/" year "[^0-9]")
+          (day " *" monthname " *" year "[^0-9]")
+          (monthname " *" day "[^,0-9]")
+          (monthname " *" day ", *" year "[^0-9]")
+          (year "[-/]" month "[-/]" day "[^0-9]")
+          (dayname "\\W"))))
+
+(use-package calendar
+  :ensure nil
+  :defer
+  :config
+  (setq calendar-mark-diary-entries-flag t)
+  (setq calendar-time-display-form
+        '(24-hours ":" minutes
+                   (when time-zone
+                     (concat " (" time-zone ")"))))
+  (setq calendar-week-start-day 1)      ; Monday
+  (setq calendar-date-style 'iso)
+  (setq calendar-christian-all-holidays-flag nil)
+  (setq calendar-holidays
+        (append holiday-local-holidays  ; TODO set local holidays
+                holiday-solar-holidays))
+
+  (use-package solar
+    :ensure nil
+    :defer
+    :config
+    (setq calendar-latitude 35.17
+          calendar-longitude 33.36))
+
+  (use-package lunar
+    :ensure nil
+    :defer
+    :config
+    (setq lunar-phase-names
+          '("New Moon"
+            "First Quarter Moon"
+            "Full Moon"
+            "Last Quarter Moon")))
+
+  :hook (calendar-today-visible-hook . calendar-mark-today))
+
 (use-package server
   :ensure nil
   :hook (after-init . server-mode))
