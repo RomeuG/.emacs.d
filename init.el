@@ -715,6 +715,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq lazy-count-suffix-format " (%s/%s)")
   (setq isearch-yank-on-move 'shift)
   (setq isearch-allow-scroll 'unlimited)
+
+  (setq search-default-mode 'char-fold-to-regexp)
   )
 
 (use-package dired
@@ -916,7 +918,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :hook (after-init . global-hungry-delete-mode)
   :config (setq-default hungry-delete-chars-to-skip " \t\f\v"))
 
-;; History
+;; Remember location in file
 (use-package saveplace
   :ensure nil
   :hook (after-init . save-place-mode))
@@ -934,6 +936,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (load-theme 'gruvbox-dark-hard)
   (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
   )
+
+(use-package so-long
+  :config
+  (global-so-long-mode))
 
 (use-package move-text
   :defer 0
@@ -1063,13 +1069,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (use-package org
   :commands org-indent-mode
   :config
-  (defvar root-dir "/home/romeu/Documents/Org/")
-  (defvar my-org-dir root-dir)
-  (defvar my-org-publish-dir (concat root-dir "Publish/"))
-  (defvar my-org-meta-dir (concat root-dir "Meta/"))
-  (defvar my-org-archive-dir (concat my-org-meta-dir "Archive/"))
-  (defvar my-org-diary-file (concat root-dir "Diary/Diary.org"))
-
   (defun my-maybe-lob-ingest ()
     (if (and buffer-file-name
              (string-match
@@ -1095,15 +1094,20 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
       (when (file-executable-p publish-script)
 	(start-process-shell-command "pub" nil publish-script))))
 
-  (defun my-org-confirm-babel-evaluate (lang body)
-    (not (member lang '("sh" "python" "elisp" "ruby" "shell" "dot" "perl"))))
-
   (defun my-publish (a b c)
     (setq org-export-with-toc t)
     (org-html-publish-to-html a b c)
     (setq org-export-with-toc nil)
     (org-ascii-publish-to-ascii a b c)
     (org-gfm-publish-to-gfm a b c))
+
+
+  (defvar root-dir "/home/romeu/Documents/Org/")
+  (defvar my-org-dir root-dir)
+  (defvar my-org-publish-dir (concat root-dir "Publish/"))
+  (defvar my-org-meta-dir (concat root-dir "Meta/"))
+  (defvar my-org-archive-dir (concat my-org-meta-dir "Archive/"))
+  (defvar my-org-diary-file (concat root-dir "Diary/Diary.org"))
 
   (setq org-directory my-org-dir)
   (setq org-metadir my-org-meta-dir)
@@ -1122,7 +1126,12 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-export-with-date nil)
   (setq org-export-time-stamp-file nil)
   (setq org-export-with-email t)
-  (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+  (setq org-confirm-babel-evaluate nil)
+
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "|" "DONE(D)" "CANCEL(C)")
+          (sequence "MEET(m)" "|" "MET(M)")
+          (sequence "STUDY(s)" "|" "STUDIED(S)")))
 
   (setq org-todo-keyword-faces
         '(
@@ -1138,13 +1147,24 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
   (setq org-ellipsis " ▼ ")
   (setq org-hide-leading-stars t)
-  (setq org-hide-emphasis-markers t)
 
   (setq org-pretty-entities 1)
   (setq org-pretty-entities-include-sub-superscripts nil)
 
   (setq org-descriptive-links nil)
+
   (setq org-src-fontify-natively t)
+  (setq org-fontify-done-headline nil)
+  (setq org-fontify-quote-and-verse-blocks t)
+  (setq org-fontify-whole-heading-line nil)
+  (setq org-fontify-whole-block-delimiter-line t)
+
+  (setq org-enforce-todo-dependencies t)
+  (setq org-enforce-todo-checkbox-dependencies t)
+  (setq org-track-ordered-property-with-tag t)
+  (setq org-highest-priority ?A)
+  (setq org-lowest-priority ?C)
+  (setq org-default-priority ?A)
 
   (setq org-tags-column -110)
   (setq org-agenda-tags-column -110)
@@ -1154,11 +1174,21 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-babel-default-header-args (cons '(:exports . "both") (assq-delete-all :exports org-babel-default-header-args)))
   (setq org-babel-default-header-args (cons '(:results . "output verbatim replace") (assq-delete-all :results org-babel-default-header-args)))
 
-
-  ;; TODO states configurations
-  (setq org-todo-keywords '((sequence "TODO" "WORKING" "|" "DONE")))
+  ;; log
   (setq org-log-done 'time)
-  (setq org-log-done 'note)
+  (setq org-log-note-clock-out nil)
+  (setq org-log-redeadline nil)
+  (setq org-log-reschedule nil)
+  (setq org-read-date-prefer-future 'time)
+
+  ;; general
+  (setq org-special-ctrl-a/e nil)
+  (setq org-special-ctrl-k nil)
+  (setq org-hide-emphasis-markers t)
+  (setq org-catch-invisible-edits 'show)
+  (setq org-return-follows-link nil)
+  (setq org-loop-over-headlines-in-active-region 'start-level)
+  (setq org-imenu-depth 7)
 
   (custom-set-faces '(org-ellipsis ((t (:foreground "gray40" :underline nil)))))
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -1202,6 +1232,13 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :hook
   (after-save . my-after-save-hook)
   (org-mode . my-org-mode-hook)
+  )
+
+(use-package ol
+  :defer
+  :ensure nil
+  :config
+  (setq org-link-keep-stored-after-insertion t)
   )
 
 (use-package org-bullets
