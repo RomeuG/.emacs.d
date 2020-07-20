@@ -658,7 +658,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package ansi-color
   :commands ansi-color-display
-  :hook (compilation-filter . colorize-compilation-buffer)
+  :hook (compilation-filter-hook . colorize-compilation-buffer)
   :config
   (defun ansi-color-display (start end)
     "Display ansi colors in region or whole buffer."
@@ -904,24 +904,24 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package server
   :ensure nil
-  :hook (after-init . server-mode))
+  :hook (after-init-hook . server-mode))
 
 ;; Automatically reload files was modified by external program
 (use-package autorevert
   :ensure nil
   :diminish
-  :hook (after-init . global-auto-revert-mode))
+  :hook (after-init-hook . global-auto-revert-mode))
 
 ;; Hungry deletion
 (use-package hungry-delete
   :diminish
-  :hook (after-init . global-hungry-delete-mode)
+  :hook (after-init-hook . global-hungry-delete-mode)
   :config (setq-default hungry-delete-chars-to-skip " \t\f\v"))
 
 ;; Remember location in file
 (use-package saveplace
   :ensure nil
-  :hook (after-init . save-place-mode))
+  :hook (after-init-hook . save-place-mode))
 
 (use-package projectile
   :diminish
@@ -1049,8 +1049,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package smartparens
   :hook
-  (after-init . smartparens-global-mode)
-  (after-init . show-smartparens-global-mode)
+  (after-init-hook . smartparens-global-mode)
+  (after-init-hook . show-smartparens-global-mode)
   :config
   (require 'smartparens-config)
   (sp-pair "=" "=" :actions '(wrap))
@@ -1230,8 +1230,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
   :bind (("M-p" . #'org-publish))
   :hook
-  (after-save . my-after-save-hook)
-  (org-mode . my-org-mode-hook)
+  (after-save-hook . my-after-save-hook)
+  (org-mode-hook . my-org-mode-hook)
   )
 
 (use-package ol
@@ -1387,10 +1387,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (lsp-enable-semantic-highlighting nil)
   (lsp-diagnostic-package :none)
   :hook
-  (c-mode . lsp)
-  (c++-mode . lsp)
-  (typescript-mode . lsp)
-  (python-mode . lsp)
+  (c-mode-hook . lsp)
+  (c++-mode-hook . lsp)
+  (typescript-mode-hook . lsp)
+  (python-mode-hook . lsp)
   :config
   (use-package lsp-ui
     :custom
