@@ -195,21 +195,6 @@ Results are reported in a compilation buffer."
 	(system-time-locale "de_DE"))
     (insert (format-time-string format))))
 
-(defun gtags-root-dir ()
-  "Returns GTAGS root directory or nil if doesn't exist."
-  (with-temp-buffer
-    (if (zerop (call-process "global" nil t nil "-pr"))
-	(buffer-substring (point-min) (1- (point-max)))
-      nil)))
-
-(defun gtags-update ()
-  "Make GTAGS incremental update"
-  (call-process "global" nil nil nil "-u"))
-
-(defun gtags-update-hook ()
-  (when (gtags-root-dir)
-    (gtags-update)))
-
 (defadvice move-beginning-of-line (around smarter-bol activate)
   ;; Move to requested line if needed.
   (let ((arg (or (ad-get-arg 0) 1)))
@@ -535,8 +520,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (global-set-key (kbd "C-.") 'other-window)
 (global-set-key (kbd "C-,") 'prev-window)
-
-;;(add-hook 'after-save-hook #'gtags-update-hook)
 
 ;; visual bell and less keystrokes
 (setq-default echo-keystrokes 0.1)
