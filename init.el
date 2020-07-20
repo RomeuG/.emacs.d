@@ -16,10 +16,12 @@
 	    (setq file-name-handler-alist my--file-name-handler-alist)))
 
 ;; Window System
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(scroll-bar-mode 0)
-(blink-cursor-mode 1)
+(unless (display-graphic-p)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (blink-cursor-mode 1)
+  )
 
 (setq gnutls-min-prime-bits 1024)
 (setq gnutls-algorithm-priority "SECURE128:-VERS-SSL3.0:-VERS-TLS1.3")
@@ -349,10 +351,6 @@ This command does not push text to `kill-ring'."
     (when file-name
       (find-alternate-file (concat "/sudo::" file-name)))))
 
-(defun my/ansi-colorize-buffer ()
-  (let ((buffer-read-only nil))
-    (ansi-color-apply-on-region (point-min) (point-max))))
-
 (defun prot/window-single-toggle ()
     "Toggle between multiple windows and single window.
 This is the equivalent of maximising a window.  Tiling window
@@ -411,6 +409,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (add-hook 'focus-out-hook #'garbage-collect)
 
+;; always left-to-right text
+(setq-default bidi-paragraph-direction 'left-to-right)
+
 ;; (setq garbage-collection-messages t)
 (setq jit-lock-defer-time 0)
 (setq fast-but-imprecise-scrolling t)
@@ -421,6 +422,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :ensure t
   :demand t
   :config (exec-path-from-shell-initialize))
+
+(size-indication-mode t)
+(setq auto-window-vscroll nil)
 
 ;; mouse settings
 (xterm-mouse-mode t)
@@ -488,6 +492,15 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 ;; highlighting
 (global-font-lock-mode t)
+
+;; Paste with middle mouse button doesn't move the cursor
+(setq mouse-yank-at-point t)
+
+;; Silence ad-handle-definition about advised functions getting redefined
+(setq ad-redefinition-action 'accept)
+
+;; Use 'fancy' ellipses for truncated strings
+(setq truncate-string-ellipsis "…")
 
 ;; scroll bar new-frame
 (add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
@@ -608,13 +621,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (modify-face 'font-lock-fixme-face "Red" nil nil t nil t nil nil)
 (modify-face 'font-lock-note-face "Dark Green" nil nil t nil t nil nil)
 
-;; compilation
-(setq compile-command "make -C .. all")
-(setq compile-read-command nil)
-(setq compilation-scroll-output t)
-(require 'ansi-color)
-(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
-
 (global-set-key (kbd "<f5>") (lambda ()
 			       (interactive)
 			       (call-interactively 'recompile)))
@@ -649,6 +655,49 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package ansi-color
+  :commands ansi-color-display
+  :hook (compilation-filter . colorize-compilation-buffer)
+  :config
+  (defun ansi-color-display (start end)
+    "Display ansi colors in region or whole buffer."
+    (interactive (if (region-active-p)
+                     (list (region-beginning) (region-end))
+                   (list (point-min) (point-max))))
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region start end)))
+
+  ;; Colorize output of Compilation Mode, see
+  ;; http://stackoverflow.com/a/3072831/355252
+  (defun colorize-compilation-buffer ()
+    (let ((inhibit-read-only t))
+      (ansi-color-apply-on-region (point-min) (point-max)))))
+
+(use-package compile
+  :config
+  (setq compile-command "make -C .. all")
+  (setq compile-read-command nil)
+
+  ;; Always save before compiling
+  (setq compilation-ask-about-save nil)
+  ;; Just kill old compile processes before starting the new one
+  (setq compilation-always-kill t)
+  ;; Scroll with the compilation output
+  ;; Set to 'first-error to stop scrolling on first error
+  (setq compilation-scroll-output t))
+
+(use-package epa
+  :defer t
+  :config
+  ;; Always replace encrypted text with plain text version
+  (setq epa-replace-original-text t))
+
+(use-package epg
+  :defer t
+  :config
+  ;; Let Emacs query the passphrase through the minibuffer
+  (setq epg-pinentry-mode 'loopback))
 
 (use-package isearch
   :defer
