@@ -1054,14 +1054,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (magit-stage-modified)
     (magit-commit)))
 
-(use-package forge
-  :after magit)
-
 (use-package git-timemachine
   :bind ("M-g t" . git-timemachine-toggle))
-
-(use-package browse-at-remote
-  :bind ("M-g r" . browse-at-remote))
 
 (use-package diffview
   :commands (diffview-region diffview-current)
@@ -1074,6 +1068,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :bind ("M-g v" . rg/diffview-dwim))
 
 (use-package px)
+
+(use-package crux)
 
 (use-package smartparens
   :hook ((
