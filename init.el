@@ -656,6 +656,32 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package time
+  :defer 10
+  :config
+  ;; Only show loads of above 0.9 in the modeline
+  (setq display-time-load-average-threshold 0.9)
+  ;; A list of timezones to show for `display-time-world`
+  (setq zoneinfo-style-world-list
+        '(("Asia/Kuala_Lumpur" "Kuala Lumpur")
+          ("Europe/Berlin" "Berlin")
+          ("America/Los_Angeles" "Los Angeles")
+          ("America/New_York" "New York")
+          ("Australia/Sydney" "Sydney")))
+
+  (setq display-time-24hr-format t)
+  ;; Show time in modeline
+  (display-time-mode)
+  ;; Right align time and org clocked-in task
+  (add-to-list
+   'global-mode-string
+   '(:eval (propertize " " 'display `((space :align-to (- right
+                                                          ,(length display-time-string)
+                                                          ,(if (org-clocking-p)
+                                                               (length org-mode-line-string)
+                                                             0)
+                                                          1)))))))
+
 (use-package ansi-color
   :commands ansi-color-display
   :hook (compilation-filter-hook . colorize-compilation-buffer)
