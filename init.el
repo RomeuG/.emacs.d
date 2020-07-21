@@ -928,6 +928,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
   :hook (calendar-today-visible-hook . calendar-mark-today))
 
+(use-package which-func
+  :defer 5
+  :config (which-function-mode 1))
+
 (use-package server
   :ensure nil
   :hook (after-init-hook . server-mode))
