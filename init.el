@@ -1023,9 +1023,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (use-package uniquify
   :ensure nil
   :config
-  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+  (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-strip-common-suffix t)
   (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-separator "/")
   )
 
 (use-package markdown-mode
