@@ -394,9 +394,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; bind-key for use-package
 (require 'bind-key)
 
-;; mode line
-(display-time-mode 1)
-
 (setq-default confirm-kill-emacs 'yes-or-no-p)
 (setq-default cursor-in-non-selected-windows t)
 (setq-default help-window-select t)
@@ -471,7 +468,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (message ""))
 (setq-default frame-title-format nil)
 (setq-default ring-bell-function 'ignore)
-(setq-default uniquify-buffer-name-style 'post-forward-angle-brackets) ; Show path if names are same
 (setq-default adaptive-fill-regexp "[ t]+|[ t]*([0-9]+.|*+)[ t]*")
 (setq-default adaptive-fill-first-line-regexp "^* *$")
 (setq-default sentence-end "\\([。、！？]\\|……\\|[,.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")
@@ -905,6 +901,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq calendar-week-start-day 1)      ; Monday
   (setq calendar-date-style 'iso)
   (setq calendar-christian-all-holidays-flag nil)
+  (setq calendar-holiday-marker t)
   (setq calendar-holidays
         (append holiday-local-holidays  ; TODO set local holidays
                 holiday-solar-holidays))
