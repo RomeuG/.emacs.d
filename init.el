@@ -1079,19 +1079,48 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (use-package px)
 
 (use-package smartparens
-  :hook
-  (after-init-hook . smartparens-global-mode)
-  (after-init-hook . show-smartparens-global-mode)
+  :hook ((
+          emacs-lisp-mode-hook lisp-mode-hook lisp-data-mode-hook
+          cc-mode-hook python-mode-hook typescript-mode-hook
+          json-mode-hook
+          ) . smartparens-strict-mode)
   :config
   (require 'smartparens-config)
-  (sp-pair "=" "=" :actions '(wrap))
-  (sp-pair "+" "+" :actions '(wrap))
-  (sp-pair "<" ">" :actions '(wrap))
-  (sp-pair "$" "$" :actions '(wrap))
-  (sp-with-modes '(c-mode c++-mode)
-    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
-    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-					      ))))
+  (setq sp-base-key-bindings 'paredit)
+  (setq sp-autoskip-closing-pair 'always)
+
+  ;; Always highlight matching parens
+  (show-smartparens-global-mode +1)
+  (setq blink-matching-paren nil)  ;; Don't blink matching parens
+
+  ;; Create keybindings to wrap symbol/region in pairs
+  (defun prelude-wrap-with (s)
+    "Create a wrapper function for smartparens using S."
+    `(lambda (&optional arg)
+       (interactive "P")
+       (sp-wrap-with-pair ,s)))
+
+  (define-key prog-mode-map (kbd "M-(") (prelude-wrap-with "("))
+  (define-key prog-mode-map (kbd "M-[") (prelude-wrap-with "["))
+  (define-key prog-mode-map (kbd "M-{") (prelude-wrap-with "{"))
+  (define-key prog-mode-map (kbd "M-\"") (prelude-wrap-with "\""))
+  (define-key prog-mode-map (kbd "M-'") (prelude-wrap-with "'"))
+  (define-key prog-mode-map (kbd "M-`") (prelude-wrap-with "`"))
+
+  ;; smart curly braces
+  (sp-pair "{" nil :post-handlers
+           '(((lambda (&rest _ignored)
+                (crux-smart-open-line-above)) "RET")))
+  (sp-pair "[" nil :post-handlers
+           '(((lambda (&rest _ignored)
+                (crux-smart-open-line-above)) "RET")))
+  (sp-pair "(" nil :post-handlers
+           '(((lambda (&rest _ignored)
+                (crux-smart-open-line-above)) "RET")))
+
+  ;; use smartparens-mode everywhere
+  (smartparens-global-mode)
+  )
 
 (use-package clean-aindent-mode
   :init
