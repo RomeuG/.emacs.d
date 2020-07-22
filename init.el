@@ -352,15 +352,15 @@ This command does not push text to `kill-ring'."
       (find-alternate-file (concat "/sudo::" file-name)))))
 
 (defun prot/window-single-toggle ()
-    "Toggle between multiple windows and single window.
+  "Toggle between multiple windows and single window.
 This is the equivalent of maximising a window.  Tiling window
 managers such as DWM, BSPWM refer to this state as 'monocle'."
-    (interactive)
-    (if (one-window-p)
-        (when prot/window-configuration
-          (set-window-configuration prot/window-configuration))
-      (setq prot/window-configuration (current-window-configuration))
-      (delete-other-windows)))
+  (interactive)
+  (if (one-window-p)
+      (when prot/window-configuration
+        (set-window-configuration prot/window-configuration))
+    (setq prot/window-configuration (current-window-configuration))
+    (delete-other-windows)))
 
 (defun prot/window-dired-vc-root-left ()
   (interactive)
@@ -1008,7 +1008,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :config
   (setq vr/default-replace-preview nil)
   (setq vr/match-separator-use-custom-face t)
-)
+  )
 
 ;; hack to actually load this package
 (use-package visual-regexp-steroids
@@ -1395,7 +1395,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (interactive)
     (if (looking-at "\\_>")
 	(company-complete-common)
-    (indent-according-to-mode)))
+      (indent-according-to-mode)))
 
   (delete 'company-dabbrev company-backends)
   (delete '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
