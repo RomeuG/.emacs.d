@@ -1540,5 +1540,28 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (set-fontset-font t 'unicode (font-spec :family "Weather Icons") nil 'append)
   )
 
+(use-package auctex
+  :mode (".tex" . latex-mode)
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-engine 'xelatex)
+  (setq TeX-PDF-mode t)
+
+  (setq TeX-command-default "Latexmk")
+  )
+
+(use-package auctex-latexmk
+  :defer 0
+  :init
+  (auctex-latexmk-setup)
+  :config
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+			       (push
+				'("LaTeXmk" "latexmk -pdf --synctex=1 -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
+				  :help "Run latexmk on file")
+				TeX-command-list)))
+  )
+
 (put 'upcase-region 'disabled nil)
 (load custom-file)
