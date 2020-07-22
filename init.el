@@ -480,9 +480,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (defalias 'yes-or-no-p #'y-or-n-p)
 
-;; scratch buffer mode
-;; (setq initial-major-mode 'org-mode)
-
 ;; column number
 (column-number-mode 1)
 
@@ -1157,24 +1154,40 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (defvar my-org-archive-dir (concat my-org-meta-dir "Archive/"))
   (defvar my-org-diary-file (concat root-dir "Diary/Diary.org"))
 
+  ;; directories
   (setq org-directory my-org-dir)
   (setq org-metadir my-org-meta-dir)
   (setq org-archive-location my-org-archive-dir)
   (setq diary-file my-org-diary-file)
 
+  ;; general configs
   (setq org-image-actual-width nil)
   (setq org-startup-indented t)
   (setq org-babel-min-lines-for-block-output 1)
   (setq org-startup-folded "showeverything")
   (setq org-startup-with-inline-images t)
-  (setq org-src-preserve-indentation t)
   (setq org-use-speed-commands t)
-  (setq org-export-with-section-numbers nil)
-  (setq org-export-with-toc t)
-  (setq org-export-with-date nil)
-  (setq org-export-time-stamp-file nil)
-  (setq org-export-with-email t)
   (setq org-confirm-babel-evaluate nil)
+  (setq org-reverse-note-order nil)
+  (setq org-special-ctrl-a/e nil)
+  (setq org-special-ctrl-k nil)
+  (setq org-hide-emphasis-markers t)
+  (setq org-catch-invisible-edits 'show)
+  (setq org-return-follows-link nil)
+  (setq org-loop-over-headlines-in-active-region 'start-level)
+  (setq org-imenu-depth 7)
+
+  ;; refile
+  (setq org-refile-targets
+        '((org-agenda-files . (:maxlevel . 2))
+          (nil . (:maxlevel . 2))))
+  (setq org-refile-use-outline-path t)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  (setq org-refile-use-cache t)
+
+  ;; todo
+  (setq org-enforce-todo-dependencies t)
+  (setq org-enforce-todo-checkbox-dependencies t)
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "|" "DONE(D)" "CANCEL(C)")
@@ -1201,21 +1214,17 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
   (setq org-descriptive-links nil)
 
-  (setq org-src-fontify-natively t)
   (setq org-fontify-done-headline nil)
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-fontify-whole-heading-line nil)
   (setq org-fontify-whole-block-delimiter-line t)
 
-  (setq org-enforce-todo-dependencies t)
-  (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-track-ordered-property-with-tag t)
   (setq org-highest-priority ?A)
   (setq org-lowest-priority ?C)
   (setq org-default-priority ?A)
 
   (setq org-tags-column -110)
-  (setq org-agenda-tags-column -110)
   (setq org-habit-graph-column 100)
 
   (setq org-babel-default-header-args (cons '(:noweb . "yes") (assq-delete-all :noweb org-babel-default-header-args)))
@@ -1228,15 +1237,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-log-redeadline nil)
   (setq org-log-reschedule nil)
   (setq org-read-date-prefer-future 'time)
-
-  ;; general
-  (setq org-special-ctrl-a/e nil)
-  (setq org-special-ctrl-k nil)
-  (setq org-hide-emphasis-markers t)
-  (setq org-catch-invisible-edits 'show)
-  (setq org-return-follows-link nil)
-  (setq org-loop-over-headlines-in-active-region 'start-level)
-  (setq org-imenu-depth 7)
 
   (custom-set-faces '(org-ellipsis ((t (:foreground "gray40" :underline nil)))))
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -1282,6 +1282,214 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (org-mode-hook . my-org-mode-hook)
   )
 
+;; "stolen" from Protesilaos Stavrou Config
+(use-package org-agenda
+  :after org
+  :ensure nil
+  :defer
+  :config
+  ;; Basic setup
+  (setq org-agenda-span 14)
+  (setq org-agenda-start-on-weekday 1)  ; Monday
+  (setq org-agenda-confirm-kill t)
+  (setq org-agenda-show-all-dates t)
+  (setq org-agenda-show-outline-path nil)
+  (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-skip-comment-trees t)
+  (setq org-agenda-menu-show-matcher t)
+  (setq org-agenda-menu-two-columns nil)
+  (setq org-agenda-sticky nil)
+  (setq org-agenda-custom-commands-contexts nil)
+  (setq org-agenda-max-entries nil)
+  (setq org-agenda-max-todos nil)
+  (setq org-agenda-max-tags nil)
+  (setq org-agenda-max-effort nil)
+
+  ;; General view options
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12:c%?-12t% s")
+          (todo . " %i %-12:c")
+          (tags . " %i %-12:c")
+          (search . " %i %-12:c")))
+  (setq org-agenda-sorting-strategy
+        '(((agenda habit-down time-up priority-down category-keep)
+           (todo priority-down category-keep)
+           (tags priority-down category-keep)
+           (search category-keep))))
+  (setq org-agenda-breadcrumbs-separator "->")
+  (setq org-agenda-todo-keyword-format "%-1s")
+  (setq org-agenda-diary-sexp-prefix nil)
+  (setq org-agenda-fontify-priorities 'cookies)
+  (setq org-agenda-category-icon-alist nil)
+  (setq org-agenda-remove-times-when-in-prefix nil)
+  (setq org-agenda-remove-timeranges-from-blocks nil)
+  (setq org-agenda-compact-blocks nil)
+  (setq org-agenda-block-separator ?—)
+
+  (defun prot/org-agenda-format-date-aligned (date)
+    "Format a DATE string for display in the daily/weekly agenda.
+This function makes sure that dates are aligned for easy reading.
+
+Slightly tweaked version of `org-agenda-format-date-aligned' that
+produces dates with a fixed length."
+    (require 'cal-iso)
+    (let* ((dayname (calendar-day-name date t))
+	   (day (cadr date))
+	   (day-of-week (calendar-day-of-week date))
+	   (month (car date))
+	   (monthname (calendar-month-name month t))
+	   (year (nth 2 date))
+	   (iso-week (org-days-to-iso-week
+		      (calendar-absolute-from-gregorian date)))
+	   (weekyear (cond ((and (= month 1) (>= iso-week 52))
+			    (1- year))
+			   ((and (= month 12) (<= iso-week 1))
+			    (1+ year))
+			   (t year)))
+	   (weekstring (if (= day-of-week 1)
+			   (format " (W%02d)" iso-week)
+		         "")))
+      (format "%s %2d %s %4d%s"
+	      dayname day monthname year weekstring)))
+
+  (setq org-agenda-format-date #'prot/org-agenda-format-date-aligned)
+
+  ;; Marks
+  (setq org-agenda-bulk-mark-char "#")
+  (setq org-agenda-persistent-marks nil)
+
+  ;; Diary entries
+  (setq org-agenda-insert-diary-strategy 'date-tree)
+  (setq org-agenda-insert-diary-extract-time nil)
+  (setq org-agenda-include-diary t)
+
+  ;; Follow mode
+  (setq org-agenda-start-with-follow-mode nil)
+  (setq org-agenda-follow-indirect t)
+
+  ;; Multi-item tasks
+  (setq org-agenda-dim-blocked-tasks t)
+  (setq org-agenda-todo-list-sublevels t)
+
+  ;; Filters and restricted views
+  (setq org-agenda-persistent-filter nil)
+  (setq org-agenda-restriction-lock-highlight-subtree t)
+
+  ;; Items with deadline and scheduled timestamps
+  (setq org-agenda-include-deadlines t)
+  (setq org-deadline-warning-days 5)
+  (setq org-agenda-skip-scheduled-if-done nil)
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (setq org-agenda-skip-timestamp-if-deadline-is-shown t)
+  (setq org-agenda-skip-deadline-if-done nil)
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled 1)
+  (setq org-agenda-skip-scheduled-delay-if-deadline nil)
+  (setq org-agenda-skip-additional-timestamps-same-entry nil)
+  (setq org-agenda-skip-timestamp-if-done nil)
+  (setq org-agenda-search-headline-for-time t)
+  (setq org-scheduled-past-days 365)
+  (setq org-deadline-past-days 365)
+  (setq org-agenda-move-date-from-past-immediately-to-today t)
+  (setq org-agenda-show-future-repeats t)
+  (setq org-agenda-prefer-last-repeat nil)
+  (setq org-agenda-timerange-leaders
+        '("" "(%d/%d): "))
+  (setq org-agenda-scheduled-leaders
+        '("Scheduled: " "Sched.%2dx: "))
+  (setq org-agenda-inactive-leader "[")
+  (setq org-agenda-deadline-leaders
+        '("Deadline:  " "In %3d d.: " "%2d d. ago: "))
+  ;; Time grid
+  (setq org-agenda-time-leading-zero t)
+  (setq org-agenda-timegrid-use-ampm nil)
+  (setq org-agenda-use-time-grid t)
+  (setq org-agenda-show-current-time-in-grid t)
+  (setq org-agenda-current-time-string
+        "—·—·—·—·—·—·—·—·—")
+  (setq org-agenda-time-grid
+        '((daily today require-timed)
+          (0700 0800 0900 1000 1100
+                1200 1300 1400 1500 1600
+                1700 1800 1900 2000 2100)
+          " -----" "—————————————————"))
+  (setq org-agenda-default-appointment-duration nil)
+
+  ;; Global to-do list
+  (setq org-agenda-todo-ignore-with-date t)
+  (setq org-agenda-todo-ignore-timestamp t)
+  (setq org-agenda-todo-ignore-scheduled t)
+  (setq org-agenda-todo-ignore-deadlines t)
+  (setq org-agenda-todo-ignore-time-comparison-use-seconds t)
+  (setq org-agenda-tags-todo-honor-ignore-options nil)
+
+  ;; Tagged items
+  (setq org-agenda-show-inherited-tags t)
+  (setq org-agenda-use-tag-inheritance
+        '(todo search agenda))
+  (setq org-agenda-hide-tags-regexp nil)
+  (setq org-agenda-remove-tags nil)
+  (setq org-agenda-tags-column -120)
+
+  ;; Agenda entry
+  ;;
+  ;; NOTE I do not use this right now.  Leaving everything to its
+  ;; default value.
+  (setq org-agenda-start-with-entry-text-mode nil)
+  (setq org-agenda-entry-text-maxlines 5)
+  (setq org-agenda-entry-text-exclude-regexps nil)
+  (setq org-agenda-entry-text-leaders "    > ")
+
+  ;; Logging, clocking
+  ;;
+  ;; NOTE I do not use these yet, though I plan to.  Leaving everything to
+  ;; its default value for the time being.
+  (setq org-agenda-log-mode-items '(closed clock))
+  (setq org-agenda-clock-consistency-checks
+        '((:max-duration "10:00" :min-duration 0 :max-gap "0:05" :gap-ok-around
+                         ("4:00")
+                         :default-face ; This should definitely be reviewed
+                         ((:background "DarkRed")
+                          (:foreground "white"))
+                         :overlap-face nil :gap-face nil :no-end-time-face nil
+                         :long-face nil :short-face nil)))
+  (setq org-agenda-log-mode-add-notes t)
+  (setq org-agenda-start-with-log-mode nil)
+  (setq org-agenda-start-with-clockreport-mode nil)
+  (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2))
+  (setq org-agenda-search-view-always-boolean nil)
+  (setq org-agenda-search-view-force-full-words nil)
+  (setq org-agenda-search-view-max-outline-level 0)
+  (setq org-agenda-search-headline-for-time t)
+  (setq org-agenda-use-time-grid t)
+  (setq org-agenda-cmp-user-defined nil)
+  (setq org-sort-agenda-notime-is-late t)
+  (setq org-sort-agenda-noeffort-is-high t)
+
+  ;; Agenda column view
+  ;;
+  ;; NOTE I do not use these, but may need them in the future.
+  (setq org-agenda-view-columns-initially nil)
+  (setq org-agenda-columns-show-summaries t)
+  (setq org-agenda-columns-compute-summary-properties t)
+  (setq org-agenda-columns-add-appointments-to-effort-sum nil)
+  (setq org-agenda-auto-exclude-function nil)
+  (setq org-agenda-bulk-custom-functions nil)
+
+  :bind (("C-c a" . org-agenda)
+         :map org-mode-map
+         ("C-'" . nil)
+         ("C-," . nil)))
+
+(use-package org-src
+  :after org
+  :ensure nil
+  :config
+  (setq org-src-window-setup 'current-window)
+  (setq org-src-fontify-natively t)
+  (setq org-src-preserve-indentation t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-edit-src-content-indentation 0))
+
 (use-package ol
   :defer
   :ensure nil
@@ -1289,10 +1497,53 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-link-keep-stored-after-insertion t)
   )
 
-(use-package org-bullets
-  :init
-  (add-hook 'org-mode-hook #'org-bullets-mode)
-  )
+(use-package org-id
+  :after org
+  :ensure nil
+  :commands (contrib/org-get-id
+             contrib/org-id-headlines)
+  :config
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+  (defun contrib/org-get-id (&optional pom create prefix)
+    "Get the CUSTOM_ID property of the entry at point-or-marker
+POM. If POM is nil, refer to the entry at point. If the entry
+does not have an CUSTOM_ID, the function returns nil. However,
+when CREATE is non nil, create a CUSTOM_ID if none is present
+already. PREFIX will be passed through to `org-id-new'. In any
+case, the CUSTOM_ID of the entry is returned."
+    (interactive)
+    (org-with-point-at pom
+      (let ((id (org-entry-get nil "CUSTOM_ID")))
+        (cond
+         ((and id (stringp id) (string-match "\\S-" id))
+          id)
+         (create
+          (setq id (org-id-new (concat prefix "h")))
+          (org-entry-put pom "CUSTOM_ID" id)
+          (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+          id)))))
+
+  (defun contrib/org-id-headlines ()
+    "Add CUSTOM_ID properties to all headlines in the current
+file which do not already have one."
+    (interactive)
+    (org-map-entries (lambda ()
+                       (contrib/org-get-id (point) 'create)))))
+
+(use-package ox
+  :after org
+  :ensure nil
+  :config
+  (setq org-export-with-section-numbers nil)
+  (setq org-export-with-date nil)
+  (setq org-export-time-stamp-file nil)
+  (setq org-export-with-email t)
+  (setq org-export-with-toc t)
+  (setq org-export-headline-levels 8)
+  (setq org-export-backends
+        '(ascii html latex md))
+  (setq org-export-dispatch-use-expert-ui nil))
 
 (use-package ox-gfm)
 
