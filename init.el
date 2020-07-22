@@ -1072,19 +1072,14 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (use-package crux)
 
 (use-package smartparens
-  :hook ((
-          emacs-lisp-mode-hook lisp-mode-hook lisp-data-mode-hook
-          cc-mode-hook python-mode-hook typescript-mode-hook
-          json-mode-hook
-          ) . smartparens-strict-mode)
   :config
   (require 'smartparens-config)
   (setq sp-base-key-bindings 'paredit)
-  (setq sp-autoskip-closing-pair 'always)
+
+  (setq blink-matching-paren t)
 
   ;; Always highlight matching parens
   (show-smartparens-global-mode +1)
-  (setq blink-matching-paren nil)  ;; Don't blink matching parens
 
   ;; Create keybindings to wrap symbol/region in pairs
   (defun prelude-wrap-with (s)
