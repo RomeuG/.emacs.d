@@ -649,6 +649,38 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package paren
+  :config
+  (setq show-paren-style 'parenthesis)
+  (setq show-paren-when-point-in-periphery t)
+  (setq show-paren-when-point-inside-paren nil)
+  :hook (after-init-hook . show-paren-mode)
+  )
+
+(use-package electric
+  :config
+  (setq electric-pair-inhibit-predicate'electric-pair-conservative-inhibit)
+  (setq electric-pair-preserve-balance t)
+  (setq electric-pair-pairs
+        '((8216 . 8217)
+          (8220 . 8221)
+          (171 . 187)))
+  (setq electric-pair-skip-self 'electric-pair-default-skip-self)
+  (setq electric-pair-skip-whitespace nil)
+  (setq electric-pair-skip-whitespace-chars
+        '(9
+          10
+          32))
+  (setq electric-quote-context-sensitive t)
+  (setq electric-quote-paragraph t)
+  (setq electric-quote-string nil)
+  (setq electric-quote-replace-double t)
+  :hook (after-init-hook . (lambda ()
+                             (electric-indent-mode 1)
+                             (electric-pair-mode 1)
+                             (electric-quote-mode 1)))
+  )
+
 (use-package time
   :defer 10
   :config
@@ -1050,6 +1082,32 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (interactive)
     (magit-stage-modified)
     (magit-commit)))
+
+(use-package git-commit
+  :after magit
+  :ensure nil
+  :defer
+  :config
+  (setq git-commit-summary-max-length 100)
+  (setq git-commit-known-pseudo-headers
+        '("Signed-off-by"
+          "Acked-by"
+          "Modified-by"
+          "Cc"
+          "Suggested-by"
+          "Reported-by"
+          "Tested-by"
+          "Reviewed-by"))
+  (setq git-commit-style-convention-checks
+        '(non-empty-second-line
+          overlong-summary-line)))
+
+(use-package magit-diff
+  :after magit
+  :ensure nil
+  :defer
+  :config
+  (setq magit-diff-refine-hunk t))
 
 (use-package git-timemachine
   :bind ("M-g t" . git-timemachine-toggle))
