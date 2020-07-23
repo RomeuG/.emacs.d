@@ -1224,7 +1224,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-enforce-todo-checkbox-dependencies t)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "|" "DONE(D)" "CANCEL(C)")
+        '((sequence "TODO(t)" "WORKING(w)" "|" "DONE(D)" "CANCEL(C)")
           (sequence "MEET(m)" "|" "MET(M)")
           (sequence "STUDY(s)" "|" "STUDIED(S)")))
 
