@@ -406,6 +406,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (add-hook 'focus-out-hook #'garbage-collect)
 
+(setq use-file-dialog nil)
+
 ;; always left-to-right text
 (setq-default bidi-paragraph-direction 'left-to-right)
 
@@ -446,6 +448,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 ;; disable suspend frame
 (global-unset-key (kbd "C-z"))
+(global-unset-key (kbd "C-x C-z"))
+(global-unset-key (kbd "C-h h"))
 
 ;; text marking
 (delete-selection-mode t)
