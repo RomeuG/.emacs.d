@@ -1191,7 +1191,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-metadir my-org-meta-dir)
   (setq org-archive-location my-org-archive-dir)
   (setq org-agenda-files (list "/home/romeu/Documents/Org/Agenda/local.org"
-							   "/home/romeu/Documents/Org/Agenda/todo.org"))
+			       "/home/romeu/Documents/Org/Agenda/todo.org"))
   (setq diary-file my-org-diary-file)
 
   ;; general configs
@@ -1281,13 +1281,13 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   ;; TODO: improve and add more templates
   (setq org-capture-templates
         '(
-		  ("c" "Code")
-		  ("ck" "Kotlin")
-		  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
-		   "* %? %t" :empty-lines 1)
+	  ("c" "Code")
+	  ("ck" "Kotlin")
+	  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
+	   "* %? %t" :empty-lines 1)
 
-		  ("ckl" "Kotlin Libs")
-		  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
+	  ("ckl" "Kotlin Libs")
+	  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
 
           ("t" "Todo" entry (file "TODO.org")
