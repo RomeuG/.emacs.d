@@ -1281,6 +1281,15 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   ;; TODO: improve and add more templates
   (setq org-capture-templates
         '(
+		  ("c" "Code")
+		  ("ck" "Kotlin")
+		  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
+		   "* %? %t" :empty-lines 1)
+
+		  ("ckl" "Kotlin Libs")
+		  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
+           "* %? %t" :empty-lines 1)
+
           ("t" "Todo" entry (file "TODO.org")
            "* TODO %?\n%U" :empty-lines 1)
           ("s" "Songs" entry (file+headline "Songs.org" "Songs")
