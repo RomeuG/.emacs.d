@@ -1190,6 +1190,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-directory my-org-dir)
   (setq org-metadir my-org-meta-dir)
   (setq org-archive-location my-org-archive-dir)
+  (setq org-agenda-files (list "/home/romeu/Documents/Org/Agenda/local.org"
+							   "/home/romeu/Documents/Org/Agenda/todo.org"))
   (setq diary-file my-org-diary-file)
 
   ;; general configs
@@ -1578,6 +1580,17 @@ file which do not already have one."
   (setq org-export-dispatch-use-expert-ui nil))
 
 (use-package ox-gfm)
+
+;; (use-package org-gcal
+;;   :after org
+;;   :config
+;;   (setq org-gcal-client-id "oauth 2.0 client ID"
+;; 		org-gcal-client-secret "client secret"
+;; 		org-gcal-file-alist '(("zamansky@gmail.com" .  "/home/romeu/Documents/Org/Agenda/romeubizz.org")))
+
+;;   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;;   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+;;   )
 
 (use-package popwin
   :init
