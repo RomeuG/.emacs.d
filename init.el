@@ -1113,6 +1113,15 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :config
   (setq magit-diff-refine-hunk t))
 
+(use-package magit-repos
+  :after magit
+  :ensure nil
+  :defer
+  :commands magit-list-repositories
+  :config
+  (setq magit-repository-directories
+        '(("~/Documents/Projects/" . 1))))
+
 (use-package git-timemachine
   :bind ("M-g t" . git-timemachine-toggle))
 
