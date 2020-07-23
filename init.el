@@ -1126,45 +1126,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package crux)
 
-(use-package smartparens
-  :config
-  (require 'smartparens-config)
-  (setq sp-base-key-bindings 'paredit)
-
-  (setq blink-matching-paren t)
-
-  ;; Always highlight matching parens
-  (show-smartparens-global-mode +1)
-
-  ;; Create keybindings to wrap symbol/region in pairs
-  (defun prelude-wrap-with (s)
-    "Create a wrapper function for smartparens using S."
-    `(lambda (&optional arg)
-       (interactive "P")
-       (sp-wrap-with-pair ,s)))
-
-  (define-key prog-mode-map (kbd "M-(") (prelude-wrap-with "("))
-  (define-key prog-mode-map (kbd "M-[") (prelude-wrap-with "["))
-  (define-key prog-mode-map (kbd "M-{") (prelude-wrap-with "{"))
-  (define-key prog-mode-map (kbd "M-\"") (prelude-wrap-with "\""))
-  (define-key prog-mode-map (kbd "M-'") (prelude-wrap-with "'"))
-  (define-key prog-mode-map (kbd "M-`") (prelude-wrap-with "`"))
-
-  ;; smart curly braces
-  (sp-pair "{" nil :post-handlers
-           '(((lambda (&rest _ignored)
-                (crux-smart-open-line-above)) "RET")))
-  (sp-pair "[" nil :post-handlers
-           '(((lambda (&rest _ignored)
-                (crux-smart-open-line-above)) "RET")))
-  (sp-pair "(" nil :post-handlers
-           '(((lambda (&rest _ignored)
-                (crux-smart-open-line-above)) "RET")))
-
-  ;; use smartparens-mode everywhere
-  (smartparens-global-mode)
-  )
-
 (use-package clean-aindent-mode
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
