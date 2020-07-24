@@ -1290,10 +1290,14 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 	  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
 
+          ("j" "Personal Journal" entry (file+datetree "Journal.org")
+           "* %U\n\n%?\n" :kill-buffer t :empty-lines 1)
+
           ("t" "Todo" entry (file "TODO.org")
            "* TODO %?\n%U" :empty-lines 1)
-          ("s" "Songs" entry (file+headline "Songs.org" "Songs")
-           "* %^{Song: } %?\n")
+
+          ("s" "Songs" plain (file+headline "Songs.org" "Songs")
+           "%^{Song: } %?\n")
           )
         )
 
