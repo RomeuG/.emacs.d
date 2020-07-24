@@ -1178,6 +1178,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (org-ascii-publish-to-ascii a b c)
     (org-gfm-publish-to-gfm a b c))
 
+  (defun rg/date-sha256 ()
+      (secure-hash 'sha256 (format-time-string "%Y-%m-%d %H:%M"))
+    )
+
 
   (defvar root-dir "/home/romeu/Documents/Org/")
   (defvar my-org-dir root-dir)
@@ -1291,7 +1295,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
            "* %? %t" :empty-lines 1)
 
           ("j" "Personal Journal" entry (file+datetree "Journal.org")
-           "* %U\n\n%?\n" :kill-buffer t :empty-lines 1)
+           "* Entry %(rg/date-sha256) %T %^G\n\n%?\n" :kill-buffer t :empty-lines 1)
 
           ("t" "Todo" entry (file "TODO.org")
            "* TODO %?\n%U" :empty-lines 1)
