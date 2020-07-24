@@ -1179,7 +1179,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (org-gfm-publish-to-gfm a b c))
 
   (defun rg/date-sha256 ()
-      (secure-hash 'sha256 (format-time-string "%Y-%m-%d %H:%M"))
+      (secure-hash 'sha256 (format-time-string "%Y-%m-%d %a %H:%M"))
     )
 
 
