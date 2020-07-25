@@ -1179,7 +1179,17 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (org-gfm-publish-to-gfm a b c))
 
   (defun rg/date-sha256 ()
-      (secure-hash 'sha256 (format-time-string "%Y-%m-%d %a %H:%M"))
+    (secure-hash 'sha256 (format-time-string "%Y-%m-%d %a %H:%M"))
+    )
+
+  (defun rg/get-journal-file-month ()
+    (let ((monthly-name (format-time-string "%Y%m")))
+      (expand-file-name (concat my-org-journal-dir monthly-name ".org")))
+    )
+
+  (defun rg/get-journal-file-year ()
+    (let ((yearly-name (format-time-string "%Y")))
+      (expand-file-name (concat my-org-journal-dir yearly-name ".org")))
     )
 
 
@@ -1188,6 +1198,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (defvar my-org-publish-dir (concat root-dir "Publish/"))
   (defvar my-org-meta-dir (concat root-dir "Meta/"))
   (defvar my-org-archive-dir (concat my-org-meta-dir "Archive/"))
+  (defvar my-org-journal-dir (concat root-dir "Journal/"))
   (defvar my-org-diary-file (concat root-dir "Diary/Diary.org"))
 
   ;; directories
@@ -1294,7 +1305,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 	  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
 
-          ("j" "Personal Journal" entry (file+datetree "Journal.org")
+          ("j" "Personal Journal" entry (file+datetree rg/get-journal-file-year)
            "* Entry %(rg/date-sha256) %T %^G\n\n%?\n" :kill-buffer t :empty-lines 1)
 
           ("t" "Todo" entry (file "TODO.org")
