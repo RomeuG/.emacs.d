@@ -1642,6 +1642,9 @@ file which do not already have one."
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-count-format "(%d/%d) ")
+
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
   (global-set-key "\C-s" 'swiper)
@@ -1655,8 +1658,18 @@ file which do not already have one."
   (global-set-key (kbd "<f1> l") 'counsel-find-library)
   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+
+  (global-set-key (kbd "C-c F") 'counsel-org-file)
   (global-set-key (kbd "C-c k") 'counsel-rg)
   (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-c L") 'counsel-git-log)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c m") 'counsel-linux-app)
+  (global-set-key (kbd "C-c n") 'counsel-fzf)
+  (global-set-key (kbd "C-c J") 'counsel-file-jump)
+  (global-set-key (kbd "C-c t") 'counsel-load-theme)
+
+
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   )
 
