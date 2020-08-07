@@ -69,10 +69,6 @@
   (interactive)
   (other-window -1))
 
-(defun comment-auto-fill ()
-  (setq-local comment-auto-fill-only-comments t)
-  (auto-fill-mode 1))
-
 (defun my-minibuffer-setup-hook ()
   "GC BUFFER."
   (setq gc-cons-threshold most-positive-fixnum))
@@ -119,13 +115,6 @@
   (modify-frame-parameters frame
 			   '((vertical-scroll-bars . nil)
 			     (horizontal-scroll-bars . nil))))
-
-(defun bookmark-to-abbrevs ()
-  "Create abbrevs based on `bookmark-alist'."
-  (dolist (bookmark bookmark-alist)
-    (let* ((name (car bookmark))
-	   (file (bookmark-get-filename name)))
-      (define-abbrev global-abbrev-table name file))))
 
 (defun endless/flycheck-dir (dir)
   "Run flycheck for each file in current directory.
@@ -394,6 +383,22 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; bind-key for use-package
 (require 'bind-key)
 
+
+;; disable abbrev-mode
+(abbrev-mode -1)
+
+(remove-hook 'text-mode-hook #'abbrev-mode)
+(remove-hook 'c-mode-hook #'abbrev-mode)
+(remove-hook 'c++-mode-hook #'abbrev-mode)
+
+(add-hook 'text-mode-hook (lambda () (abbrev-mode -1)))
+(add-hook 'c-mode-hook (lambda () (abbrev-mode -1)))
+(add-hook 'c++-mode-hook (lambda () (abbrev-mode -1)))
+
+(add-hook 'text-mode-hook (lambda () (TeX-PDF-mode -1)))
+(add-hook 'c-mode-hook (lambda () (TeX-PDF-mode -1)))
+(add-hook 'c++-mode-hook (lambda () (TeX-PDF-mode -1)))
+
 (setq-default confirm-kill-emacs 'yes-or-no-p)
 (setq-default cursor-in-non-selected-windows t)
 (setq-default help-window-select t)
@@ -459,9 +464,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 ;; cursor type
 (setq-default cursor-type 'box)
-
-;; auto fill comments
-(add-hook 'prog-mode-hook 'comment-auto-fill)
 
 ;; quiet startup
 (setq inhibit-startup-screen t)
