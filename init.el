@@ -491,6 +491,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 ;; highlighting
 (global-font-lock-mode t)
+(setq font-lock-maximum-decoration t)
 
 ;; Paste with middle mouse button doesn't move the cursor
 (setq mouse-yank-at-point t)
@@ -1050,8 +1051,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :ensure
   :demand)
 
-(use-package lua-mode)
-
 (use-package uniquify
   :ensure nil
   :config
@@ -1298,14 +1297,18 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   ;; TODO: improve and add more templates
   (setq org-capture-templates
         '(
-	  ("c" "Code")
-	  ("ck" "Kotlin")
-	  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
-	   "* %? %t" :empty-lines 1)
+		  ("c" "Code")
 
-	  ("ckl" "Kotlin Libs")
-	  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
+		  ("ck" "Kotlin")
+		  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
+		   "* %? %t" :empty-lines 1)
+		  ("ckl" "Kotlin Libs")
+		  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
+
+		  ("cr" "Rust")
+		  ("crs" "Rust Snippets" entry (file+olp "Code.org" "Rust" "Snippets")
+		   "* %? %t" :empty-lines 1)
 
           ("j" "Personal Journal" entry (file+datetree rg/get-journal-file-year)
            "* Entry %(rg/date-sha256) %T %^G\n\n%?\n" :kill-buffer t :empty-lines 1)
@@ -1611,17 +1614,6 @@ file which do not already have one."
 
 (use-package ox-gfm)
 
-;; (use-package org-gcal
-;;   :after org
-;;   :config
-;;   (setq org-gcal-client-id "oauth 2.0 client ID"
-;; 		org-gcal-client-secret "client secret"
-;; 		org-gcal-file-alist '(("zamansky@gmail.com" .  "/home/romeu/Documents/Org/Agenda/romeubizz.org")))
-
-;;   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-;;   (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-;;   )
-
 (use-package popwin
   :init
   (customize-set-variable 'popwin:popup-window-height 0.5)
@@ -1674,15 +1666,15 @@ file which do not already have one."
   (company-dabbrev-ignore-case company-dabbrev-downcase)
   :init (global-company-mode)
   :custom
-  (company-idle-delay 0.1)
-  (company-echo-delay 0.1)
+  (company-idle-delay 0)
+  (company-echo-delay 0)
   (company-minimum-prefix-length 1)
   (company-tooltip-align-annotations t)
   :config
   (defun indent-or-complete ()
     (interactive)
     (if (looking-at "\\_>")
-	(company-complete-common)
+		(company-complete-common)
       (indent-according-to-mode)))
 
   (delete 'company-dabbrev company-backends)
@@ -1697,78 +1689,6 @@ file which do not already have one."
   ;; deactivate auto complete selection
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
-
-  ;; Show quick tooltip
-  (use-package company-quickhelp
-    :defines company-quickhelp-delay
-    :bind (:map company-active-map
-  		("M-h" . company-quickhelp-manual-begin))
-    :hook (global-company-mode . company-quickhelp-mode)
-    :custom (company-quickhelp-delay 0.8))
-  )
-
-(use-package lsp-mode
-  :commands lsp
-  :custom
-  ;; debug
-  (lsp-print-io nil)
-  (lsp-trace nil)
-  (lsp-print-performance nil)
-  ;; general
-  (lsp-auto-guess-root t)
-  (lsp-prefer-flymake nil)
-  ;; snippet
-  (lsp-enable-snippet nil)
-  ;; force disable highlight
-  (lsp-enable-semantic-highlighting nil)
-  (lsp-diagnostic-package :none)
-  :hook
-  (c-mode-hook . lsp)
-  (c++-mode-hook . lsp)
-  (typescript-mode-hook . lsp)
-  (python-mode-hook . lsp)
-  ;; :config
-  ;; (use-package lsp-ui
-  ;;   :custom
-  ;;   ;; lsp-ui-doc
-  ;;   (lsp-ui-doc-enable nil)
-  ;;   (lsp-ui-doc-header t)
-  ;;   ;; lsp-ui-flycheck
-  ;;   (lsp-ui-flycheck-enable t)
-  ;;   ;; lsp-ui-sideline
-  ;;   (lsp-ui-sideline-enable nil)
-  ;;   (lsp-ui-sideline-ignore-duplicate t)
-  ;;   (lsp-ui-sideline-show-symbol t)
-  ;;   (lsp-ui-sideline-show-hover t)
-  ;;   (lsp-ui-sideline-show-diagnostics nil)
-  ;;   (lsp-ui-sideline-show-code-actions t)
-  ;;   (lsp-ui-sideline-code-actions-prefix "")
-  ;;   ;; lsp-ui-imenu
-  ;;   (lsp-ui-imenu-enable t)
-  ;;   (lsp-ui-imenu-kind-position 'top)
-  ;;   ;; lsp-ui-peek
-  ;;   (lsp-ui-peek-enable t)
-  ;;   (lsp-ui-peek-peek-height 20)
-  ;;   (lsp-ui-peek-list-width 50)
-  ;;   (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
-  ;;   :preface
-  ;;   (defun ladicle/toggle-lsp-ui-doc ()
-  ;;     (interactive)
-  ;;     (if lsp-ui-doc-mode
-  ;;         (progn
-  ;;           (lsp-ui-doc-mode -1)
-  ;;           (lsp-ui-doc--hide-frame))
-  ;;       (lsp-ui-doc-mode 1)))
-  ;;   :bind
-  ;;   (:map lsp-mode-map
-  ;;         ;; ("C-c C-r" . lsp-ui-peek-find-references)
-  ;;         ;; ("C-c C-j" . lsp-ui-peek-find-definitions)
-  ;;         ;; ("C-c i"   . lsp-ui-peek-find-implementation)
-  ;;         ;; ("C-c m"   . lsp-ui-imenu)
-  ;;         ("C-c s"   . lsp-ui-sideline-mode)
-  ;;         ("C-c d"   . ladicle/toggle-lsp-ui-doc))
-  ;;   :hook
-  ;;   (lsp-mode . lsp-ui-mode))
   )
 
 (use-package eldoc
