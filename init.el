@@ -1642,69 +1642,31 @@ file which do not already have one."
 
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-(use-package helm
+(use-package counsel)
+
+(use-package ivy
   :defer 0
-  :diminish helm-ff-cache-mode
   :config
-
-  (require 'helm-config)
-
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-unset-key (kbd "C-x c"))
-
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-  (global-set-key (kbd "C-x b") 'helm-mini)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (global-set-key (kbd "C-c h o") 'helm-occur)
-
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
-  (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t))
-
-  (when (executable-find "ack")
-    (setq helm-grep-default-command "ack -Hn --no-group --no-color %e %p %f"
-          helm-grep-default-recurse-command "ack -H --no-group --no-color %e %p %f"))
-
-  (setq helm-autoresize-max-height 0)
-  (setq helm-autoresize-min-height 30)
-
-  (setq helm-M-x-fuzzy-match                  t
-        helm-semantic-fuzzy-match             t
-        helm-imenu-fuzzy-match                t
-        helm-buffer-fuzzy-matching            t
-        helm-recentf-fuzzy-match              nil
-        helm-split-window-in-side-p           t
-        helm-move-to-line-cycle-in-source     t
-        helm-ff-search-library-in-sexp        t
-        helm-scroll-amount                    8
-        helm-ff-file-name-history-use-recentf nil
-        helm-move-to-line-cycle-in-source     t
-        helm-autoresize-mode                  t
-	helm-ff-auto-update-initial-value     nil
-        )
-
-  (customize-set-variable 'helm-apropos-function-list
-			  '(helm-def-source--emacs-commands
-			    helm-def-source--emacs-functions
-			    helm-def-source--emacs-variables
-			    helm-def-source--emacs-faces))
-
-  (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
-
-  ;; recover old keybinds
-  (define-key helm-map (kbd "<left>") 'helm-previous-source)
-  (define-key helm-map (kbd "<right>") 'helm-next-source)
-
-  (customize-set-variable 'helm-ff-lynx-style-map t)
-  (customize-set-variable 'helm-imenu-lynx-style-map t)
-  (customize-set-variable 'helm-semantic-lynx-style-map t)
-  (customize-set-variable 'helm-occur-use-ioccur-style-keys t)
-
-  (helm-mode 1))
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; enable this if you want `swiper' to use it
+  ;; (setq search-default-mode #'char-fold-to-regexp)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c k") 'counsel-rg)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  )
 
 (use-package company
   :diminish company-mode
