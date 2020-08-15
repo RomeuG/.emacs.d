@@ -1086,7 +1086,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (defun magit-quick-commit ()
     (interactive)
     (magit-stage-modified)
-    (magit-commit)))
+    (magit-commit))
+  )
 
 (use-package git-commit
   :after magit
@@ -1106,13 +1107,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq git-commit-style-convention-checks
         '(non-empty-second-line
           overlong-summary-line)))
-
-(use-package magit-diff
-  :after magit
-  :ensure nil
-  :defer
-  :config
-  (setq magit-diff-refine-hunk t))
 
 (use-package magit-repos
   :after magit
@@ -1632,7 +1626,8 @@ file which do not already have one."
   (diff-hl-margin-mode)
   (global-diff-hl-mode 1)
 
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  )
 
 (use-package counsel)
 
