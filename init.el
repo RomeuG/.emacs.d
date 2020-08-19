@@ -1705,6 +1705,70 @@ file which do not already have one."
   (define-key company-active-map (kbd "RET") nil)
   )
 
+(use-package lsp-mode
+  :commands lsp
+  :custom
+  ;; debug
+  (lsp-print-io nil)
+  (lsp-trace nil)
+  (lsp-print-performance nil)
+  ;; general
+  (lsp-auto-guess-root t)
+  (lsp-prefer-flymake nil)
+  ;; snippet
+  (lsp-enable-snippet nil)
+  ;; force disable highlight
+  (lsp-enable-semantic-highlighting nil)
+  (lsp-diagnostic-package :none)
+  :hook
+  (c-mode-hook . lsp)
+  (c++-mode-hook . lsp)
+  (typescript-mode-hook . lsp)
+  (python-mode-hook . lsp)
+  ;; :config
+  ;; (use-package lsp-ui
+  ;;   :custom
+  ;;   ;; lsp-ui-doc
+  ;;   (lsp-ui-doc-enable nil)
+  ;;   (lsp-ui-doc-header t)
+  ;;   ;; lsp-ui-flycheck
+  ;;   (lsp-ui-flycheck-enable t)
+  ;;   ;; lsp-ui-sideline
+  ;;   (lsp-ui-sideline-enable nil)
+  ;;   (lsp-ui-sideline-ignore-duplicate t)
+  ;;   (lsp-ui-sideline-show-symbol t)
+  ;;   (lsp-ui-sideline-show-hover t)
+  ;;   (lsp-ui-sideline-show-diagnostics nil)
+  ;;   (lsp-ui-sideline-show-code-actions t)
+  ;;   (lsp-ui-sideline-code-actions-prefix "")
+  ;;   ;; lsp-ui-imenu
+  ;;   (lsp-ui-imenu-enable t)
+  ;;   (lsp-ui-imenu-kind-position 'top)
+  ;;   ;; lsp-ui-peek
+  ;;   (lsp-ui-peek-enable t)
+  ;;   (lsp-ui-peek-peek-height 20)
+  ;;   (lsp-ui-peek-list-width 50)
+  ;;   (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+  ;;   :preface
+  ;;   (defun ladicle/toggle-lsp-ui-doc ()
+  ;;     (interactive)
+  ;;     (if lsp-ui-doc-mode
+  ;;         (progn
+  ;;           (lsp-ui-doc-mode -1)
+  ;;           (lsp-ui-doc--hide-frame))
+  ;;       (lsp-ui-doc-mode 1)))
+  ;;   :bind
+  ;;   (:map lsp-mode-map
+  ;;         ;; ("C-c C-r" . lsp-ui-peek-find-references)
+  ;;         ;; ("C-c C-j" . lsp-ui-peek-find-definitions)
+  ;;         ;; ("C-c i"   . lsp-ui-peek-find-implementation)
+  ;;         ;; ("C-c m"   . lsp-ui-imenu)
+  ;;         ("C-c s"   . lsp-ui-sideline-mode)
+  ;;         ("C-c d"   . ladicle/toggle-lsp-ui-doc))
+  ;;   :hook
+  ;;   (lsp-mode . lsp-ui-mode))
+  )
+
 (use-package eldoc
   :ensure nil
   :config (global-eldoc-mode -1))
