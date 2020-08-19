@@ -652,6 +652,12 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (fringe-mode '(nil . 0))
 (set-fringe-mode fringe-mode)
 
+;; modeline
+(setq-default mode-line-buffer-identification
+              (let ((orig  (car mode-line-buffer-identification)))
+                `(:eval (cons (concat ,orig (abbreviate-file-name default-directory))
+                              (cdr mode-line-buffer-identification)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
