@@ -12,12 +12,13 @@
 	    (setq file-name-handler-alist my--file-name-handler-alist)))
 
 ;; Window System
-(unless (display-graphic-p)
+;; (unless (display-graphic-p)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+  (toggle-scroll-bar -1)
   (blink-cursor-mode 1)
-  )
+ ;; )
 
 (setq gnutls-min-prime-bits 1024)
 (setq gnutls-algorithm-priority "SECURE128:-VERS-SSL3.0:-VERS-TLS1.3")
@@ -369,6 +370,17 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     (when (boundp 'aw-ignored-buffers)
       (add-to-list 'aw-ignored-buffers "*Dired-Side*"))))
 
+(defun ap/garbage-collect ()
+  "Run `garbage-collect' and print stats about memory usage."
+  (interactive)
+  (message (cl-loop for (type size used free) in (garbage-collect)
+                    for used = (* used size)
+                    for free = (* (or free 0) size)
+                    for total = (file-size-human-readable (+ used free))
+                    for used = (file-size-human-readable used)
+                    for free = (file-size-human-readable free)
+                    concat (format "%s: %s + %s = %s\n" type used free total))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -535,8 +547,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (setq-default use-dialog-box nil)
 (setq-default visible-bell t)
 
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+;; (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+;; (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
 
 ;; backups
 (setq-default backup-directory-alist '(("." . "~/.config/emacs/backups")))
@@ -1031,27 +1043,14 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 	    (lambda ()
 	      (when (member major-mode '(c-mode c++-mode))
 		(progn
-		  (when (locate-dominating-file "." ".clang-format")
-		    (clang-format-buffer))
+		  (if (string= (file-name-extension (buffer-name)) "h")
+		      (message "Clang-format won’t work with this file format.")
+		    (when (locate-dominating-file "." ".clang-format")
+		      (clang-format-buffer))
+		    )
 		  ;; Return nil, to continue saving.
 		  nil))))
   )
-
-;; Use :defer to load steroids first
-(use-package visual-regexp
-  :defer
-  :bind
-  (("C-c r" . vr/replace)
-   ("C-c q" . vr/query-replace))
-  :config
-  (setq vr/default-replace-preview nil)
-  (setq vr/match-separator-use-custom-face t)
-  )
-
-;; hack to actually load this package
-(use-package visual-regexp-steroids
-  :ensure
-  :demand)
 
 (use-package uniquify
   :ensure nil
@@ -1068,12 +1067,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-
-(use-package multiple-cursors
-  :bind (("C-c m"   . mc/edit-lines)
-         ("C->"     . mc/mark-next-like-this)
-         ("C-<"     . mc/mark-previous-like-this)
-         ("C-c C-<" . mc/mark-all-like-this)))
 
 (use-package cmake-mode)
 
@@ -1327,9 +1320,21 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
    '((shell . t)
      (python . t)
      (ruby . t)
+     (latex . t)
      (perl . t)
      (emacs-lisp . t)
      (dot . t)))
+
+  ;; org latex
+  ;; (require 'ox-latex)
+  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; (setq org-latex-listings 'minted)
+    (setq org-latex-listings 'minted
+    org-latex-packages-alist '(("newfloat" "minted"))
+    org-latex-pdf-process
+    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
 
   ;; org crypt
   (require 'org-crypt)
@@ -1711,6 +1716,8 @@ file which do not already have one."
   ;; general
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
+  (lsp-completion-provider :capf)
+  (lsp-idle-delay 0.600)
   ;; snippet
   (lsp-enable-snippet nil)
   ;; force disable highlight
@@ -1721,48 +1728,6 @@ file which do not already have one."
   (c++-mode-hook . lsp)
   (typescript-mode-hook . lsp)
   (python-mode-hook . lsp)
-  ;; :config
-  ;; (use-package lsp-ui
-  ;;   :custom
-  ;;   ;; lsp-ui-doc
-  ;;   (lsp-ui-doc-enable nil)
-  ;;   (lsp-ui-doc-header t)
-  ;;   ;; lsp-ui-flycheck
-  ;;   (lsp-ui-flycheck-enable t)
-  ;;   ;; lsp-ui-sideline
-  ;;   (lsp-ui-sideline-enable nil)
-  ;;   (lsp-ui-sideline-ignore-duplicate t)
-  ;;   (lsp-ui-sideline-show-symbol t)
-  ;;   (lsp-ui-sideline-show-hover t)
-  ;;   (lsp-ui-sideline-show-diagnostics nil)
-  ;;   (lsp-ui-sideline-show-code-actions t)
-  ;;   (lsp-ui-sideline-code-actions-prefix "")
-  ;;   ;; lsp-ui-imenu
-  ;;   (lsp-ui-imenu-enable t)
-  ;;   (lsp-ui-imenu-kind-position 'top)
-  ;;   ;; lsp-ui-peek
-  ;;   (lsp-ui-peek-enable t)
-  ;;   (lsp-ui-peek-peek-height 20)
-  ;;   (lsp-ui-peek-list-width 50)
-  ;;   (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
-  ;;   :preface
-  ;;   (defun ladicle/toggle-lsp-ui-doc ()
-  ;;     (interactive)
-  ;;     (if lsp-ui-doc-mode
-  ;;         (progn
-  ;;           (lsp-ui-doc-mode -1)
-  ;;           (lsp-ui-doc--hide-frame))
-  ;;       (lsp-ui-doc-mode 1)))
-  ;;   :bind
-  ;;   (:map lsp-mode-map
-  ;;         ;; ("C-c C-r" . lsp-ui-peek-find-references)
-  ;;         ;; ("C-c C-j" . lsp-ui-peek-find-definitions)
-  ;;         ;; ("C-c i"   . lsp-ui-peek-find-implementation)
-  ;;         ;; ("C-c m"   . lsp-ui-imenu)
-  ;;         ("C-c s"   . lsp-ui-sideline-mode)
-  ;;         ("C-c d"   . ladicle/toggle-lsp-ui-doc))
-  ;;   :hook
-  ;;   (lsp-mode . lsp-ui-mode))
   )
 
 (use-package eldoc
@@ -1835,9 +1800,13 @@ file which do not already have one."
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   (add-hook 'LaTeX-mode-hook (lambda ()
 			       (push
-				'("LaTeXmk" "latexmk -pdf --synctex=1 -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
+				'("LaTeXmk" "latexmk -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
 				  :help "Run latexmk on file")
-				TeX-command-list)))
+				TeX-command-list)
+                               (push '("LuaLatex" "lualatex -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
+				  :help "Run lualatex on file")
+				TeX-command-list)
+                               ))
   )
 
 (put 'upcase-region 'disabled nil)
