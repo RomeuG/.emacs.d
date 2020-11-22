@@ -3,6 +3,8 @@
 ;; 	    (setq gc-cons-threshold 16777216 ; 16mb
 ;; 		  gc-cons-percentage 0.1)))
 
+(setq gc-cons-threshold 100000000) ; 100mb
+
 ;; file-name-handler-list optimization
 (defvar my--file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
@@ -843,72 +845,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (use-package window
   :ensure nil
   :init
-  (setq display-buffer-alist
-        '(;; top side window
-          ("\\*\\(Flycheck\\|Flymake\\|Package-Lint\\|vc-git :\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))
-          ("\\*Messages.*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 1)
-           (window-parameters . ((no-other-window . t))))
-          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . top)
-           (slot . 2)
-           (window-parameters . ((no-other-window . t))))
-          ;; bottom side window
-          ("\\*\\(Output\\|Register Preview\\).*"
-           (display-buffer-in-side-window)
-           (window-width . 0.16)       ; See the :hook
-           (side . bottom)
-           (slot . -1)
-           (window-parameters . ((no-other-window . t))))
-          (".*\\*\\(Completions\\|Embark Live Occur\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . bottom)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))
-          ("^\\(\\*e?shell\\|vterm\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . bottom)
-           (slot . 1))
-          ;; left side window
-          ("\\*Help.*"
-           (display-buffer-in-side-window)
-           (window-width . 0.20)       ; See the :hook
-           (side . left)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))
-          ;; right side window
-          ("\\*Faces\\*"
-           (display-buffer-in-side-window)
-           (window-width . 0.25)
-           (side . right)
-           (slot . 0)
-           (window-parameters
-            . ((no-other-window . t)
-               (mode-line-format
-                . (" "
-                   mode-line-buffer-identification)))))
-          ("\\*Custom.*"
-           (display-buffer-in-side-window)
-           (window-width . 0.25)
-           (side . right)
-           (slot . 1))
-          ;; bottom buffer (NOT side window)
-          ("\\*\\vc-\\(incoming\\|outgoing\\).*"
-           (display-buffer-at-bottom))
-          ("\\*Embark Occur.*"
-           (display-buffer-at-bottom))))
   (setq window-combination-resize t)
   (setq even-window-sizes 'height-only)
   (setq window-sides-vertical nil)
@@ -960,8 +896,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
     :ensure nil
     :defer
     :config
-    (setq calendar-latitude 35.17
-          calendar-longitude 33.36))
+    (setq calendar-latitude 40.641190
+          calendar-longitude -8.653620))
 
   (use-package lunar
     :ensure nil
@@ -1195,8 +1131,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-directory my-org-dir)
   (setq org-metadir my-org-meta-dir)
   (setq org-archive-location my-org-archive-dir)
-  (setq org-agenda-files (list "/home/romeu/Documents/Org/Agenda/local.org"
-			       "/home/romeu/Documents/Org/Agenda/todo.org"))
+  (setq org-agenda-files (list
+						  "/home/romeu/Documents/Org/Agenda/todo.org"
+						  "/home/romeu/Documents/Org/Agenda/work.org"
+                          ))
   (setq diary-file my-org-diary-file)
 
   ;; general configs
@@ -1215,6 +1153,10 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-return-follows-link nil)
   (setq org-loop-over-headlines-in-active-region 'start-level)
   (setq org-imenu-depth 7)
+
+  ;; selection
+  (setq org-fast-tag-selection-single-key t)
+  (setq org-use-fast-todo-selection t)
 
   ;; refile
   (setq org-refile-targets
@@ -1248,14 +1190,14 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-ellipsis " ▼ ")
   (setq org-hide-leading-stars t)
 
-  (setq org-pretty-entities 1)
+  (setq org-pretty-entities t)
   (setq org-pretty-entities-include-sub-superscripts nil)
 
   (setq org-descriptive-links nil)
 
-  (setq org-fontify-done-headline nil)
+  (setq org-fontify-done-headline t)
   (setq org-fontify-quote-and-verse-blocks t)
-  (setq org-fontify-whole-heading-line nil)
+  (setq org-fontify-whole-heading-line t)
   (setq org-fontify-whole-block-delimiter-line t)
 
   (setq org-track-ordered-property-with-tag t)
@@ -1288,15 +1230,19 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
         '(
 		  ("c" "Code")
 
+		  ("cc" "Cpp")
+		  ("ccs" "Cpp Snippets" entry (file+olp "Code/Cpp.org" "Cpp" "Snippets")
+		   "* %? %t" :empty-lines 1)
+
 		  ("ck" "Kotlin")
-		  ("cks" "Kotlin Snippets" entry (file+olp "Code.org" "Kotlin" "Snippets")
+		  ("cks" "Kotlin Snippets" entry (file+olp "Code/Kotlin.org" "Kotlin" "Snippets")
 		   "* %? %t" :empty-lines 1)
 		  ("ckl" "Kotlin Libs")
-		  ("ckln" "Kotlin Native" entry (file+headline "Code.org" "Kotlin Native")
+		  ("ckln" "Kotlin Native" entry (file+headline "Code/Kotlin.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
 
 		  ("cr" "Rust")
-		  ("crs" "Rust Snippets" entry (file+olp "Code.org" "Rust" "Snippets")
+		  ("crs" "Rust Snippets" entry (file+olp "Code/Rust.org" "Rust" "Snippets")
 		   "* %? %t" :empty-lines 1)
 
           ("j" "Personal Journal" entry (file+datetree rg/get-journal-file-year)
@@ -1611,7 +1557,10 @@ file which do not already have one."
   (setq org-export-headline-levels 8)
   (setq org-export-backends
         '(ascii html latex md))
-  (setq org-export-dispatch-use-expert-ui nil))
+  (setq org-export-dispatch-use-expert-ui nil)
+
+  (setq org-html-validation-link nil)
+  )
 
 (use-package ox-gfm)
 
@@ -1621,6 +1570,7 @@ file which do not already have one."
   :config
   (popwin-mode 1)
   (setq display-buffer-function 'popwin:display-buffer)
+  ;; (push '("*anything*") popwin:special-display-config)
   )
 
 (use-package diff-hl
@@ -1693,6 +1643,10 @@ file which do not already have one."
       (indent-according-to-mode)))
 
   (delete 'company-dabbrev company-backends)
+  (delete 'company-oddmuse company-backends)
+  (delete 'company-clang company-backends)
+  (delete 'company-bbdb company-backends)
+  (delete 'company-files company-backends)
   (delete '(company-dabbrev-code company-gtags company-etags company-keywords) company-backends)
 
   (setq company-require-match nil)
@@ -1713,22 +1667,38 @@ file which do not already have one."
   (lsp-print-io nil)
   (lsp-trace nil)
   (lsp-print-performance nil)
+  (lsp-log-io nil)
+  ;; workspace
+  (lsp-keep-workspace-alive nil)
   ;; general
+  (lsp-enable-file-watchers nil)
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
   (lsp-completion-provider :capf)
   (lsp-idle-delay 0.600)
+  (lsp-enable-imenu t)
   ;; snippet
   (lsp-enable-snippet nil)
   ;; force disable highlight
   (lsp-enable-semantic-highlighting nil)
   (lsp-diagnostic-package :none)
+  ;; other disables
+  (lsp-modeline-code-actions-mode nil)
+  (lsp-diagnostics-provider :none)
+  (lsp-eldoc-enable-hover t)
+  (lsp-eldoc-render-all nil)
+  (lsp-modeline-diagnostics-enable nil)
   :hook
   (c-mode-hook . lsp)
   (c++-mode-hook . lsp)
   (typescript-mode-hook . lsp)
   (python-mode-hook . lsp)
   )
+
+;; (use-package eglot
+;;   :config
+;;   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+;;   )
 
 (use-package eldoc
   :ensure nil
