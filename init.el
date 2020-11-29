@@ -401,6 +401,15 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (remove-hook 'c-mode-hook #'abbrev-mode)
 (remove-hook 'c++-mode-hook #'abbrev-mode)
 
+;; don’t warn for large file
+(setq large-file-warning-threshold nil)
+
+;; don’t warn for symlink
+(setq vc-follow-symlinks t)
+
+;; Don’t warn when advice is added for functions
+(setq ad-redefinition-action 'accept)
+
 (add-hook 'text-mode-hook (lambda () (abbrev-mode -1)))
 (add-hook 'c-mode-hook (lambda () (abbrev-mode -1)))
 (add-hook 'c++-mode-hook (lambda () (abbrev-mode -1)))
@@ -1132,8 +1141,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-metadir my-org-meta-dir)
   (setq org-archive-location my-org-archive-dir)
   (setq org-agenda-files (list
-						  "/home/romeu/Documents/Org/Agenda/todo.org"
-						  "/home/romeu/Documents/Org/Agenda/work.org"
+			  "/home/romeu/Documents/Org/Agenda/todo.org"
+			  "/home/romeu/Documents/Org/Agenda/work.org"
+			  "/home/romeu/Documents/Org/Agenda/birthdays.org"
                           ))
   (setq diary-file my-org-diary-file)
 
@@ -1171,9 +1181,73 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (setq org-enforce-todo-checkbox-dependencies t)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WORKING(w)" "|" "DONE(D)" "CANCEL(C)")
+        '((sequence "TODO(t)" "NEXT(n!)" "INPROGRESS(p!)" "WAITING(w!)" "|" "DONE(D)" "CANCELED(C)")
+          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")
           (sequence "MEET(m)" "|" "MET(M)")
           (sequence "STUDY(s)" "|" "STUDIED(S)")))
+
+  ;; Configure custom agenda views
+  (setq org-agenda-custom-commands
+        '(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "PROC" ((org-agenda-overriding-header "Process Tasks")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))
+            (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+          ;; (todo "TODO"
+          ;;   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+          ;;    (org-agenda-files `(,dw/org-inbox-path))
+          ;;    (org-agenda-text-search-extra-files nil)))))
+
+          ("n" "Next Tasks"
+           ((todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ("p" "Active Projects"
+           ((agenda "")
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-max-todos 5)
+                   (org-agenda-files org-agenda-files)))))
+
+          ("w" "Workflow Status"
+           ((todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting on External")
+                   (org-agenda-files org-agenda-files)))
+            (todo "REVIEW"
+                  ((org-agenda-overriding-header "In Review")
+                   (org-agenda-files org-agenda-files)))
+            (todo "PLAN"
+                  ((org-agenda-overriding-header "In Planning")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "BACKLOG"
+                  ((org-agenda-overriding-header "Project Backlog")
+                   (org-agenda-todo-list-sublevels nil)
+                   (org-agenda-files org-agenda-files)))
+            (todo "READY"
+                  ((org-agenda-overriding-header "Ready for Work")
+                   (org-agenda-files org-agenda-files)))
+            (todo "ACTIVE"
+                  ((org-agenda-overriding-header "Active Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "COMPLETED"
+                  ((org-agenda-overriding-header "Completed Projects")
+                   (org-agenda-files org-agenda-files)))
+            (todo "CANC"
+                  ((org-agenda-overriding-header "Cancelled Projects")
+                   (org-agenda-files org-agenda-files)))))
+
+          ;; Projects on hold
+          ("h" tags-todo "+LEVEL=2/+HOLD"
+           ((org-agenda-overriding-header "On-hold Projects")
+            (org-agenda-files org-agenda-files)))
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))))
 
   (setq org-todo-keyword-faces
         '(
@@ -1186,6 +1260,23 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
           ("COLLECT"   . (:foreground "MediumSeaGreen"   :weight bold))
           ("SOLVE"     . (:foreground "orange red"    :weight bold))
           ))
+
+  ;; Configure common tags
+  (setq org-tag-alist
+        '((:startgroup)
+          ;; Put mutually exclusive tags here
+          (:endgroup)
+          ("@errand" . ?E)
+          ("@home" . ?H)
+          ("@work" . ?W)
+          ("agenda" . ?a)
+          ("planning" . ?p)
+          ("publish" . ?P)
+          ("batch" . ?b)
+          ("note" . ?n)
+          ("idea" . ?i)
+          ("thinking" . ?t)
+          ("recurring" . ?r)))
 
   (setq org-ellipsis " ▼ ")
   (setq org-hide-leading-stars t)
@@ -1214,6 +1305,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
   ;; log
   (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
   (setq org-log-note-clock-out nil)
   (setq org-log-redeadline nil)
   (setq org-log-reschedule nil)
@@ -1469,6 +1561,7 @@ produces dates with a fixed length."
   (setq org-agenda-log-mode-add-notes t)
   (setq org-agenda-start-with-log-mode nil)
   (setq org-agenda-start-with-clockreport-mode nil)
+
   (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2))
   (setq org-agenda-search-view-always-boolean nil)
   (setq org-agenda-search-view-force-full-words nil)
@@ -1593,17 +1686,26 @@ file which do not already have one."
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
+  (setq ivy-wrap t)
   (setq enable-recursive-minibuffers t)
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-count-format "(%d/%d) ")
+
+  ;; fuzzy matching
+  (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
+                                (t . ivy--regex-fuzzy)))
 
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
   (global-set-key "\C-s" 'swiper)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume)
+
   (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x b") 'counsel-ibuffer)
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "C-M-l") 'counsel-imenu)
+
   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
   (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
@@ -1620,7 +1722,6 @@ file which do not already have one."
   (global-set-key (kbd "C-c n") 'counsel-fzf)
   (global-set-key (kbd "C-c J") 'counsel-file-jump)
   (global-set-key (kbd "C-c t") 'counsel-load-theme)
-
 
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   )
@@ -1728,7 +1829,9 @@ file which do not already have one."
 (use-package csv-mode)
 
 (use-package avy
-  :bind ("M-s" . avy-goto-char))
+  :bind
+  ("M-s" . avy-goto-char)
+  )
 
 (use-package rg
   :ensure
