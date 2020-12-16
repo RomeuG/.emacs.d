@@ -393,7 +393,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; bind-key for use-package
 (require 'bind-key)
 
-
 ;; disable abbrev-mode
 (abbrev-mode -1)
 
@@ -431,6 +430,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (add-hook 'focus-out-hook #'garbage-collect)
 
 (setq use-file-dialog nil)
+
+;; set fill columns
+(setq fill-column 80)
 
 ;; always left-to-right text
 (setq-default bidi-paragraph-direction 'left-to-right)
@@ -952,12 +954,12 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :config
   (projectile-mode +1))
 
-(use-package gruvbox-theme
-  :defer 0
-  :config
-  (load-theme 'gruvbox-dark-hard)
-  (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
-  )
+;; (use-package gruvbox-theme
+;;   :defer 0
+;;   :config
+;;   (load-theme 'gruvbox-dark-hard)
+;;   (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
+;;   )
 
 (use-package so-long
   :config
@@ -1094,8 +1096,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   (defun my-org-mode-hook ()
     (my-maybe-lob-ingest)
     (turn-on-auto-fill)
-    (org-indent-mode 1)
-    (setq fill-column 80))
+    (org-indent-mode 1))
 
   (defun my-chromium (ppl)
     (start-process "fox" nil "open" "-a"
