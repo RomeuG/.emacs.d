@@ -1784,59 +1784,65 @@ file which do not already have one."
   ;; workspace
   (lsp-keep-workspace-alive nil)
   ;; general
-  (lsp-enable-file-watchers nil)
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
+
   (lsp-completion-provider :capf)
-  (lsp-idle-delay 0.600)
+  (lsp-prefer-capf t)
+
+  (lsp-idle-delay 0.500)
   (lsp-enable-imenu t)
   ;; snippet
   (lsp-enable-snippet nil)
-  ;; force disable highlight
-  (lsp-enable-semantic-highlighting nil)
   (lsp-diagnostic-package :none)
   ;; other disables
-  (lsp-modeline-code-actions-mode nil)
+  (lsp--display-inline-image nil)
+  (lsp-enable-on-type-formatting nil)
+  (lsp-enable-text-document-color nil)
+  (lsp-headerline-breadcrumb-enable nil)
   (lsp-diagnostics-provider :none)
   (lsp-eldoc-enable-hover t)
   (lsp-eldoc-render-all nil)
   (lsp-modeline-diagnostics-enable nil)
+
+  ;; other
+  (lsp-signature-auto-activate nil)
+
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
+  (lsp-modeline-workspace-status-enable nil)
+  (lsp-modeline-code-actions-mode nil)
+
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding nil)
+  (lsp-enable-symbol-highlighting nil)
+  (lsp-enable-text-document-color nil)
+
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil)
+
+  ;; rust specific stuff
+  (lsp-rust-analyzer-server-display-inlay-hints nil)
+  (lsp-rust-analyzer-cargo-watch-enable nil)
+  (lsp-rust-analyzer-cargo-all-targets nil)
+  (lsp-rust-analyzer-use-client-watching nil)
+  (lsp-rust-analyzer-diagnostics-enable nil)
+  (lsp-rust-analyzer-diagnostics-enable-experimental nil)
+  (lsp-rust-analyzer-completion-add-call-parenthesis nil)
+  (lsp-rust-analyzer-completion-add-call-argument-snippets nil)
+  (lsp-rust-analyzer-completion-postfix-enable nil)
+
   :hook
   (c-mode-hook . lsp)
   (c++-mode-hook . lsp)
   (typescript-mode-hook . lsp)
   (python-mode-hook . lsp)
+  (rust-mode-hook . lsp)
   )
-
-;; (use-package eglot
-;;   :config
-;;   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-;;   )
 
 (use-package eldoc
   :ensure nil
   :config (global-eldoc-mode -1))
-
-(use-package iedit
-  :preface
-  (defun iedit-dwim (arg)
-    "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
-    (interactive "P")
-    (if arg
-	(iedit-mode)
-      (save-excursion
-	(save-restriction
-	  (widen)
-	  ;; this function determines the scope of `iedit-start'.
-	  (if iedit-mode
-	      (iedit-done)
-	    ;; `current-word' can of course be replaced by other
-	    ;; functions.
-	    (narrow-to-defun)
-	    (iedit-start (current-word) (point-min) (point-max)))))))
-  :config
-  (global-set-key (kbd "C-;") 'iedit-dwim)
-  )
 
 (use-package csv-mode)
 
