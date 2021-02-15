@@ -694,6 +694,12 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package multiple-cursors
+  :bind (("C-c m"   . mc/edit-lines)
+         ("C->"     . mc/mark-next-like-this)
+         ("C-<"     . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
+
 (use-package paren
   :config
   (setq show-paren-style 'parenthesis)
