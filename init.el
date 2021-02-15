@@ -440,7 +440,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (setq use-file-dialog nil)
 
 ;; set fill columns
-(setq fill-column 80)
+(setq-default fill-column 80)
 
 ;; always left-to-right text
 (setq-default bidi-paragraph-direction 'left-to-right)
