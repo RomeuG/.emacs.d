@@ -3,7 +3,7 @@
 ;; 	    (setq gc-cons-threshold 16777216 ; 16mb
 ;; 		  gc-cons-percentage 0.1)))
 
-(setq gc-cons-threshold 100000000) ; 100mb
+(setq gc-cons-threshold 60000000) ; 100mb
 
 ;; file-name-handler-list optimization
 (defvar my--file-name-handler-alist file-name-handler-alist)
@@ -681,6 +681,8 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (global-set-key (kbd "M-N") #'next-error)
 (global-set-key (kbd "M-P") #'previous-error)
 
+;; (fringe-mode '(nil . 0))
+;; (set-fringe-mode 0)
 (fringe-mode '(nil . 0))
 (set-fringe-mode fringe-mode)
 
@@ -971,22 +973,16 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :config
   (projectile-mode +1))
 
-;; (use-package gruvbox-theme
-;;   :defer 0
-;;   :config
-;;   (load-theme 'gruvbox-dark-hard)
-;;   (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
-;;   )
+(use-package gruvbox-theme
+  :defer 0
+  :config
+  (load-theme 'gruvbox-dark-hard)
+  (set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
+  )
 
 (use-package so-long
   :config
   (global-so-long-mode))
-
-(use-package move-text
-  :defer 0
-  :config
-  (move-text-default-bindings)
-  )
 
 (use-package cc-mode
   :config
@@ -1032,7 +1028,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(use-package cmake-mode)
+;; (use-package cmake-mode)
 
 (use-package magit
   :diminish magit-auto-revert-mode
@@ -1078,16 +1074,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package git-timemachine
   :bind ("M-g t" . git-timemachine-toggle))
-
-(use-package diffview
-  :commands (diffview-region diffview-current)
-  :preface
-  (defun rg/diffview-dwim ()
-    (interactive)
-    (if (region-active-p)
-        (diffview-region)
-      (diffview-current)))
-  :bind ("M-g v" . rg/diffview-dwim))
 
 (use-package px)
 
@@ -1706,12 +1692,12 @@ file which do not already have one."
   (setq ivy-use-virtual-buffers t)
   (setq ivy-wrap t)
   (setq enable-recursive-minibuffers t)
-  (setq ivy-initial-inputs-alist nil)
+  ;; (setq ivy-initial-inputs-alist nil)
   (setq ivy-count-format "(%d/%d) ")
 
-  ;; fuzzy matching
-  (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
-                                (t . ivy--regex-fuzzy)))
+  ;; ;; fuzzy matching
+  ;; (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
+  ;;                               (t . ivy--regex-fuzzy)))
 
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
