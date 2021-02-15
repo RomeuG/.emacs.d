@@ -383,6 +383,14 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
                     for free = (file-size-human-readable free)
                     concat (format "%s: %s + %s = %s\n" type used free total))))
 
+(defun desperately-compile ()
+  "Traveling up the path, find a Makefile and `compile'."
+  (interactive)
+  (when (locate-dominating-file default-directory "Makefile")
+  (with-temp-buffer
+    (cd (locate-dominating-file default-directory "Makefile"))
+    (compile "make -k"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -476,6 +484,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (global-unset-key (kbd "C-z"))
 (global-unset-key (kbd "C-x C-z"))
 (global-unset-key (kbd "C-h h"))
+
+;; compile
+(global-set-key [f5] 'desperately-compile)
 
 ;; text marking
 (delete-selection-mode t)
