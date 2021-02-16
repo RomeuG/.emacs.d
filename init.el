@@ -958,8 +958,15 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 ;; Hungry deletion
 (use-package hungry-delete
   :diminish
-  :hook (after-init-hook . global-hungry-delete-mode)
-  :config (setq-default hungry-delete-chars-to-skip " \t\f\v"))
+  :hook
+  (c-mode-hook . hungry-delete-mode)
+  (c++-mode-hook . hungry-delete-mode)
+  (typescript-mode-hook . hungry-delete-mode)
+  (python-mode-hook . hungry-delete-mode)
+  (rust-mode-hook . hungry-delete-mode)
+  :config
+  (setq-default hungry-delete-chars-to-skip " \t\f\v")
+  )
 
 ;; Remember location in file
 (use-package saveplace
@@ -1798,8 +1805,6 @@ file which do not already have one."
   (lsp-modeline-diagnostics-enable nil)
 
   ;; other
-  (lsp-signature-auto-activate nil)
-
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-workspace-status-enable nil)
