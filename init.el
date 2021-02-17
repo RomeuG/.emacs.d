@@ -1178,6 +1178,7 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   ;; selection
   (setq org-fast-tag-selection-single-key t)
   (setq org-use-fast-todo-selection t)
+  (setq org-support-shift-select 'always)
 
   ;; refile
   (setq org-refile-targets
