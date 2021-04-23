@@ -1,8 +1,3 @@
-;; (add-hook 'emacs-startup-hook
-;; 	  (lambda ()
-;; 	    (setq gc-cons-threshold 16777216 ; 16mb
-;; 		  gc-cons-percentage 0.1)))
-
 (setq gc-cons-threshold 60000000) ; 100mb
 
 ;; file-name-handler-list optimization
@@ -15,12 +10,12 @@
 
 ;; Window System
 ;; (unless (display-graphic-p)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-  (toggle-scroll-bar -1)
-  (blink-cursor-mode 1)
- ;; )
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(toggle-scroll-bar -1)
+(blink-cursor-mode 1)
+;; )
 
 (setq gnutls-min-prime-bits 1024)
 (setq gnutls-algorithm-priority "SECURE128:-VERS-SSL3.0:-VERS-TLS1.3")
@@ -40,6 +35,10 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+;; load theme earlier because of off-emacs org-mode conversion
+(load-theme 'gruvbox-dark-hard t)
+(set-face-attribute 'mode-line nil :background "#1d2021" :foreground "#fbf1c7" :box "#fe8019")
 
 ;; Configure `use-package' prior to loading it.
 (eval-and-compile
@@ -387,13 +386,30 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   "Traveling up the path, find a Makefile and `compile'."
   (interactive)
   (when (locate-dominating-file default-directory "Makefile")
-  (with-temp-buffer
-    (cd (locate-dominating-file default-directory "Makefile"))
-    (compile "make -k"))))
+    (with-temp-buffer
+      (cd (locate-dominating-file default-directory "Makefile"))
+      (compile "make -k"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CONFIGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; terminal bindings
+(unless (display-graphic-p)
+  (progn
+    (define-key input-decode-map "\e[1;2A" [(shift up)])
+    (define-key input-decode-map "\e[1;2B" [(shift down)])
+    (define-key input-decode-map "\e[1;2C" [(shift right)])
+    (define-key input-decode-map "\e[1;2D" [(shift left)])
+    (define-key input-decode-map "\e[1;3A" [(alt up)])
+    (define-key input-decode-map "\e[1;3B" [(alt down)])
+    (define-key input-decode-map "\e[1;3C" [(alt right)])
+    (define-key input-decode-map "\e[1;3D" [(alt left)])
+    (define-key input-decode-map "\e[1;5A" [(control up)])
+    (define-key input-decode-map "\e[1;5B" [(control down)])
+    (define-key input-decode-map "\e[1;5C" [(control right)])
+    (define-key input-decode-map "\e[1;5D" [(control left)])
+    ))
 
 ;; load early
 (require 'tramp)
@@ -553,9 +569,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 (setq-default inhibit-compacting-font-caches t)
 
 (cond ((string-equal system-type "gnu/linux")
-       (setq-default default-font-family "Fira Code Retina")
-       (set-frame-font "Fira Code Retina-11")
-       (setq-default default-frame-alist '((font . "Fira Code Retina-11")
+       (setq-default default-font-family "Sarasa Term K")
+       (set-frame-font "Sarasa Term K-12")
+       (setq-default default-frame-alist '((font . "Sarasa Term K-12")
 					   (height . 75)))
        )
       )
@@ -702,6 +718,22 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
          ("C-<"     . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
+
+(use-package hungry-delete
+  :diminish
+  :config
+  (setq hungry-delete-chars-to-skip " \t\r\f\v")
+
+  (defun rvg/hungry-delete-off ()
+    (hungry-delete-mode -1))
+
+  ;; hungry delete mode doesnt play well with multiple cursors...
+  (add-hook 'multiple-cursors-mode-enabled-hook #'rvg/hungry-delete-off)
+  (add-hook 'multiple-cursors-mode-disabled-hook #'rvg/hungry-delete-off)
+
+  (global-hungry-delete-mode)
+  )
+
 (use-package paren
   :config
   (setq show-paren-style 'parenthesis)
@@ -733,32 +765,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
                              (electric-pair-mode 1)
                              (electric-quote-mode 1)))
   )
-
-(use-package time
-  :defer 10
-  :config
-  ;; Only show loads of above 0.9 in the modeline
-  (setq display-time-load-average-threshold 0.9)
-  ;; A list of timezones to show for `display-time-world`
-  (setq zoneinfo-style-world-list
-        '(("Asia/Kuala_Lumpur" "Kuala Lumpur")
-          ("Europe/Berlin" "Berlin")
-          ("America/Los_Angeles" "Los Angeles")
-          ("America/New_York" "New York")
-          ("Australia/Sydney" "Sydney")))
-
-  (setq display-time-24hr-format t)
-  ;; Show time in modeline
-  (display-time-mode)
-  ;; Right align time and org clocked-in task
-  (add-to-list
-   'global-mode-string
-   '(:eval (propertize " " 'display `((space :align-to (- right
-                                                          ,(length display-time-string)
-                                                          ,(if (org-clocking-p)
-                                                               (length org-mode-line-string)
-                                                             0)
-                                                          1)))))))
 
 (use-package ansi-color
   :commands ansi-color-display
@@ -955,19 +961,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :diminish
   :hook (after-init-hook . global-auto-revert-mode))
 
-;; Hungry deletion
-(use-package hungry-delete
-  :diminish
-  :hook
-  (c-mode-hook . hungry-delete-mode)
-  (c++-mode-hook . hungry-delete-mode)
-  (typescript-mode-hook . hungry-delete-mode)
-  (python-mode-hook . hungry-delete-mode)
-  (rust-mode-hook . hungry-delete-mode)
-  :config
-  (setq-default hungry-delete-chars-to-skip " \t\f\v")
-  )
-
 ;; Remember location in file
 (use-package saveplace
   :ensure nil
@@ -975,8 +968,6 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
 
 (use-package projectile
   :diminish
-  :bind
-  ("M-o p" . counsel-projectile-switch-project)
   :config
   (projectile-mode +1))
 
@@ -995,7 +986,9 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   :config
   (setq-default c-default-style "bsd")
   (setq-default c-basic-offset 4)
-  (global-set-key (kbd "RET") 'newline-and-indent)	; automatically indent when press RET
+
+  ; automatically indent when press RET
+  (global-set-key (kbd "RET") 'newline-and-indent)
 
   (global-set-key (kbd "C-c w") 'whitespace-mode)
   (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
@@ -1138,6 +1131,24 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
       (expand-file-name (concat my-org-journal-dir yearly-name ".org")))
     )
 
+  (defun my-org-inline-css-hook (exporter)
+    "Insert custom inline css"
+    (when (eq exporter 'html)
+      (let* ((dir (ignore-errors (file-name-directory (buffer-file-name))))
+	     (path (concat dir "style.css"))
+	     (homestyle (or (null dir) (null (file-exists-p path))))
+	     (final (if homestyle "~/.config/emacs/org-style.css" path)))
+	(setq org-html-head-include-default-style nil)
+	(setq org-html-head (concat
+			     "<style type=\"text/css\">\n"
+			     "<!--/*--><![CDATA[/*><!--*/\n"
+			     (with-temp-buffer
+                               (insert-file-contents final)
+                               (buffer-string))
+			     "/*]]>*/-->\n"
+			     "</style>\n")))))
+
+  (add-hook 'org-export-before-processing-hook 'my-org-inline-css-hook)
 
   (defvar root-dir "/home/romeu/Documents/Org/")
   (defvar my-org-dir root-dir)
@@ -1332,22 +1343,22 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
   ;; TODO: improve and add more templates
   (setq org-capture-templates
         '(
-		  ("c" "Code")
+	  ("c" "Code")
 
-		  ("cc" "Cpp")
-		  ("ccs" "Cpp Snippets" entry (file+olp "Code/Cpp.org" "Cpp" "Snippets")
-		   "* %? %t" :empty-lines 1)
+	  ("cc" "Cpp")
+	  ("ccs" "Cpp Snippets" entry (file+olp "Code/Cpp.org" "Cpp" "Snippets")
+	   "* %? %t" :empty-lines 1)
 
-		  ("ck" "Kotlin")
-		  ("cks" "Kotlin Snippets" entry (file+olp "Code/Kotlin.org" "Kotlin" "Snippets")
-		   "* %? %t" :empty-lines 1)
-		  ("ckl" "Kotlin Libs")
-		  ("ckln" "Kotlin Native" entry (file+headline "Code/Kotlin.org" "Kotlin Native")
+	  ("ck" "Kotlin")
+	  ("cks" "Kotlin Snippets" entry (file+olp "Code/Kotlin.org" "Kotlin" "Snippets")
+	   "* %? %t" :empty-lines 1)
+	  ("ckl" "Kotlin Libs")
+	  ("ckln" "Kotlin Native" entry (file+headline "Code/Kotlin.org" "Kotlin Native")
            "* %? %t" :empty-lines 1)
 
-		  ("cr" "Rust")
-		  ("crs" "Rust Snippets" entry (file+olp "Code/Rust.org" "Rust" "Snippets")
-		   "* %? %t" :empty-lines 1)
+	  ("cr" "Rust")
+	  ("crs" "Rust Snippets" entry (file+olp "Code/Rust.org" "Rust" "Snippets")
+	   "* %? %t" :empty-lines 1)
 
           ("j" "Personal Journal" entry (file+datetree rg/get-journal-file-year)
            "* Entry %(rg/date-sha256) %T %^G\n\n%?\n" :kill-buffer t :empty-lines 1)
@@ -1375,15 +1386,11 @@ managers such as DWM, BSPWM refer to this state as 'monocle'."
      (emacs-lisp . t)
      (dot . t)))
 
-  ;; org latex
-  ;; (require 'ox-latex)
-  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
-  ;; (setq org-latex-listings 'minted)
-    (setq org-latex-listings 'minted
-    org-latex-packages-alist '(("newfloat" "minted"))
-    org-latex-pdf-process
-    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (setq org-latex-listings 'minted
+	org-latex-packages-alist '(("newfloat" "minted"))
+	org-latex-pdf-process
+	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 
   ;; org crypt
@@ -1466,7 +1473,7 @@ produces dates with a fixed length."
 			   (t year)))
 	   (weekstring (if (= day-of-week 1)
 			   (format " (W%02d)" iso-week)
-		         "")))
+			 "")))
       (format "%s %2d %s %4d%s"
 	      dayname day monthname year weekstring)))
 
@@ -1675,7 +1682,6 @@ file which do not already have one."
   :config
   (popwin-mode 1)
   (setq display-buffer-function 'popwin:display-buffer)
-  ;; (push '("*anything*") popwin:special-display-config)
   )
 
 (use-package diff-hl
@@ -1700,15 +1706,8 @@ file which do not already have one."
   (setq ivy-use-virtual-buffers t)
   (setq ivy-wrap t)
   (setq enable-recursive-minibuffers t)
-  ;; (setq ivy-initial-inputs-alist nil)
   (setq ivy-count-format "(%d/%d) ")
 
-  ;; ;; fuzzy matching
-  ;; (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
-  ;;                               (t . ivy--regex-fuzzy)))
-
-  ;; enable this if you want `swiper' to use it
-  ;; (setq search-default-mode #'char-fold-to-regexp)
   (global-set-key "\C-s" 'swiper)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume)
@@ -1752,7 +1751,7 @@ file which do not already have one."
   (defun indent-or-complete ()
     (interactive)
     (if (looking-at "\\_>")
-		(company-complete-common)
+	(company-complete-common)
       (indent-according-to-mode)))
 
   (delete 'company-dabbrev company-backends)
@@ -1767,75 +1766,11 @@ file which do not already have one."
 
   (global-unset-key (kbd "C-SPC"))
   (global-set-key (kbd "C-SPC") 'company-complete)
+  (global-set-key (kbd "<f9>") 'company-complete)
 
   ;; deactivate auto complete selection
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
-  )
-
-(use-package lsp-mode
-  :commands lsp
-  :custom
-  ;; debug
-  (lsp-print-io nil)
-  (lsp-trace nil)
-  (lsp-print-performance nil)
-  (lsp-log-io nil)
-  ;; workspace
-  (lsp-keep-workspace-alive nil)
-  ;; general
-  (lsp-auto-guess-root t)
-  (lsp-prefer-flymake nil)
-
-  (lsp-completion-provider :capf)
-  (lsp-prefer-capf t)
-
-  (lsp-idle-delay 0.500)
-  (lsp-enable-imenu t)
-  ;; snippet
-  (lsp-enable-snippet nil)
-  (lsp-diagnostic-package :none)
-  ;; other disables
-  (lsp--display-inline-image nil)
-  (lsp-enable-on-type-formatting nil)
-  (lsp-enable-text-document-color nil)
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-diagnostics-provider :none)
-  (lsp-eldoc-enable-hover t)
-  (lsp-eldoc-render-all nil)
-  (lsp-modeline-diagnostics-enable nil)
-
-  ;; other
-  (lsp-modeline-code-actions-enable nil)
-  (lsp-modeline-diagnostics-enable nil)
-  (lsp-modeline-workspace-status-enable nil)
-  (lsp-modeline-code-actions-mode nil)
-
-  (lsp-enable-file-watchers nil)
-  (lsp-enable-folding nil)
-  (lsp-enable-symbol-highlighting nil)
-  (lsp-enable-text-document-color nil)
-
-  (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil)
-
-  ;; rust specific stuff
-  (lsp-rust-analyzer-server-display-inlay-hints nil)
-  (lsp-rust-analyzer-cargo-watch-enable nil)
-  (lsp-rust-analyzer-cargo-all-targets nil)
-  (lsp-rust-analyzer-use-client-watching nil)
-  (lsp-rust-analyzer-diagnostics-enable nil)
-  (lsp-rust-analyzer-diagnostics-enable-experimental nil)
-  (lsp-rust-analyzer-completion-add-call-parenthesis nil)
-  (lsp-rust-analyzer-completion-add-call-argument-snippets nil)
-  (lsp-rust-analyzer-completion-postfix-enable nil)
-
-  :hook
-  (c-mode-hook . lsp)
-  (c++-mode-hook . lsp)
-  (typescript-mode-hook . lsp)
-  (python-mode-hook . lsp)
-  (rust-mode-hook . lsp)
   )
 
 (use-package eldoc
@@ -1887,15 +1822,16 @@ file which do not already have one."
   (auctex-latexmk-setup)
   :config
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  (add-hook 'LaTeX-mode-hook (lambda ()
-			       (push
-				'("LaTeXmk" "latexmk -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
-				  :help "Run latexmk on file")
-				TeX-command-list)
-                               (push '("LuaLatex" "lualatex -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
-				  :help "Run lualatex on file")
-				TeX-command-list)
-                               ))
+  (add-hook 'LaTeX-mode-hook
+            (lambda ()
+	      (push
+	       '("LaTeXmk" "latexmk -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
+		 :help "Run latexmk on file")
+	       TeX-command-list)
+              (push '("LuaLatex" "lualatex -pdf --synctex=1 -shell-escape -interaction=nonstopmode -file-line-error -synctex=1 %s" TeX-run-TeX nil t
+		      :help "Run lualatex on file")
+		    TeX-command-list)
+              ))
   )
 
 (put 'upcase-region 'disabled nil)
