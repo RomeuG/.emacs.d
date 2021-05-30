@@ -1672,9 +1672,21 @@ file which do not already have one."
   (setq org-export-dispatch-use-expert-ui nil)
 
   (setq org-html-validation-link nil)
+
+  ;; if headline has ignore tag, dont export it. But export its contents!
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
   )
 
 (use-package ox-gfm)
+
+;; if headline has ignore tag, dont export it. But export its contents!
+(use-package ox-extra
+  :after org
+  :ensure nil
+  :config
+  (ox-extras-activate '(ignore-headlines))
+  )
 
 (use-package popwin
   :init
